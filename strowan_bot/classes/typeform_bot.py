@@ -22,6 +22,7 @@ r.encoding = 'utf-8'
 json_data = json.loads(r.text)
 
 # try:
+print(json_data)
 for i in range(0,len(json_data['items'])):
     custom_id = json_data['items'][i]["hidden"]["id"]
     landing_id = json_data['items'][i]["landing_id"]
