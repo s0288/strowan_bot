@@ -17,7 +17,7 @@ last_value = DBBot.get_last_value('typeform')
 last_value = last_value[0].date().strftime('%Y-%m-%d')
 
 headers = {'Authorization': 'Bearer ' + TYPEFORM_AUTHORIZATION, 'Accept': 'application/json'}
-r = requests.get("https://api.typeform.com/forms/ASHAdA/responses?since={}T00%3A00%3A00&page_size=999".format(last_value), headers=headers)
+r = requests.get("https://api.typeform.com/forms/gam4il/responses?since={}T00%3A00%3A00&page_size=999".format(last_value), headers=headers)
 r.encoding = 'utf-8'
 json_data = json.loads(r.text)
 
