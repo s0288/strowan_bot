@@ -30,7 +30,7 @@ try:
         submitted_at = json_data['items'][i]["submitted_at"]
         if json_data['items'][i].get("answers") != None:
             for j in range(0,len(json_data['items'][i]["answers"])):
-                field_id = json_data['items'][i]["answers"][j]["field"]["id"]
+                field_id = json_data['items'][i]["answers"][j]["field"]["ref"]
                 field_type = json_data['items'][i]["answers"][j]["field"]["type"]
                 answer_type = json_data['items'][i]["answers"][j]["type"]
                 if answer_type == 'number':
