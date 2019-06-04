@@ -1,0 +1,4 @@
+last_bot_message,last_user_message,message,keyboard,resize_keyboard,inline_keyboard,photo,key_value,intent
+✏,/fasten_success,"""Glückwunsch, du hast durchgehalten! Halte hier fest, wie es dir mit dem Fasten ergangen ist: https://notadiet.typeform.com/to/PUmZkK?id={}"".format(chat_id)",Ausgefüllt 🙂; Jetzt nicht,,,,,/fasten_success
+"""Glückwunsch, du hast durchgehalten! Halte hier fest, wie es dir mit dem Fasten ergangen ist: https://notadiet.typeform.com/to/PUmZkK?id={}"".format(chat_id)",Jetzt nicht,"Kein Problem. Wenn du möchtest, klicke einfach später auf den Link. Melde dich, wenn es dir nicht gut geht beim Fasten. Bis bald.",,,,,,end_conversation
+"""Glückwunsch, du hast durchgehalten! Halte hier fest, wie es dir mit dem Fasten ergangen ist: https://notadiet.typeform.com/to/PUmZkK?id={}"".format(chat_id)",✏,"Danke. Melde dich, wenn es dir nicht gut geht beim Fasten. Bis bald.",,,,,,end_conversation

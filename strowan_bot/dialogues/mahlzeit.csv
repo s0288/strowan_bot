@@ -1,0 +1,9 @@
+last_bot_message,last_user_message,message,keyboard,resize_keyboard,inline_keyboard,photo,key_value,intent
+✏,/mahlzeit,"Alles klar. Lade ein Foto deines Essens hoch, um es zu erfassen. Oder klicke auf 'Bestätigen', wenn du kein Foto hochladen möchtest 🔍.",Bestätigen,,,,meal_entry,/mahlzeit
+"Alles klar. Lade ein Foto deines Essens hoch, um es zu erfassen. Oder klicke auf 'Bestätigen', wenn du kein Foto hochladen möchtest 🔍.",✏,Ist notiert. 🔍 Bringt dich diese Mahlzeit deinem Ziel näher oder entfernt sie dich?,bringt mich näher; entfernt mich; weiß ich nicht,,,,meal_path,/mahlzeit
+Ist notiert. 🔍 Bringt dich diese Mahlzeit deinem Ziel näher oder entfernt sie dich?,entfernt mich,"Ok. Wieso isst du das, obwohl es dich von deinem Ziel entfernt? ✏️",,,,,meal_reason,/mahlzeit
+Ist notiert. 🔍 Bringt dich diese Mahlzeit deinem Ziel näher oder entfernt sie dich?,weiß ich nicht,"Kein Problem. Dein Coach wird dir Feedback geben. Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",,,,,meal_description,/mahlzeit
+Ist notiert. 🔍 Bringt dich diese Mahlzeit deinem Ziel näher oder entfernt sie dich?,✏,"Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",,,,,meal_description,/mahlzeit
+"Ok. Wieso isst du das, obwohl es dich von deinem Ziel entfernt? ✏️",✏,"Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",,,,,meal_description,/mahlzeit
+"Kein Problem. Dein Coach wird dir Feedback geben. Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",✏,Guten Appetit 👩‍🍳.,,,,,,end_conversation
+"Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",✏,Guten Appetit 👩‍🍳.,,,,,,end_conversation
