@@ -1,8 +1,8 @@
 last_bot_message,last_user_message,message,keyboard,resize_keyboard,inline_keyboard,photo,key_value,intent
-✏,/meal_entry,Ist notiert. 🔍 Wie wohl fühlst du dich mit deiner Mahlzeit?,bringt mich näher; entfernt mich; weiß ich nicht,,,,meal_path,/meal_entry
-Ist notiert. 🔍 Wie wohl fühlst du dich mit deiner Mahlzeit?,entfernt mich,"Wieso isst du es, obwohl du dich nicht damit wohlfühlst? ✏️",,,,,meal_reason,/meal_entry
-Ist notiert. 🔍 Wie wohl fühlst du dich mit deiner Mahlzeit?,weiß ich nicht,"Kein Problem. Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",,,,,meal_description,/meal_entry
-Ist notiert. 🔍 Wie wohl fühlst du dich mit deiner Mahlzeit?,✏,"Ok, Guten Appetit 👩‍🍳. Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",,,,,meal_description,/meal_entry
+✏,/meal_entry,Ist notiert. 🔍 Wie denkst du über deine Mahlzeit?,bringt mich näher; entfernt mich; weiß ich nicht,,,,meal_path,/meal_entry
+Ist notiert. 🔍 Wie denkst du über deine Mahlzeit?,entfernt mich,"Wieso isst du es, obwohl du dich nicht damit wohlfühlst? ✏️",,,,,meal_reason,/meal_entry
+Ist notiert. 🔍 Wie denkst du über deine Mahlzeit?,weiß ich nicht,"Kein Problem. Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",,,,,meal_description,/meal_entry
+Ist notiert. 🔍 Wie denkst du über deine Mahlzeit?,✏,"Ok, Guten Appetit 👩‍🍳. Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",,,,,meal_description,/meal_entry
 "Wieso isst du es, obwohl du dich nicht damit wohlfühlst? ✏️",✏,"Ok, Guten Appetit 👩‍🍳. Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",,,,,meal_description,/meal_entry
 "Kein Problem. Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",✏,Alles klar. Bis später,,,,,,end_conversation
 "Ok, Guten Appetit 👩‍🍳. Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",✏,Alles klar. Bis später,,,,,,end_conversation
