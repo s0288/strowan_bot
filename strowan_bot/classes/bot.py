@@ -203,14 +203,10 @@ class Bot:
             if intent in ['open_conversation', 'end_conversation']:
                 return
             ##### end catch-all
-            elif intent == '/profil':
-                message_elements["message"], message_elements["intent"], message_elements["keyboard"] = Bot.build_menu(message, intent, chat_id)
             else:
                 message_elements["message"], message_elements["keyboard"], message_elements["photo"], message_elements["key_value"], message_elements["intent"] = DialogueBot.find_response(intent, chat_id)
                 if message_elements["keyboard"]:
                     message_elements["keyboard"] = Bot.build_keyboard(message_elements["keyboard"])
-                if message_elements["key_value"] and "p_" in message_elements["key_value"]:
-                    Bot.add_to_profile(chat_id, "/"+message_elements["key_value"].split("_",1)[1])
 
             # check for photo, doc or other
             if message_elements["photo"]:
@@ -231,31 +227,6 @@ class Bot:
         return json.dumps(reply_markup)
 # ------ end: handle updates
 
-# ------ start: profile functions
-    def build_menu(message, intent, chat_id):
-        keyboard = []
-        # find info to display
-        if message in ['/profil', '/Profil']:
-            message = 'Hier kannst du Daten angeben.'
-            data = DBBot.get_user_menu('main', chat_id)
-        elif message == 'Weitere Daten':
-            intent = '/data'
-            message = 'Welche Daten möchtest du angeben?'
-            data = DBBot.get_user_menu('data', chat_id)
-        for row in data:
-            keyboard.append(row[0])
-        keyboard = Bot.build_keyboard(keyboard)
-        return message, intent, keyboard
-
-
-    def add_to_profile(chat_id, profile_value):
-        if profile_value in ('/zurueck', '/mahlzeit', '/ketonwert', '/gewicht', '/fasten'):
-            category = profile_value
-        else:
-            category = 'data'
-        created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        if DBBot.check_profile(chat_id, chat_id, category, profile_value) == 0:
-            DBBot.add_to_profile(chat_id, chat_id, category, profile_value, created_at)
 
 # ------ start: trigger messages
     def trigger_message(self, intent, chat_id):

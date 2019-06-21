@@ -1,0 +1,2 @@
+last_bot_message,last_user_message,message,keyboard,resize_keyboard,inline_keyboard,photo,key_value,intent
+✏,/profil,"""Hey. Hier ist dein Profil: https://strowan.herokuapp.com/?key={}"".format(chat_id)",,,,,,end_conversation
