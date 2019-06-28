@@ -70,7 +70,7 @@ class DataBot:
                     key_value_value = key_value_value + ':00'
                     DBBot.add_key_value(telegram_id, chat_id, key_value, key_value_value, created_at, received_at)
                     print('key_value for {} added'.format(key_value))
-            elif "user_photo" in key_value or "meal_entry" in key_value or "meal_path" in key_value or "meal_description" in key_value or "meal_reason" in key_value or "text" in key_value:
+            elif "user_photo" in key_value or "meal_entry" in key_value or "meal_path" in key_value or "meal_description" in key_value or "meal_reason" in key_value or "meal_problem" in key_value or "text" in key_value:
                 key_value_value = key_value_value
                 DBBot.add_key_value(telegram_id, chat_id, key_value, key_value_value, created_at, received_at)
                 print('key_value for {} added'.format(key_value))
