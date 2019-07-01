@@ -1,3 +1,2 @@
 last_bot_message,last_user_message,message,keyboard,resize_keyboard,inline_keyboard,photo,key_value,intent
-✏,/rezepte,"Hier findest du alle bisherigen Rezepte: https://tinyurl.com/yyzmjo9c
-",,,,,,end_conversation
+✏,/rezepte,"""Die Rezepte findest du in deinem https://strowan.herokuapp.com/?key={}"".format(chat_id)",,,,,,end_conversation
