@@ -1,10 +1,10 @@
 last_bot_message,last_user_message,message,keyboard,resize_keyboard,inline_keyboard,photo,key_value,intent
-✏,/mahlzeit,"Alles klar. Lade ein Foto deines Essens hoch, um es zu erfassen. Oder klicke auf 'Bestätigen', wenn du kein Foto hochladen möchtest 🔍.",Bestätigen,,,,meal-confirmed_text,/mahlzeit
-"Alles klar. Lade ein Foto deines Essens hoch, um es zu erfassen. Oder klicke auf 'Bestätigen', wenn du kein Foto hochladen möchtest 🔍.",✏,Ist notiert. 🔍 Wie denkst du über diese Mahlzeit?,bringt mich näher; entfernt mich; weiß ich nicht,,,,meal-path_text,/mahlzeit
-Ist notiert. 🔍 Wie denkst du über diese Mahlzeit?,entfernt mich,Was stört dich daran? ✏️,,,,,meal-problem_text,/mahlzeit
-Was stört dich daran? ✏️,✏,Wieso isst du es? ✏️,,,,,meal-reason_text,/meal_entry
-Ist notiert. 🔍 Wie denkst du über diese Mahlzeit?,weiß ich nicht,"Kein Problem. Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",,,,,meal-description_text,/mahlzeit
-Ist notiert. 🔍 Wie denkst du über diese Mahlzeit?,✏,"Ok, Guten Appetit 👩‍🍳. Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",,,,,meal-description_text,/mahlzeit
-Wieso isst du es? ✏️,✏,"Ok, Guten Appetit 👩‍🍳. Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",,,,,meal-description_text,/mahlzeit
+✏,/mahlzeit,"Alles klar. Lade ein Foto deines Essens hoch, um es zu erfassen. Oder klicke auf 'Bestätigen', wenn du kein Foto hochladen möchtest 🔍.",Bestätigen,,,,meal_confirmed_text,/mahlzeit
+"Alles klar. Lade ein Foto deines Essens hoch, um es zu erfassen. Oder klicke auf 'Bestätigen', wenn du kein Foto hochladen möchtest 🔍.",✏,Ist notiert. 🔍 Wie denkst du über diese Mahlzeit?,bringt mich näher; entfernt mich; weiß ich nicht,,,,meal_path_text,/mahlzeit
+Ist notiert. 🔍 Wie denkst du über diese Mahlzeit?,entfernt mich,Was stört dich daran? ✏️,,,,,meal_problem_text,/mahlzeit
+Was stört dich daran? ✏️,✏,Wieso isst du es? ✏️,,,,,meal_reason_text,/meal_entry
+Ist notiert. 🔍 Wie denkst du über diese Mahlzeit?,weiß ich nicht,"Kein Problem. Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",,,,,meal_description_text,/mahlzeit
+Ist notiert. 🔍 Wie denkst du über diese Mahlzeit?,✏,"Ok, Guten Appetit 👩‍🍳. Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",,,,,meal_description_text,/mahlzeit
+Wieso isst du es? ✏️,✏,"Ok, Guten Appetit 👩‍🍳. Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",,,,,meal_description_text,/mahlzeit
 "Kein Problem. Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",✏,Alles klar. Bis später,,,,,,end_conversation
 "Ok, Guten Appetit 👩‍🍳. Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",✏,Guten Appetit 👩‍🍳.,,,,,,end_conversation

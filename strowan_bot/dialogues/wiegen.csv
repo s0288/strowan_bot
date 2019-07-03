@@ -1,4 +1,4 @@
 last_bot_message,last_user_message,message,keyboard,resize_keyboard,inline_keyboard,photo,key_value,intent
-✏,/wiegen,"Hallo, wie viel hast du heute morgen gewogen? ✏",,,,,weight-value_float,/wiegen
-"Hallo, wie viel hast du heute morgen gewogen? ✏",✏,"Ok. Hier siehst du, wann du gestern gegessen hast. Was denkst du darüber? ✏",,,,"""http://s0288.pythonanywhere.com/static/food/{}_{}.png"".format(chat_id, datetime.datetime.strftime(datetime.date.today() - datetime.timedelta(1), '%y-%m-%d'))",meal-daily-feedback_text,/wiegen
+✏,/wiegen,"Hallo, wie viel hast du heute morgen gewogen? ✏",,,,,weight_value_float,/wiegen
+"Hallo, wie viel hast du heute morgen gewogen? ✏",✏,"Ok. Hier siehst du, wann du gestern gegessen hast. Was denkst du darüber? ✏",,,,"""http://s0288.pythonanywhere.com/static/food/{}_{}.png"".format(chat_id, datetime.datetime.strftime(datetime.date.today() - datetime.timedelta(1), '%y-%m-%d'))",meal_daily_feedback_text,/wiegen
 "Ok. Hier siehst du, wann du gestern gegessen hast. Was denkst du darüber? ✏",✏,Alles klar. Möchtest du sonst noch etwas angeben?,"Nein, danke 😊; /ketonwert; /befehle",,,,,end_conversation
