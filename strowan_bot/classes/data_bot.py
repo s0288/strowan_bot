@@ -130,11 +130,11 @@ class DataBot:
 
     # trigger functions
     def add_trigger_for_times(self, key_value):
-        if key_value == 'wi_time_wknd' or key_value == 'wi_time_wrkday':
+        if key_value in ['wi_time_wknd', 'weight_notif_wknd_time'] or key_value in ['wi_time_wrkday', 'weight_notif_work_time']:
             trigger_value = '/wiegen'
-            if key_value == 'wi_time_wknd':
+            if key_value in ['wi_time_wknd', 'weight_notif_wknd_time']:
                 trigger_day = "sat-sun"
-            elif key_value == 'wi_time_wrkday':
+            elif key_value in ['wi_time_wrkday', 'weight_notif_work_time']:
                 trigger_day = "mon-fri"
         data = DBBot.get_key_values(key_value)
         for row in data:
@@ -213,6 +213,8 @@ if __name__ == '__main__':
     DataBot = DataBot()
     DataBot.find_key_values()
     DataBot.add_files_from_updates()
+    DataBot.add_trigger_for_times('weight_notif_work_time')
+    DataBot.add_trigger_for_times('weight_notif_wknd_time')
     DataBot.add_trigger_for_times('wi_time_wrkday')
     DataBot.add_trigger_for_times('wi_time_wknd')
     DataBot.add_trigger_for_fast('f_duration')
