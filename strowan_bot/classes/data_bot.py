@@ -19,12 +19,12 @@ class DataBot:
 
     def find_key_values(self):
         # get key values
-        # last_key_value = DBBot.get_last_value('key_values')
-        # # check if no files have been saved so far
-        # if last_key_value[0] == None:
-        data = DBBot.get_values_from_updates('key_values')
-        # else:
-        #    data = DBBot.get_values_from_updates('key_values', last_key_value[0].strftime('%Y-%m-%d %H:%M:%S'))
+        last_key_value = DBBot.get_last_value('key_values')
+        # check if no files have been saved so far
+        if last_key_value[0] == None:
+            data = DBBot.get_values_from_updates('key_values')
+        else:
+           data = DBBot.get_values_from_updates('key_values', last_key_value[0].strftime('%Y-%m-%d %H:%M:%S'))
         data.reverse()
         for row in data:
             telegram_id = row[0]
@@ -215,8 +215,6 @@ if __name__ == '__main__':
     DataBot.add_files_from_updates()
     DataBot.add_trigger_for_times('weight_notif_work_time')
     DataBot.add_trigger_for_times('weight_notif_wknd_time')
-    DataBot.add_trigger_for_times('wi_time_wrkday')
-    DataBot.add_trigger_for_times('wi_time_wknd')
     DataBot.add_trigger_for_fast('f_duration')
     DBBot.delete_triggers_by_inactive_users()
     DataBot.remove_triggers('/fasten_progress')
