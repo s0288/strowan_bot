@@ -1,0 +1,19 @@
+- Triggers <-- independent (?)
+
+- Telegram
+    - Listener
+        - formerly get_updates functions in bot.py
+    - Extractor
+        - formerly extract functions in bot.py
+    - Handler
+        - formerly handle functions in bot.py
+        - decide between open dialogue or scripted dialogue
+            - scripted dialogue
+            - open dialogue
+
+- AI
+    - Closed_dialogues
+        - load dialogues
+        - fixed conversations
+    - Open_dialogues
+        - catch all

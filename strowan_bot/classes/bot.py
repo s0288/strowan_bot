@@ -41,6 +41,13 @@ class Bot:
         for update in updates["result"]:
             update_ids.append(int(update["update_id"]))
         return min(update_ids)
+
+    # for handling inline buttons
+    def answer_callback(callback_query_id, text=None):
+        url = URL + "answerCallbackQuery?callback_query_id={}".format(callback_query_id)
+        if text:
+            url += "&text={}".format(text)
+        Bot.get_json_from_url(url)
 # ------ end: process incoming messages
 
 # ------ extract content of incoming messages
@@ -108,6 +115,30 @@ class Bot:
             message_elements['language_code'] = message["from"]["language_code"]
         return message_elements
 
+    # invoked in extract_updates() - for handling inline buttons
+    def extract_callback(message_elements, message):
+        # save callback_query_id
+        message_elements['callback_query_id'] = message["id"]
+        # remove loading button on the client
+        Bot.answer_callback(message_elements['callback_query_id'])
+        # save remaining parameters
+        message_elements['created_at'] = datetime.datetime.fromtimestamp(int(message["message"]["date"])).strftime('%Y-%m-%d %H:%M:%S')
+        #update_elements['created_at'] = created_at.replace(tzinfo=pytz.utc).astimezone(local_tz).strftime('%Y-%m-%d %H:%M:%S')
+        message_elements['message_id'] = message["message"]["message_id"]
+        message_elements['message'] = message["data"]
+        message_elements['user_id'] = message["from"]["id"]
+        message_elements['first_name'] = message["from"]["first_name"]
+        message_elements['chat_id'] = message["message"]["chat"]["id"]
+        # if the chat has a title, save it
+        if message["message"]["chat"].get('title') is not None:
+            message_elements['chat_title'] = message["message"]["chat"]["title"]
+        message_elements['chat_type'] = message["message"]["chat"]["type"]
+        message_elements['is_bot'] = message["from"]["is_bot"]
+        # if the message has a language code, save it
+        if message["from"].get('language_code') is not None:
+            message_elements['language_code'] = message["from"]["language_code"]
+        return message_elements
+
     def get_intent(message_elements):
         # set bot_command as intent
         if message_elements["bot_command"] == 'bot_command':
@@ -139,9 +170,12 @@ class Bot:
 
             # check whether we're dealing with a message, a callback or not-to-be-extracted content
             content = Bot.check_content(update)
-            if content not in ['do_not_extract', 'extract_callback']:
+            if content not in ['do_not_extract']:
                 if content == 'extract_message':
                     message_elements = Bot.extract_message(message_elements, update['message'])
+                elif content == 'extract_callback':
+                    print(update)
+                    message_elements = Bot.extract_callback(message_elements, update['callback_query'])
                 message_elements = Bot.get_intent(message_elements)
                 Bot.save_messages(message_elements)
                 return message_elements
@@ -154,6 +188,7 @@ class Bot:
         # remove keyboard from the background if no new keyboard is provided
         if message_elements["keyboard"]:
             url += "&reply_markup={}".format(message_elements["keyboard"])
+            print(url)
         else:
             url += "&reply_markup={\"remove_keyboard\":%20true}"
         # send message and save response
@@ -221,7 +256,7 @@ class Bot:
             print(e)
 
 
-    def build_keyboard(items, inline_keyboard=None):
+    def build_keyboard(items):
         keyboard = [[item] for item in items]
         reply_markup = {"keyboard": keyboard, "one_time_keyboard": True, "resize_keyboard": True}
         return json.dumps(reply_markup)
