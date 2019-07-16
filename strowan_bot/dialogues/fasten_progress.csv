@@ -1,4 +1,0 @@
-last_bot_message,last_user_message,message,keyboard,resize_keyboard,inline_keyboard,photo,key_value,intent
-✏,/fasten_progress,"""Hallo. Wenn du möchtest, notiere für dich selbst, wie es dir heute mit dem Fasten ergangen ist: https://strowan.typeform.com/to/cgloWh?id={}"".format(chat_id)",Ausgefüllt 🙂; Jetzt nicht,,,,,/fasten_progress
-"""Hallo. Wenn du möchtest, notiere für dich selbst, wie es dir heute mit dem Fasten ergangen ist: https://strowan.typeform.com/to/cgloWh?id={}"".format(chat_id)",Jetzt nicht,"Kein Problem. Wenn du möchtest, klicke einfach später auf den Link. Bis bald.",,,,,,end_conversation
-"""Hallo. Wenn du möchtest, notiere für dich selbst, wie es dir heute mit dem Fasten ergangen ist: https://strowan.typeform.com/to/cgloWh?id={}"".format(chat_id)",✏,Danke. Bis bald.,,,,,,end_conversation

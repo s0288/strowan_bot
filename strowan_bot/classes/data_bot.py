@@ -179,9 +179,6 @@ class DataBot:
                     if i == duration_days:
                         trigger_value = '/fasten_success'
                         trigger_time = end_time.time().strftime('%H:%M')
-                    else:
-                        trigger_value = '/fasten_progress'
-                        trigger_time = '20:00'
                     # currently also adds old fasting triggers. Better would be to only consider fasting key values from this week or sth
                     if DBBot.check_triggers(user_id, chat_id, trigger_value, trigger_day, trigger_time) == 0:
                         received_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -217,5 +214,6 @@ if __name__ == '__main__':
     DataBot.add_trigger_for_times('weight_notif_wknd_time')
     DataBot.add_trigger_for_fast('f_duration')
     DBBot.delete_triggers_by_inactive_users()
+    # fasten_progress is deprecated
     DataBot.remove_triggers('/fasten_progress')
     DataBot.remove_triggers('/fasten_success')
