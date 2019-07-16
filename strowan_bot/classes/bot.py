@@ -193,7 +193,6 @@ class Bot:
             url += "&reply_markup={\"remove_keyboard\":%20true}"
         # send message and save response
         url_response = Bot.get_json_from_url(url)
-        print(url_response)
         message_elements = Bot.extract_message(message_elements, url_response["result"])
         Bot.save_messages(message_elements)
 
@@ -228,37 +227,55 @@ class Bot:
 
 # ------ handle updates
     def handle_updates(self, first_name, chat_id, intent, message):
-        try:
-            # message container for incoming and outgoing msgs
-            message_elements = {'update_id': None, 'created_at': None, 'received_at': None, 'message_id': None, 'message': None, 'intent': None, 'keyboard': None, 'user_id': None, 'first_name': None, 'chat_id': None, 'chat_title': None, 'chat_type': None, 'bot_command': None, 'key_value': None, 'photo': None, 'is_bot': None, 'language_code': None, 'callback_query_id': None, 'group_chat_created': None, 'new_chat_participant_id': None}
+        # try:
+        # message container for incoming and outgoing msgs
+        message_elements = {'update_id': None, 'created_at': None, 'received_at': None, 'message_id': None, 'message': None, 'intent': None, 'keyboard': None, 'user_id': None, 'first_name': None, 'chat_id': None, 'chat_title': None, 'chat_type': None, 'bot_command': None, 'key_value': None, 'callback_url': None, 'photo': None, 'is_bot': None, 'language_code': None, 'callback_query_id': None, 'group_chat_created': None, 'new_chat_participant_id': None}
 
-            message_elements["intent"] = intent
-            message_elements["chat_id"] = chat_id
-            ##### TO DO: catch-all until fixed:
-            if intent in ['open_conversation', 'end_conversation']:
-                return
-            ##### end catch-all
+        message_elements["intent"] = intent
+        message_elements["chat_id"] = chat_id
+        ##### TO DO: catch-all until fixed:
+        if intent in ['open_conversation', 'end_conversation']:
+            return
+        ##### end catch-all
+        else:
+            message_elements["message"], message_elements["keyboard"], message_elements["callback_url"], message_elements["photo"], message_elements["key_value"], message_elements["intent"] = DialogueBot.find_response(intent, chat_id)
+            if message_elements["keyboard"]:
+                message_elements["keyboard"] = Bot.build_keyboard(message_elements["keyboard"], message_elements["callback_url"])
+
+        # check for photo, doc or other
+        if message_elements["photo"]:
+            file_type = os.path.splitext(message_elements["photo"])[1]
+            if file_type == ".gif" or file_type == ".pdf":
+                Bot.send_document(message_elements)
             else:
-                message_elements["message"], message_elements["keyboard"], message_elements["photo"], message_elements["key_value"], message_elements["intent"] = DialogueBot.find_response(intent, chat_id)
-                if message_elements["keyboard"]:
-                    message_elements["keyboard"] = Bot.build_keyboard(message_elements["keyboard"])
+                Bot.send_photo(message_elements)
+        else:
+            Bot.send_message(message_elements)
+        # except Exception as e:
+        #     print(e)
 
-            # check for photo, doc or other
-            if message_elements["photo"]:
-                file_type = os.path.splitext(message_elements["photo"])[1]
-                if file_type == ".gif" or file_type == ".pdf":
-                    Bot.send_document(message_elements)
-                else:
-                    Bot.send_photo(message_elements)
+
+    def build_keyboard(keyboard, callback_url):
+        inline_keyboard = []
+        # needed to make sure that not more than 2 buttons are allowed side-by-side
+        temp_keyboard = []
+        # create correct format for inline_keyboard, e.g.: {"inline_keyboard":[[{"text": "Hello", "callback_url": "Hello", "url": "", "callback_data": "Hello"},{"text": "No", "callback_url": "Google", "url": "http://www.google.com/"}]]}
+        n_items = len(keyboard)-1
+        for num, row in enumerate(keyboard):
+            # check whether it is a callback (internal dialogue) or url (external)
+            if "http" in callback_url[num]:
+                inline_type = "url"
             else:
-                Bot.send_message(message_elements)
-        except Exception as e:
-            print(e)
-
-
-    def build_keyboard(items):
-        keyboard = [[item] for item in items]
-        reply_markup = {"keyboard": keyboard, "one_time_keyboard": True, "resize_keyboard": True}
+                inline_type = "callback_data"    
+            temp_keyboard.append({"text": keyboard[num], inline_type: callback_url[num]})
+            print("temp_keyboard: {}".format(temp_keyboard))
+            print(num, n_items)
+            # do not allow more than 2 buttons side-by-side
+            # CHANGECHANGECHANGE TO REST OF 1
+            if (num % 2 == 1) or num == n_items: 
+                inline_keyboard.append(temp_keyboard)
+                temp_keyboard = []
+        reply_markup = {"inline_keyboard": inline_keyboard}
         return json.dumps(reply_markup)
 # ------ end: handle updates
 

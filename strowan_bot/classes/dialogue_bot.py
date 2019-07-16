@@ -35,9 +35,10 @@ class DialogueBot:
             data = pd.read_csv("{}/dialogues/{}.csv".format(config.DIRECTORY, identifier), dtype= str, delimiter=',')
             # translate NaN cells into None cells
             data = data.where(pd.notnull(data), None)
-            # transform keyboard list into actual list
+            # transform keyboard, callback, url lists into actual lists
             f = lambda x: x.split("; ") if x is not None else x
             data["keyboard"] = data["keyboard"].apply(f)
+            data["callback_url"] = data["callback_url"].apply(f)
             # transform array into subscriptable numpy array
             data=np.array(data, dtype=object)
             #add slash to match the intent
@@ -84,16 +85,27 @@ class DialogueBot:
         # save parameters
         message = response_array[2]
         keyboard = response_array[3]
-        photo = response_array[6]
-        key_value = response_array[7]
-        intent = response_array[8]
-        # check for key_values (chat_id, datetime)
+        callback_url = response_array[4]
+        img = response_array[5]
+        key_value = response_array[6]
+        intent = response_array[7]
+        # check for db values in msg (chat_id, datetime)
+        print("callback_url: {}".format(callback_url))
+        print("message: {}".format(message))
+        print("keyboard: {}".format(keyboard))
         if '{}' in message:
             # convert string to message with .format
             message = eval(message)
-        if photo and '{}' in photo:
-            photo = eval(photo)
-        return message, keyboard, photo, key_value, intent
+        # check for db values in callback (chat_id, datetime)
+        print(callback_url[0])
+        print(callback_url)
+        if '{}' in callback_url[0]:
+            # convert string to message with .format
+            callback_url = eval(callback_url[0])
+        # check for db values in img
+        if img and '{}' in img:
+            img = eval(img)
+        return message, keyboard, callback_url, img, key_value, intent
 
     def find_response(self, intent, chat_id, last_user_message=None, last_bot_message=None):
         # get the dialogue
@@ -124,6 +136,6 @@ class DialogueBot:
                 print(e)
                 response_array = ['✏', '✏', 'Tut mir leid. Das verstehe ich nicht 😔. Ich habe meine Macher schon verständigt.', None, None, None, None, None, '/open_conversation']
 
-        message, keyboard, photo, key_value, intent = DialogueBot.extract_response_array(response_array, chat_id)
+        message, keyboard, callback_url, img, key_value, intent = DialogueBot.extract_response_array(response_array, chat_id)
 
-        return message, keyboard, photo, key_value, intent
+        return message, keyboard, callback_url, img, key_value, intent

@@ -1,3 +1,0 @@
-last_bot_message,last_user_message,message,keyboard,resize_keyboard,inline_keyboard,photo,key_value,intent
-✏,/gewicht,Alles klar. Wie viel hast du gewogen? ✏,,,,,wi_value,/gewicht
-Alles klar. Wie viel hast du gewogen? ✏,✏,Ist erfasst. Bis später ☺,,,,,,end_conversation
