@@ -228,32 +228,31 @@ class Bot:
 
 # ------ handle updates
     def handle_updates(self, first_name, chat_id, intent, message):
-        try:
-            # message container for incoming and outgoing msgs
-            message_elements = {'update_id': None, 'created_at': None, 'received_at': None, 'message_id': None, 'message': None, 'intent': None, 'keyboard': None, 'user_id': None, 'first_name': None, 'chat_id': None, 'chat_title': None, 'chat_type': None, 'bot_command': None, 'key_value': None, 'callback_url': None, 'photo': None, 'is_bot': None, 'language_code': None, 'callback_query_id': None, 'group_chat_created': None, 'new_chat_participant_id': None}
+        # message container for incoming and outgoing msgs
+        message_elements = {'update_id': None, 'created_at': None, 'received_at': None, 'message_id': None, 'message': None, 'intent': None, 'keyboard': None, 'user_id': None, 'first_name': None, 'chat_id': None, 'chat_title': None, 'chat_type': None, 'bot_command': None, 'key_value': None, 'callback_url': None, 'photo': None, 'is_bot': None, 'language_code': None, 'callback_query_id': None, 'group_chat_created': None, 'new_chat_participant_id': None}
 
-            message_elements["intent"] = intent
-            message_elements["chat_id"] = chat_id
-            ##### TO DO: catch-all until fixed:
-            if intent in ['open_conversation', 'end_conversation']:
-                return
-            ##### end catch-all
-            else:
-                message_elements["message"], message_elements["keyboard"], message_elements["callback_url"], message_elements["photo"], message_elements["key_value"], message_elements["intent"] = DialogueBot.find_response(intent, chat_id)
-                if message_elements["keyboard"]:
-                    message_elements["keyboard"] = Bot.build_keyboard(message_elements["keyboard"], message_elements["callback_url"])
+        message_elements["intent"] = intent
+        message_elements["chat_id"] = chat_id
+        ##### TO DO: catch-all until fixed:
+        if intent in ['open_conversation', 'end_conversation']:
+            message_elements["message"], message_elements["keyboard"], message_elements["callback_url"], message_elements["photo"], message_elements["key_value"], message_elements["intent"] = DialogueBot.find_response("/befehle", chat_id, last_user_message="/befehle", last_bot_message="✏")
+        ##### end catch-all
+        else:
+            message_elements["message"], message_elements["keyboard"], message_elements["callback_url"], message_elements["photo"], message_elements["key_value"], message_elements["intent"] = DialogueBot.find_response(intent, chat_id)
+        
+        # create keyboard
+        if message_elements["keyboard"]:
+            message_elements["keyboard"] = Bot.build_keyboard(message_elements["keyboard"], message_elements["callback_url"])
 
-            # check for photo, doc or other
-            if message_elements["photo"]:
-                file_type = os.path.splitext(message_elements["photo"])[1]
-                if file_type == ".gif" or file_type == ".pdf":
-                    Bot.send_document(message_elements)
-                else:
-                    Bot.send_photo(message_elements)
+        # check for photo, doc or other
+        if message_elements["photo"]:
+            file_type = os.path.splitext(message_elements["photo"])[1]
+            if file_type == ".gif" or file_type == ".pdf":
+                Bot.send_document(message_elements)
             else:
-                Bot.send_message(message_elements)
-        except Exception as e:
-            print(e)
+                Bot.send_photo(message_elements)
+        else:
+            Bot.send_message(message_elements)
 
 
     def build_keyboard(keyboard, callback_url):
@@ -270,7 +269,6 @@ class Bot:
                 inline_type = "callback_data"    
             temp_keyboard.append({"text": keyboard[num], inline_type: callback_url[num]})
             # do not allow more than 2 buttons side-by-side
-            # CHANGECHANGECHANGE TO REST OF 1
             if (num % 2 == 1) or num == n_items: 
                 inline_keyboard.append(temp_keyboard)
                 temp_keyboard = []
