@@ -1,2 +1,2 @@
 last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
-✏,/rezepte,Die Rezepte findest du in deinem Profil.,Profil,"""https://strowan.herokuapp.com/?key={}"".format(chat_id)",,,end_conversation
+✏,/rezepte,"""Die Rezepte findest du in deinem Profil: https://strowan.herokuapp.com/?key={}"".format(chat_id)",,,,,end_conversation

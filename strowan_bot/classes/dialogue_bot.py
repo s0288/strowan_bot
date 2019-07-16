@@ -90,18 +90,9 @@ class DialogueBot:
         key_value = response_array[6]
         intent = response_array[7]
         # check for db values in msg (chat_id, datetime)
-        print("callback_url: {}".format(callback_url))
-        print("message: {}".format(message))
-        print("keyboard: {}".format(keyboard))
         if '{}' in message:
             # convert string to message with .format
             message = eval(message)
-        # check for db values in callback (chat_id, datetime)
-        print(callback_url[0])
-        print(callback_url)
-        if '{}' in callback_url[0]:
-            # convert string to message with .format
-            callback_url = eval(callback_url[0])
         # check for db values in img
         if img and '{}' in img:
             img = eval(img)
