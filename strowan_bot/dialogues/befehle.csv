@@ -1,3 +1,3 @@
 last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
-✏,/befehle,Du kannst mit einem dieser Befehle ein Gespräch mit mir starten.,/ketonwert; /mahlzeit; /fasten; /wiegen; /profil,/ketonwert; /mahlzeit; /fasten; /wiegen; /profil,,,/befehle
+✏,/befehle,Du kannst mit einem dieser Befehle ein Gespräch mit mir starten.,/fasten; /mahlzeit; /wiegen; /ketonwert; /profil,/fasten; /mahlzeit; /wiegen; /ketonwert; /profil,,,/befehle
 Du kannst mit einem dieser Befehle ein Gespräch mit mir starten.,✏,"Melde dich mit /befehle, wenn du mir etwas schreiben möchtest.",,,,,end_conversation
