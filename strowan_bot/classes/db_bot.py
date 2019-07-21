@@ -1,6 +1,6 @@
 #!/usr/bin/python3.6
 # coding: utf8
-
+import logging
 from time import sleep
 from sqlalchemy import *
 
@@ -47,7 +47,7 @@ class DBBot:
         try:
             return self.conn.execute(stmt).fetchall()
         except Exception as e:
-            print(e)
+            logging.exception("Exception in get_active_users")
 
     def get_trigger_values(self, telegram_id=None, trigger_value=None):
         if telegram_id == None and trigger_value == None:
@@ -62,8 +62,8 @@ class DBBot:
         try:
             return self.conn.execute(stmt, args).fetchall()
         except Exception as e:
-            print('in exception')
-            print(e)
+            print(self.conn.execute(stmt, args).fetchall())
+            return None
 
 # update functions
     def add_message(self, message_id, created_at, received_at, message, intent, telegram_id, chat_id, chat_type, bot_command, key_value, is_bot, callback_query_id, group_chat_created, new_chat_participant_id, update_id):
@@ -72,7 +72,7 @@ class DBBot:
         try:
             self.conn.execute(stmt, args)
         except Exception as e:
-            print(e)
+            logging.exception("Exception in add_message")
 
     def get_last_message(self, chat_id, is_bot):
         stmt = 'SELECT intent, message, key_value FROM updates WHERE chat_id = %s AND is_bot = cast(%s as boolean) ORDER BY id DESC LIMIT 1'
@@ -106,7 +106,7 @@ class DBBot:
         try:
             return self.conn.execute(stmt, args).fetchall()
         except Exception as e:
-            print(e)
+            logging.exception("Exception")
 
     def check_profile(self, telegram_id, chat_id, category, profile_value):
         stmt = 'SELECT COUNT(*) FROM user_menus WHERE telegram_id = %s AND chat_id = %s AND category = %s AND value = %s'
@@ -131,7 +131,7 @@ class DBBot:
         try:
             self.conn.execute(stmt, args)
         except Exception as e:
-            print(e)
+            logging.exception("Exception in add_dialogue")
 
     def get_dialogue(self, intent_identifier):
         stmt = "SELECT * FROM dialogues WHERE intent = %s ORDER BY id DESC"
@@ -157,7 +157,7 @@ class DBBot:
         try:
             return self.conn.execute(stmt, args).fetchall()[0]
         except Exception as e:
-            print(e)
+            logging.exception("Exception in get_last_value")
 
     def get_values_from_updates(self, context, last_value=None):
         if context == 'files':
@@ -178,7 +178,7 @@ class DBBot:
         try:
             return self.conn.execute(stmt, args).fetchall()
         except Exception as e:
-            print(e)
+            logging.exception("Exception in get_last_values_from_updates")
 
     ## key value retrieval
     def add_key_value(self, telegram_id, chat_id, key_value, value, created_at, received_at):
@@ -196,7 +196,7 @@ class DBBot:
         try:
             return self.conn.execute(stmt, args).fetchall()
         except Exception as e:
-            print(e)
+            logging.exception("Exception in get_key_values")
 
     ## file retrieval
     def add_file(self, telegram_id, chat_id, intent, key_value, file, created_at, received_at):
@@ -205,7 +205,7 @@ class DBBot:
         try:
             self.conn.execute(stmt, args)
         except Exception as e:
-            print(e)
+            logging.exception("Exception in add_file")
 
     ## trigger functions
     def check_triggers(self, telegram_id, chat_id, trigger_value, trigger_day, trigger_time):
@@ -224,7 +224,7 @@ class DBBot:
         try:
             self.conn.execute(stmt, args)
         except Exception as e:
-            print(e)
+            logging.exception("Exception in delete_triggers_by_inactive_users")
 
     def delete_from_triggers(self, telegram_id, trigger_value, trigger_day, created_at):
         stmt = 'DELETE FROM triggers WHERE telegram_id = %s AND trigger_value = %s AND trigger_day = %s AND created_at = %s'
@@ -232,7 +232,7 @@ class DBBot:
         try:
             self.conn.execute(stmt, args)
         except Exception as e:
-            print(e)
+            logging.exception("Exception in delete_from_triggers")
 
 
 ####### remove later
@@ -242,7 +242,7 @@ class DBBot:
         try:
             self.conn.execute(stmt, args)
         except Exception as e:
-            print(e)
+            logging.exception("Exception in add_typeform_response")
 
     def check_typeform(self, landing_id, field_id):
         stmt = 'SELECT COUNT(*) FROM typeform_responses WHERE landing_id = %s AND field_id = %s'

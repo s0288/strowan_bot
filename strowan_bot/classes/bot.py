@@ -1,5 +1,6 @@
 #!/usr/bin/python3.6
 # coding: utf8
+import logging
 import requests
 import json
 import datetime
@@ -62,12 +63,13 @@ class Bot:
             if DBBot.check_user(message_elements['user_id']) == 0:
                 # add user_id, first_name, created_at, is_bot, language_code
                 DBBot.add_user(message_elements['user_id'], message_elements['first_name'], message_elements['created_at'], message_elements['received_at'], message_elements['is_bot'], message_elements['language_code'])
+                logging.info(f"New user created: {message_elements['user_id']}")
 
         # save message to db
         try:
             DBBot.add_message(message_elements['message_id'], message_elements['created_at'], message_elements['received_at'], message_elements['message'], message_elements['intent'], message_elements['user_id'], message_elements['chat_id'], message_elements['chat_type'], message_elements['bot_command'], message_elements['key_value'], message_elements['is_bot'], message_elements['callback_query_id'], message_elements['group_chat_created'], message_elements['new_chat_participant_id'], message_elements['update_id'])
         except Exception as e:
-            print(e)
+            logging.exception("Exception in add_message")
 
     # invoked in extract_updates()
     def check_content(update):
@@ -236,6 +238,7 @@ class Bot:
         ##### TO DO: catch-all until fixed:
         if intent in ['open_conversation', 'end_conversation']:
             message_elements["message"], message_elements["keyboard"], message_elements["callback_url"], message_elements["photo"], message_elements["key_value"], message_elements["intent"] = DialogueBot.find_response("/befehle", chat_id, last_user_message="/befehle", last_bot_message="✏")
+            logging.info(f'Open dialogue started by {chat_id}')
         ##### end catch-all
         else:
             message_elements["message"], message_elements["keyboard"], message_elements["callback_url"], message_elements["photo"], message_elements["key_value"], message_elements["intent"] = DialogueBot.find_response(intent, chat_id)

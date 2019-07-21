@@ -76,7 +76,7 @@ for user in ids:
     except:
         fig.savefig('../../../nad_app/user_files/polar_plots/{}_{}.png'.format(user, datetime.date.today() - datetime.timedelta(days=day)))
         plt.close(fig)
-        print("no data so far")
+        logging.exception("Exception in meal_pic.py")
 
 
 
@@ -143,7 +143,7 @@ for user in ids:
             try:
                 img=Image.open("../../../nad_app/user_files/{}".format(imgs[num]))
             except:
-                print('mealtime logged')
+                logging.exception("Exception in meal_pic.py")
                 img=Image.open("../../../nad_app/static/no_photo.jpg")
 
             if num < 5:

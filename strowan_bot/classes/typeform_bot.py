@@ -1,3 +1,4 @@
+import logging
 import requests
 import json
 import datetime
@@ -49,4 +50,4 @@ try:
                 else:
                     print("Typeform response already there")
 except Exception as e:
-    print(e)
+    logging.exception("Exception in typeform.py")

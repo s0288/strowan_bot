@@ -1,5 +1,6 @@
 #!/usr/bin/python3.6
 # coding: utf8
+import logging
 
 # read user data
 import pandas as pd
@@ -32,7 +33,7 @@ for row in active_users:
         pm.execute_notebook('../../../papermill.ipynb', '../../../nad_app/static/reports/' + str(telegram_id) + "_" + current_year + current_work_week +'.ipynb', parameters = dict(user=telegram_id, start_year=year, start_month=month, start_day=day))
     except Exception as e:
         print('error creating notebook for user {} ({})'.format(telegram_id, telegram_id))
-        print(e)
+        logging.exception("Exception in weekly_bot.py")
     # download html file without input code from jupyter notebook for user & week
     try:
         print('converting jupyter notebook to html...')
@@ -44,4 +45,4 @@ for row in active_users:
         os.remove('../../../nad_app/static/reports/' + str(telegram_id) + "_" + current_year + current_work_week + '.ipynb' + "")
     except Exception as e:
         print('error creating html file for user {} ({})'.format(telegram_id, telegram_id))
-        print(e)
+        logging.exception("Exception in weekly_bot.py")

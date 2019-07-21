@@ -1,5 +1,6 @@
 #!/usr/bin/python3.6
 # coding: utf8
+import logging
 import requests
 import json
 import os
@@ -125,8 +126,7 @@ class DataBot:
                 DBBot.add_file(telegram_id, chat_id, intent, key_value, file, created_at, received_at)
                 print('added file to db')
         except Exception as e:
-            print('no new files. Error message: ')
-            print(e)
+            logging.exception("Error in add_files_from_updates")
 
     # trigger functions
     def add_trigger_for_times(self, key_value):

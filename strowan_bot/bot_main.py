@@ -1,6 +1,7 @@
 #!/usr/bin/python3.6
 # coding: utf8
 import time
+import logging
 
 # used for cronjobs
 import pandas as pd
@@ -43,6 +44,11 @@ def get_job_details(trigger_value):
 
 
 def main(chat_id=None):
+    ## set up logging
+    logging.basicConfig(filename='app.log', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO, datefmt='%d-%m-%y %H:%M:%S')
+    # specifically for apscheduler
+    logging.getLogger('apscheduler').setLevel(logging.DEBUG)
+
     ## main job
     # create non-existent tables
     DBBot.setup()
@@ -52,9 +58,6 @@ def main(chat_id=None):
 
     # create scheduler
     scheduler = BackgroundScheduler()
-    # set up logging
-    logging.basicConfig()
-    logging.getLogger('apscheduler').setLevel(logging.DEBUG)
     scheduler.start()
     # cache needed to make sure the same job isn't set up over and over again
     cache = []
@@ -68,20 +71,24 @@ def main(chat_id=None):
             #### IMPORTANT: Already-set-up triggers are not removed - currently needs to restart whenever a user is removed
             active_users = DBBot.get_active_users("telegram_ids_only")
             active_users = [x[0] for x in active_users]
+            # added to allow testing with only one active user
+            if len(active_users)==1:
+                active_users=[active_users[0], active_users[0]]
             trigger_values = DBBot.get_trigger_values(telegram_id=tuple(active_users))
-            for trigger_value in trigger_values:
-                if trigger_value not in cache:
-                    try:
-                        user_id, intent, trigger_time, trigger_day, hour, minute = get_job_details(trigger_value)
-                        job = scheduler.add_job(trigger, trigger='cron', day_of_week=trigger_day, hour=hour, minute=minute, args=[intent, user_id], misfire_grace_time=10, name="{}:{}_{}".format(counter, user_id, intent), max_instances=999, id=str(counter))
+            if trigger_values:
+                for trigger_value in trigger_values:
+                    if trigger_value not in cache:
+                        try:
+                            user_id, intent, trigger_time, trigger_day, hour, minute = get_job_details(trigger_value)
+                            job = scheduler.add_job(trigger, trigger='cron', day_of_week=trigger_day, hour=hour, minute=minute, args=[intent, user_id], misfire_grace_time=10, name="{}:{}_{}".format(counter, user_id, intent), max_instances=999, id=str(counter))
 
-                    except Exception as e:
-                        print(e)
-                        # continue to prevent incrementing cache & counter
-                        continue
-                    # add new jobs to cache to make sure they are only triggered once
-                    cache.append(trigger_value)
-                    counter += 1
+                        except Exception as e:
+                            print(e)
+                            # continue to prevent incrementing cache & counter
+                            continue
+                        # add new jobs to cache to make sure they are only triggered once
+                        cache.append(trigger_value)
+                        counter += 1
 
             ##### listen for new messages
             updates = Bot.get_updates(last_update_id)
@@ -92,7 +99,7 @@ def main(chat_id=None):
                 message_elements = Bot.extract_updates(updates)
                 Bot.handle_updates(message_elements["first_name"], message_elements["chat_id"], message_elements["intent"], message_elements["message"])
         except Exception as e:
-            print(e)
+            logging.exception(f"Exception in main from {message_elements['user_id']}")
 
         time.sleep(0.5)
         sys.stdout.write('.'); sys.stdout.flush()

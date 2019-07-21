@@ -1,5 +1,6 @@
 #!/usr/bin/python3.6
 # coding: utf8
+import logging
 import numpy as np
 import pandas as pd
 import datetime
@@ -103,9 +104,9 @@ class DialogueBot:
         try:
             data = DialogueBot.fetch_dialogue(intent)
         except Exception as e:
-            print(e)
-            intent = '/wrong_command'
-            last_user_message = '/wrong_command'
+            logging.exception("Could not find intent in find_response")
+            intent = '/befehle'
+            last_user_message = '/befehle'
             data = DialogueBot.fetch_dialogue(intent)
 
         last_user_message, last_bot_message, last_bot_message_for_exception = DialogueBot.fetch_last_messages(data, chat_id, last_user_message, last_bot_message)
@@ -124,7 +125,7 @@ class DialogueBot:
                 # check if the user double clicked a button by replacing the user message with "✏".
                 response_array = data[(intent == "✏" == data[:,1]) | ((last_bot_message == data[:,0]) & ("✏" == data[:,1]))][0]
             except Exception as e:
-                print(e)
+                logging.exception("No matching answer")
                 response_array = ['✏', '✏', 'Tut mir leid. Das verstehe ich nicht 😔. Ich habe meine Macher schon verständigt.', None, None, None, None, None, '/open_conversation']
 
         message, keyboard, callback_url, img, key_value, intent = DialogueBot.extract_response_array(response_array, chat_id)
