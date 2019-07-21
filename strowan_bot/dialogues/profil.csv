@@ -1,2 +1,2 @@
 last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
-✏,/profil,"""Hier ist dein Profil: https://strowan.herokuapp.com/?key={}"".format(chat_id)",,,,,end_conversation
+✏,/profil,"""Hier ist dein Profil: https://strowan-flask.herokuapp.com/?id={}"".format(chat_id)",,,,,end_conversation
