@@ -1,2 +1,2 @@
 last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
-✏,/rezepte,Die Rezepte findest du hier: https://s0288.github.io/strowan_recipes/,,,,,end_conversation
+✏,/rezepte,Eine Auswahl an Rezepten findest du hier: https://s0288.github.io/strowan_recipes/,,,,,end_conversation
