@@ -25,7 +25,7 @@ conn = engine.connect()
 
 
 
-data = DBBot.get_active_users("telegram_ids_only")
+data = DBBot.get_active_users()
 ids = []
 for num, id in enumerate(data):
     ids.append(data[num][0])
@@ -41,7 +41,7 @@ for user in ids:
 
     ##### >>>>> create polar plot <<<<< ######
 
-    stmt = "SELECT * FROM key_values WHERE key_value in ('user_photo', 'meal_entry') AND telegram_id = {} ORDER BY created_at DESC".format(user)
+    stmt = "SELECT * FROM key_values WHERE key_value in ('user_photo', 'meal_entry') AND platform_user_id = {} ORDER BY created_at DESC".format(user)
     df = pd.read_sql_query(stmt, conn)
     df = np.array(df, dtype=object)
 
@@ -85,7 +85,7 @@ for user in ids:
     ##### >>>>> create meal pic <<<<< ######
     # get the names of the user uploads
     # get the user_photos, meal_entries, meal_paths and meal_reasons
-    stmt = "select * from key_values where telegram_id = {} and key_value in ('user_photo', 'meal_entry', 'meal_path', 'meal_reason') and date(created_at) = '{}' order by created_at asc".format(user, target_date)
+    stmt = "select * from key_values where platform_user_id = {} and key_value in ('user_photo', 'meal_entry', 'meal_path', 'meal_reason') and date(created_at) = '{}' order by created_at asc".format(user, target_date)
     df = pd.read_sql_query(stmt, conn)
 
     ## assign paths and reasons to photos/entries
@@ -99,7 +99,7 @@ for user in ids:
     for num in range(count_df):
         # get image urls and created at
         if df["key_value"][num] in ('user_photo', 'meal_entry'):
-            imgs.append("{}/{}_meal_entry_{}_{}_{}-{}-{}".format(str(df['created_at'][num].isocalendar()[0]) + "-" + str(df['created_at'][num].isocalendar()[1]), df['telegram_id'][num], df['key_value'][num], df['created_at'][num].date(), df['created_at'][num].hour, df['created_at'][num].minute, df['created_at'][num].second))
+            imgs.append("{}/{}_meal_entry_{}_{}_{}-{}-{}".format(str(df['created_at'][num].isocalendar()[0]) + "-" + str(df['created_at'][num].isocalendar()[1]), df['platform_user_id'][num], df['key_value'][num], df['created_at'][num].date(), df['created_at'][num].hour, df['created_at'][num].minute, df['created_at'][num].second))
             created_at.append(df['created_at'][num])
 
             ## only check for paths and reasons, when the current input is an image

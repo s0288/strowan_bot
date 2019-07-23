@@ -28,8 +28,8 @@ class DataBot:
            data = DBBot.get_values_from_updates('key_values', last_key_value[0].strftime('%Y-%m-%d %H:%M:%S'))
         data.reverse()
         for row in data:
-            telegram_id = row[0]
-            chat_id = row[1]
+            platform_user_id = row[0]
+            platform_chat_id = row[1]
             key_value_value = row[2] # will be split up in if clauses
             key_value = row[3]
             created_at = row[5]
@@ -40,43 +40,43 @@ class DataBot:
             if "_float" in key_value or "_integer" in key_value:
                 if re.findall("\d+\.\d+", key_value_value):
                     key_value_value = re.findall("\d+\.\d+", key_value_value)[0]
-                    DBBot.add_key_value(telegram_id, chat_id, key_value, key_value_value, created_at, received_at)
+                    DBBot.add_key_value(platform_user_id, platform_chat_id, key_value, key_value_value, created_at, received_at)
                     print('key_value for {} added'.format(key_value))
                 elif re.findall("\d+\,\d+", key_value_value):
                     key_value_value = re.findall("\d+\,\d+", key_value_value)[0]
                     key_value_value = key_value_value.replace(',','.')
-                    DBBot.add_key_value(telegram_id, chat_id, key_value, key_value_value, created_at, received_at)
+                    DBBot.add_key_value(platform_user_id, platform_chat_id, key_value, key_value_value, created_at, received_at)
                     print('key_value for {} added'.format(key_value))
                 elif re.findall("\d+", key_value_value):
                     key_value_value = re.findall("\d+", key_value_value)[0]
-                    DBBot.add_key_value(telegram_id, chat_id, key_value, key_value_value, created_at, received_at)
+                    DBBot.add_key_value(platform_user_id, platform_chat_id, key_value, key_value_value, created_at, received_at)
                     print('key_value for {} added'.format(key_value))
             # 'time' is deprecated
             elif "_time" in key_value and "_timestamp" not in key_value:
                 if re.findall("\d+\:\d+", key_value_value):
                     key_value_value = re.findall("\d+\:\d+", key_value_value)[0]
-                    DBBot.add_key_value(telegram_id, chat_id, key_value, key_value_value, created_at, received_at)
+                    DBBot.add_key_value(platform_user_id, platform_chat_id, key_value, key_value_value, created_at, received_at)
                     print('key_value for {} added'.format(key_value))
                 elif re.findall("\d+\.\d+", key_value_value):
                     key_value_value = re.findall("\d+\.\d+", key_value_value)[0]
                     key_value_value = key_value_value.replace('.',':')
-                    DBBot.add_key_value(telegram_id, chat_id, key_value, key_value_value, created_at, received_at)
+                    DBBot.add_key_value(platform_user_id, platform_chat_id, key_value, key_value_value, created_at, received_at)
                     print('key_value for {} added'.format(key_value))
                 elif re.findall("\d+\,\d+", key_value_value):
                     key_value_value = re.findall("\d+\,\d+", key_value_value)[0]
                     key_value_value = key_value_value.replace(',',':')
-                    DBBot.add_key_value(telegram_id, chat_id, key_value, key_value_value, created_at, received_at)
+                    DBBot.add_key_value(platform_user_id, platform_chat_id, key_value, key_value_value, created_at, received_at)
                     print('key_value for {} added'.format(key_value))
                 elif re.findall("\d+", key_value_value):
                     key_value_value = re.findall("\d+", key_value_value)[0]
                     # add a leading zero and 2 zeros at the end
                     key_value_value = key_value_value + ':00'
-                    DBBot.add_key_value(telegram_id, chat_id, key_value, key_value_value, created_at, received_at)
+                    DBBot.add_key_value(platform_user_id, platform_chat_id, key_value, key_value_value, created_at, received_at)
                     print('key_value for {} added'.format(key_value))
             # meal_entry, meal_path, meal_description, meal_reason are deprecated
             elif "user_photo" in key_value or "_text" in key_value:
                 key_value_value = key_value_value
-                DBBot.add_key_value(telegram_id, chat_id, key_value, key_value_value, created_at, received_at)
+                DBBot.add_key_value(platform_user_id, platform_chat_id, key_value, key_value_value, created_at, received_at)
                 print('key_value for {} added'.format(key_value))
             # currently missing: timestamp
 
@@ -100,8 +100,8 @@ class DataBot:
         try:
             for row in data:
                 # retrieve new file from update
-                telegram_id = row[0]
-                chat_id = row[1]
+                platform_user_id = row[0]
+                platform_chat_id = row[1]
                 file_id = row[2].split("photo: ")[1]
                 key_value = row[3]
                 intent = row[4]
@@ -114,7 +114,7 @@ class DataBot:
 
                 # save file
                 file_path = url_response['result']['file_path']
-                file = "{}_{}_{}_{}_{}-{}-{}".format(telegram_id, intent.replace("/", ""), key_value, created_at.date(), created_at.hour, created_at.minute, created_at.second)
+                file = "{}_{}_{}_{}_{}-{}-{}".format(platform_user_id, intent.replace("/", ""), key_value, created_at.date(), created_at.hour, created_at.minute, created_at.second)
                 # get location of folder for file
                 weeknr =  str(created_at.date().isocalendar()[0]) + '-' + str(created_at.date().isocalendar()[1])
                 file_location = "{}/user_files/{}".format(config.FILE_DIRECTORY, weeknr)
@@ -123,7 +123,7 @@ class DataBot:
                     os.makedirs(file_location)
                 urllib.request.urlretrieve("https://api.telegram.org/file/bot{}/{}".format(config.TELEGRAM_TOKEN, file_path), "{}/{}".format(file_location, file))
                 print('retrieved file')
-                DBBot.add_file(telegram_id, chat_id, intent, key_value, file, created_at, received_at)
+                DBBot.add_file(platform_user_id, platform_chat_id, intent, key_value, file, created_at, received_at)
                 print('added file to db')
         except Exception as e:
             logging.exception("Error in add_files_from_updates")
@@ -138,15 +138,15 @@ class DataBot:
                 trigger_day = "mon-fri"
         data = DBBot.get_key_values(key_value)
         for row in data:
-            user_id = row[1]
-            chat_id = row[2]
+            platform_user_id = row[1]
+            platform_chat_id = row[2]
             created_at = row[5]
             # unique for _time values
             trigger_time = row[4]
             # check if already there or add
-            if DBBot.check_triggers(user_id, chat_id, trigger_value, trigger_day, trigger_time) == 0:
+            if DBBot.check_triggers(platform_user_id, platform_chat_id, trigger_value, trigger_day, trigger_time) == 0:
                 received_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                DBBot.add_trigger(user_id, chat_id, trigger_value, trigger_time, trigger_day, created_at, received_at)
+                DBBot.add_trigger(platform_user_id, platform_chat_id, trigger_value, trigger_time, trigger_day, created_at, received_at)
                 print('trigger for {} added'.format(trigger_value))
 
     # convert hourly fast to cronjob hours
@@ -163,8 +163,8 @@ class DataBot:
 
             # check whether fasten key value is still active (within fasting window)
             if today - datetime.timedelta(hours=fasting_duration) < created_at_day:
-                user_id = row[1]
-                chat_id = row[2]
+                platform_user_id = row[1]
+                platform_chat_id = row[2]
                 # calculate end of fast
                 end_time = created_at + datetime.timedelta(hours=fasting_duration)
                 # how many days from today to end of fast?
@@ -180,9 +180,9 @@ class DataBot:
                         trigger_value = '/fasten_success'
                         trigger_time = end_time.time().strftime('%H:%M')
                     # currently also adds old fasting triggers. Better would be to only consider fasting key values from this week or sth
-                    if DBBot.check_triggers(user_id, chat_id, trigger_value, trigger_day, trigger_time) == 0:
+                    if DBBot.check_triggers(platform_user_id, platform_chat_id, trigger_value, trigger_day, trigger_time) == 0:
                         received_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                        DBBot.add_trigger(user_id, chat_id, trigger_value, trigger_time, trigger_day, created_at, received_at)
+                        DBBot.add_trigger(platform_user_id, platform_chat_id, trigger_value, trigger_time, trigger_day, created_at, received_at)
                         print('trigger for fast: day {} of {} added'.format(i, duration_days))
 
     def remove_triggers(self, trigger_value):
