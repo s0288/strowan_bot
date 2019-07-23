@@ -7,9 +7,10 @@ import logging
 import pandas as pd
 from apscheduler.schedulers.background import BackgroundScheduler
 
-import sys #required because files in other folder
-sys.path.append('./classes/')
 from bot import Bot
+
+import sys #required because files in other folder
+sys.path.append('./Handler/')
 from db_bot import DBBot
 from dialogue_bot import DialogueBot
 

@@ -8,7 +8,7 @@ import urllib
 import os
 
 import sys #required because files in other folder
-sys.path.append('../classes/')
+sys.path.append('../Handler/')
 from db_bot import DBBot
 from dialogue_bot import DialogueBot
 
