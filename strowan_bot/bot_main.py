@@ -5,7 +5,6 @@ import logging
 
 # used for cronjobs
 import pandas as pd
-import logging
 from apscheduler.schedulers.background import BackgroundScheduler
 
 import sys #required because files in other folder

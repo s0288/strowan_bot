@@ -4,6 +4,8 @@ import logging
 import socket
 import sys
 
+logging.basicConfig(filename='app.log', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO, datefmt='%d-%m-%y %H:%M:%S')
+
 lock_socket = None  # we want to keep the socket open until the very end of
                     # our script so we use a global variable to avoid going
                     # out of scope and being garbage-collected
