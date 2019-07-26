@@ -208,8 +208,11 @@ class Bot:
             url += "&reply_markup={}".format(message_elements["keyboard"])
         else:
             url += "&reply_markup={\"remove_keyboard\":%20true}"
+        print(url)
         url_response = Bot.get_json_from_url(url)
+        print(url_response)
         message_elements = Bot.extract_message(message_elements, url_response["result"])
+        print(message_elements)
         Bot.save_messages(message_elements)
 
     # for gifs and pdfs

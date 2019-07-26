@@ -33,10 +33,11 @@ for num, id in enumerate(data):
 
 ## change here if you want to get yesterday:
 # for meal pics
-#target_date = datetime.datetime.today().date()
-target_date = datetime.datetime.today().date() - datetime.timedelta(days = 1)
-# for polar plot:
 day = 1
+#target_date = datetime.datetime.today().date()
+target_date = datetime.datetime.today().date() - datetime.timedelta(days = day)
+# for polar plot:
+
 
 for user in ids:
 
@@ -79,7 +80,6 @@ for user in ids:
     except:
         fig.savefig('../../../nad_app/user_files/polar_plots/{}_{}.png'.format(user, datetime.date.today() - datetime.timedelta(days=day)))
         plt.close(fig)
-        logging.exception("Exception in meal_pic.py")
 
 
 

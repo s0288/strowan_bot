@@ -93,7 +93,7 @@ def main(chat_id=None):
             ##### listen for new messages
             updates = Bot.get_updates(last_update_id)
             ## main job
-            if len(updates["result"]) > 0:
+            if 'updates' in locals():
                 last_update_id = Bot.get_last_update_id(updates) + 1
                 # update_elements holds the user's initial message
                 message_elements = Bot.extract_updates(updates)
