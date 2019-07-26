@@ -58,7 +58,6 @@ class DBBot:
             args = [trigger_value]
         else:
             stmt = 'SELECT platform_user_id, platform_chat_id, trigger_value, trigger_time, trigger_day, created_at FROM triggers WHERE platform_user_id in %s ORDER BY id DESC'
-            print(platform_user_id)
             args = [platform_user_id]
         try:
             return self.conn.execute(stmt, args).fetchall()
