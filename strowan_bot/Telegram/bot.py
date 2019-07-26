@@ -171,7 +171,7 @@ class Bot:
     def extract_updates(self, updates):
         for update in updates["result"]:
             # message container for incoming and outgoing msgs
-            message_elements = {'update_id': None, 'created_at': None, 'received_at': None, 'message_id': None, 'message': None, 'intent': None, 'keyboard': None, 'user_id': None, 'first_name': None, 'chat_id': None, 'chat_title': None, 'chat_type': None, 'bot_command': None, 'key_value': None, 'photo': None, 'is_bot': None, 'language_code': None, 'callback_query_id': None, 'group_chat_created': None, 'new_chat_participant_id': None}
+            message_elements = {'update_id': None, 'created_at': None, 'received_at': None, 'message_id': None, 'message': None, 'intent': None, 'keyboard': None, 'user_id': None, 'first_name': None, 'chat_id': None, 'chat_title': None, 'chat_type': None, 'bot_command': None, 'key_value': None, 'img': None, 'is_bot': None, 'language_code': None, 'callback_query_id': None, 'group_chat_created': None, 'new_chat_participant_id': None}
 
             # check whether we're dealing with a message, a callback or not-to-be-extracted content
             content = Bot.check_content(update)
@@ -201,24 +201,21 @@ class Bot:
 
     def send_photo(message_elements):
         #photo, chat_id, caption=None, reply_markup=None
-        url = URL + "sendPhoto?photo={}&chat_id={}&parse_mode=HTML".format(message_elements["photo"], message_elements["chat_id"])
+        url = URL + "sendPhoto?photo={}&chat_id={}&parse_mode=HTML".format(message_elements["img"], message_elements["chat_id"])
         if message_elements["message"]:
             url += "&caption={}".format(message_elements["message"])
         if message_elements["keyboard"]:
             url += "&reply_markup={}".format(message_elements["keyboard"])
         else:
             url += "&reply_markup={\"remove_keyboard\":%20true}"
-        print(url)
         url_response = Bot.get_json_from_url(url)
-        print(url_response)
         message_elements = Bot.extract_message(message_elements, url_response["result"])
-        print(message_elements)
         Bot.save_messages(message_elements)
 
     # for gifs and pdfs
     def send_document(message_elements):
         #photo, chat_id, caption=None, reply_markup=None
-        url = URL + "sendDocument?document={}&chat_id={}&parse_mode=HTML".format(message_elements["photo"], message_elements["chat_id"])
+        url = URL + "sendDocument?document={}&chat_id={}&parse_mode=HTML".format(message_elements["img"], message_elements["chat_id"])
         if message_elements["message"]:
             url += "&caption={}".format(message_elements["message"])
         if message_elements["keyboard"]:
@@ -234,25 +231,25 @@ class Bot:
 # ------ handle updates
     def handle_updates(self, first_name, chat_id, intent, message):
         # message container for incoming and outgoing msgs
-        message_elements = {'update_id': None, 'created_at': None, 'received_at': None, 'message_id': None, 'message': None, 'intent': None, 'keyboard': None, 'user_id': None, 'first_name': None, 'chat_id': None, 'chat_title': None, 'chat_type': None, 'bot_command': None, 'key_value': None, 'callback_url': None, 'photo': None, 'is_bot': None, 'language_code': None, 'callback_query_id': None, 'group_chat_created': None, 'new_chat_participant_id': None}
+        message_elements = {'update_id': None, 'created_at': None, 'received_at': None, 'message_id': None, 'message': None, 'intent': None, 'keyboard': None, 'user_id': None, 'first_name': None, 'chat_id': None, 'chat_title': None, 'chat_type': None, 'bot_command': None, 'key_value': None, 'callback_url': None, 'img': None, 'is_bot': None, 'language_code': None, 'callback_query_id': None, 'group_chat_created': None, 'new_chat_participant_id': None}
 
         message_elements["intent"] = intent
         message_elements["chat_id"] = chat_id
         ##### TO DO: catch-all until fixed:
         if intent in ['open_conversation', 'end_conversation']:
-            message_elements["message"], message_elements["keyboard"], message_elements["callback_url"], message_elements["photo"], message_elements["key_value"], message_elements["intent"] = DialogueBot.find_response("/befehle", chat_id, last_user_message="/befehle", last_bot_message="✏")
+            message_elements["message"], message_elements["keyboard"], message_elements["callback_url"], message_elements["img"], message_elements["key_value"], message_elements["intent"] = DialogueBot.find_response("/befehle", chat_id, last_user_message="/befehle", last_bot_message="✏")
             logging.info(f'Open dialogue started by {chat_id}')
         ##### end catch-all
         else:
-            message_elements["message"], message_elements["keyboard"], message_elements["callback_url"], message_elements["photo"], message_elements["key_value"], message_elements["intent"] = DialogueBot.find_response(intent, chat_id)
+            message_elements["message"], message_elements["keyboard"], message_elements["callback_url"], message_elements["img"], message_elements["key_value"], message_elements["intent"] = DialogueBot.find_response(intent, chat_id)
         
         # create keyboard
         if message_elements["keyboard"]:
             message_elements["keyboard"] = Bot.build_keyboard(message_elements["keyboard"], message_elements["callback_url"])
 
         # check for photo, doc or other
-        if message_elements["photo"]:
-            file_type = os.path.splitext(message_elements["photo"])[1]
+        if message_elements["img"]:
+            file_type = os.path.splitext(message_elements["img"])[1]
             if file_type == ".gif" or file_type == ".pdf":
                 Bot.send_document(message_elements)
             else:
@@ -285,7 +282,7 @@ class Bot:
 
 # ------ start: trigger messages
     def trigger_message(self, intent, chat_id):
-        message_elements = {'update_id': None, 'created_at': None, 'received_at': None, 'message_id': None, 'message': None, 'intent': None, 'keyboard': None, 'user_id': None, 'first_name': None, 'chat_id': None, 'chat_title': None, 'chat_type': None, 'bot_command': None, 'key_value': None, 'photo': None, 'is_bot': None, 'language_code': None, 'callback_query_id': None, 'group_chat_created': None, 'new_chat_participant_id': None}
+        message_elements = {'update_id': None, 'created_at': None, 'received_at': None, 'message_id': None, 'message': None, 'intent': None, 'keyboard': None, 'user_id': None, 'first_name': None, 'chat_id': None, 'chat_title': None, 'chat_type': None, 'bot_command': None, 'key_value': None, 'img': None, 'is_bot': None, 'language_code': None, 'callback_query_id': None, 'group_chat_created': None, 'new_chat_participant_id': None}
         message_elements["chat_id"] = chat_id
         message_elements["message"], message_elements["keyboard"], message_elements["callback_url"], message_elements["img"], message_elements["key_value"], message_elements["intent"] = DialogueBot.find_response(intent, chat_id, last_user_message=intent, last_bot_message="✏")
         # if keyboard needed, get it
@@ -293,8 +290,8 @@ class Bot:
             message_elements["keyboard"] = Bot.build_keyboard(message_elements["keyboard"], message_elements["callback_url"])
         
         # check for photo, doc or other
-        if message_elements["photo"]:
-            file_type = os.path.splitext(message_elements["photo"])[1]
+        if message_elements["img"]:
+            file_type = os.path.splitext(message_elements["img"])[1]
             if file_type == ".gif" or file_type == ".pdf":
                 Bot.send_document(message_elements)
             else:
