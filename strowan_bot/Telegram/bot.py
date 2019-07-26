@@ -291,4 +291,13 @@ class Bot:
         # if keyboard needed, get it
         if message_elements["keyboard"]:
             message_elements["keyboard"] = Bot.build_keyboard(message_elements["keyboard"], message_elements["callback_url"])
-        Bot.send_message(message_elements)
+        
+        # check for photo, doc or other
+        if message_elements["photo"]:
+            file_type = os.path.splitext(message_elements["photo"])[1]
+            if file_type == ".gif" or file_type == ".pdf":
+                Bot.send_document(message_elements)
+            else:
+                Bot.send_photo(message_elements)
+        else:
+            Bot.send_message(message_elements)
