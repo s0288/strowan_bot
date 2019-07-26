@@ -10,6 +10,8 @@ import datetime
 import papermill as pm
 import os
 
+import sys #required because files in other folder
+sys.path.append('../Handler/')
 from db_bot import DBBot
 
 DBBot = DBBot()
