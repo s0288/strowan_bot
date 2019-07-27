@@ -1,5 +1,5 @@
 last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
-✏,/assessment,Hier siehst du deine Fastenfenster der letzten Woche. Wie denkst du darüber? ✏,,,"""http://s0288.pythonanywhere.com/static/strowan/pwa/2019/W{}/fasting_{}_W{}.png"".format(datetime.datetime.today().isocalendar()[1], chat_id, datetime.datetime.today().isocalendar()[1])",,/assessment
-Hier siehst du deine Fastenfenster der letzten Woche. Wie denkst du darüber? ✏,✏,Alles klar. Welches Verhalten blieb dir besonders in Erinnerung? Möchtest du mehr oder weniger davon? ✏,,,,past_week_text,/assessment
+✏,/assessment,Hier siehst du deine Fastenfenster der letzten Woche. Wie denkst du über deine Woche? ✏,,,"""http://s0288.pythonanywhere.com/static/strowan/pwa/2019/W{}/fasting_{}_W{}.png"".format(datetime.datetime.today().isocalendar()[1], chat_id, datetime.datetime.today().isocalendar()[1])",,/assessment
+Hier siehst du deine Fastenfenster der letzten Woche. Wie denkst du über deine Woche? ✏,✏,Alles klar. Welches Verhalten blieb dir besonders in Erinnerung? Möchtest du mehr oder weniger davon? ✏,,,,past_week_text,/assessment
 Alles klar. Welches Verhalten blieb dir besonders in Erinnerung? Möchtest du mehr oder weniger davon? ✏,✏,Was nimmst du dir für nächste Woche vor? ✏,,,,next_week_text,/assessment
 Was nimmst du dir für nächste Woche vor? ✏,✏,Danke für deine Antworten.,,,,,end_conversation
