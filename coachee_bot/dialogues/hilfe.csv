@@ -1,2 +1,0 @@
-last_bot_message,last_user_message,message,keyboard,resize_keyboard,inline_keyboard,photo,key_value,intent
-✏,/hilfe,"""Hey {}, wie können dein Gesundheits-Coach und ich dir helfen? 😊"".format(first_name, chat_id)",,,,,,end_conversation
