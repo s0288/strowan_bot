@@ -1,6 +1,6 @@
 last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
-✏,/meal_entry,Ist notiert. 🔍 Wie denkst du über deine Mahlzeit?,bringt mich näher; entfernt mich; weiß ich nicht,bringt mich näher; entfernt mich; weiß ich nicht,,meal_path_text,/meal_entry
-Ist notiert. 🔍 Wie denkst du über deine Mahlzeit?,entfernt mich,Was stört dich daran? ✏️,,,,meal_problem_text,/meal_entry
+✏,/meal_entry,Ist notiert. 🔍 Wie denkst du über deine Mahlzeit?,positiv; negativ; weiß ich nicht,positiv; negativ; weiß ich nicht,,meal_path_text,/meal_entry
+Ist notiert. 🔍 Wie denkst du über deine Mahlzeit?,negativ,Was stört dich daran? ✏️,,,,meal_problem_text,/meal_entry
 Was stört dich daran? ✏️,✏,Wieso isst du es? ✏️,,,,meal_reason_text,/meal_entry
 Ist notiert. 🔍 Wie denkst du über deine Mahlzeit?,weiß ich nicht,"Kein Problem. Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",,,,meal_description_text,/meal_entry
 Ist notiert. 🔍 Wie denkst du über deine Mahlzeit?,✏,"Ok, Guten Appetit 👩‍🍳. Wenn du möchtest, notiere für dich selbst, was du isst. Bspw.: 'Fisch mit Spinat' ✏",,,,meal_description_text,/meal_entry
