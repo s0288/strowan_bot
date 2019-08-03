@@ -32,7 +32,12 @@ for row in active_users:
     # create jupyter notebook for user & week
     try:
         print('creating jupyter notebook for {}'.format(row['telegram_id']))
-        pm.execute_notebook('../../../papermill.ipynb', '../../../nad_app/static/reports/' + str(telegram_id) + "_" + current_year + current_work_week +'.ipynb', parameters = dict(user=telegram_id, start_year=year, start_month=month, start_day=day))
+        output_ipynb = '../../../nad_app/static/reports/' + str(telegram_id) + "_" + current_year + current_work_week +'.ipynb'
+        # os.system(f"jupyter trust {output_ipynb}")
+        # pm.execute_notebook('../../../papermill.ipynb', output_ipynb, parameters = dict(user=telegram_id, start_year=year, start_month=month, start_day=day))
+        ## necessary to add trust because bokeh makes some changes to jupyter notebook that require manual confirmation each time papermill runs otherwise
+        os.system(f"papermill ../../../papermill.ipynb {output_ipynb} -p user {telegram_id} -p start_year {year} -p start_month {month} -p start_day {day} && jupyter trust {output_ipynb}")
+
     except Exception as e:
         print('error creating notebook for user {} ({})'.format(telegram_id, telegram_id))
         logging.exception("Exception in weekly_bot.py")
