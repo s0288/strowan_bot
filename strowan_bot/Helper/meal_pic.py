@@ -158,11 +158,11 @@ for user in ids:
 
             ## add image border based on meal_path
             if paths[num]  == 'positiv' or paths[num]  == 'bringt mich näher':
-                img_with_border = ImageOps.expand(img,border=75,fill='lime')
+                img_with_border = ImageOps.expand(img,border=10,fill='lime')
             elif paths[num]  == 'negativ' or paths[num]  == 'entfernt mich':
-                img_with_border = ImageOps.expand(img,border=75,fill='orange')
+                img_with_border = ImageOps.expand(img,border=10,fill='orange')
             elif paths[num]  == 'weiß ich nicht':
-                img_with_border = ImageOps.expand(img,border=75,fill='white')
+                img_with_border = ImageOps.expand(img,border=10,fill='white')
             else:
                 img_with_border = img
 
