@@ -26,30 +26,30 @@ if datetime.datetime.now().hour >= 4 or datetime.datetime.now().hour < 21:
     current_work_week = datetime.datetime.now().strftime("%V")
 
     for row in active_users:
-        telegram_id = row[1]
+        platform_user_id = row[1]
         year = row[3].year
         month = row[3].month
         day = row[3].day
 
         # create jupyter notebook for user & week
         try:
-            print('creating jupyter notebook for {}'.format(row['telegram_id']))
-            output_ipynb = '../../../nad_app/static/reports/' + str(telegram_id) + "_" + current_year + current_work_week +'.ipynb'
+            print('creating jupyter notebook for {}'.format(row['platform_user_id']))
+            output_ipynb = '../../../nad_app/static/reports/' + str(platform_user_id) + "_" + current_year + current_work_week +'.ipynb'
             os.system(f"jupyter trust {output_ipynb}")
-            pm.execute_notebook('../../../papermill.ipynb', output_ipynb, parameters = dict(user=telegram_id, start_year=year, start_month=month, start_day=day))
+            pm.execute_notebook('../../../papermill.ipynb', output_ipynb, parameters = dict(user=platform_user_id, start_year=year, start_month=month, start_day=day))
 
         except Exception as e:
-            print('error creating notebook for user {} ({})'.format(telegram_id, telegram_id))
+            print('error creating notebook for user {} ({})'.format(platform_user_id, platform_user_id))
             logging.exception("Exception in weekly_bot.py")
         # download html file without input code from jupyter notebook for user & week
         try:
             print('converting jupyter notebook to html...')
             ## add /home/s0288/.virtualenvs/my-virtualenv/bin/ to specify directory of virtual env for subprocess - reverts to default python 2.7 otherwise!
-            nbconverttohtml_nocode ="/home/s0288/.virtualenvs/my-virtualenv/bin/jupyter nbconvert --ExecutePreprocessor.kernel_name=python3.6 --template=nbextensions --to=html ../../../nad_app/static/reports/" + str(telegram_id) + "_" + current_year + current_work_week + ""
+            nbconverttohtml_nocode ="/home/s0288/.virtualenvs/my-virtualenv/bin/jupyter nbconvert --ExecutePreprocessor.kernel_name=python3.6 --template=nbextensions --to=html ../../../nad_app/static/reports/" + str(platform_user_id) + "_" + current_year + current_work_week + ""
             os.system(nbconverttohtml_nocode)
             # remove the original jupyter file to save space
             print('removing jupyter notebook...')
-            os.remove('../../../nad_app/static/reports/' + str(telegram_id) + "_" + current_year + current_work_week + '.ipynb' + "")
+            os.remove('../../../nad_app/static/reports/' + str(platform_user_id) + "_" + current_year + current_work_week + '.ipynb' + "")
         except Exception as e:
-            print('error creating html file for user {} ({})'.format(telegram_id, telegram_id))
+            print('error creating html file for user {} ({})'.format(platform_user_id, platform_user_id))
             logging.exception("Exception in weekly_bot.py")
