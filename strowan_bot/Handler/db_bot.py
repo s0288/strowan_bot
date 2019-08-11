@@ -52,13 +52,11 @@ class DBBot:
     def get_trigger_values(self, platform_user_id=None, trigger_value=None):
         if platform_user_id == None and trigger_value == None:
             stmt = 'SELECT platform_user_id, platform_chat_id, trigger_value, trigger_time, trigger_day, created_at FROM triggers ORDER BY id DESC'
-            args = []
         elif trigger_value is not None:
-            stmt = 'SELECT platform_user_id, platform_chat_id, trigger_value, trigger_time, trigger_day, created_at FROM triggers WHERE trigger_value = %s ORDER BY id DESC'
-            args = [trigger_value]
+            stmt = f'SELECT platform_user_id, platform_chat_id, trigger_value, trigger_time, trigger_day, created_at FROM triggers WHERE trigger_value = {trigger_value} ORDER BY id DESC'
         else:
-            stmt = 'SELECT platform_user_id, platform_chat_id, trigger_value, trigger_time, trigger_day, created_at FROM triggers WHERE platform_user_id in %s ORDER BY id DESC'
-            args = [platform_user_id]
+            stmt = f'SELECT platform_user_id, platform_chat_id, trigger_value, trigger_time, trigger_day, created_at FROM triggers WHERE platform_user_id in {platform_user_id} ORDER BY id DESC'
+        args = []
         try:
             return self.conn.execute(stmt, args).fetchall()
         except Exception as e:
