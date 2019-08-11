@@ -1,3 +1,4 @@
+import logging
 import pandas as pd
 import numpy as np
 import datetime
@@ -32,10 +33,11 @@ for num, id in enumerate(data):
 
 ## change here if you want to get yesterday:
 # for meal pics
-#target_date = datetime.datetime.today().date()
-target_date = datetime.datetime.today().date() - datetime.timedelta(days = 1)
-# for polar plot:
 day = 1
+#target_date = datetime.datetime.today().date()
+target_date = datetime.datetime.today().date() - datetime.timedelta(days = day)
+# for polar plot:
+
 
 for user in ids:
 
@@ -78,14 +80,13 @@ for user in ids:
     except:
         fig.savefig('../../../nad_app/user_files/polar_plots/{}_{}.png'.format(user, datetime.date.today() - datetime.timedelta(days=day)))
         plt.close(fig)
-        logging.exception("Exception in meal_pic.py")
 
 
 
     ##### >>>>> create meal pic <<<<< ######
     # get the names of the user uploads
     # get the user_photos, meal_entries, meal_paths and meal_reasons
-    stmt = "select * from key_values where platform_user_id = {} and key_value in ('user_photo', 'meal_entry', 'meal_path', 'meal_reason') and date(created_at) = '{}' order by created_at asc".format(user, target_date)
+    stmt = "select * from key_values where platform_user_id = {} and key_value in ('user_photo', 'meal_entry', 'meal_path_text', 'meal_reason_text') and date(created_at) = '{}' order by created_at asc".format(user, target_date)
     df = pd.read_sql_query(stmt, conn)
 
     ## assign paths and reasons to photos/entries
@@ -104,12 +105,12 @@ for user in ids:
 
             ## only check for paths and reasons, when the current input is an image
             # get meal paths
-            if df["key_value"][min(num+1, count_df-1)] == 'meal_path':
+            if df["key_value"][min(num+1, count_df-1)] == 'meal_path_text':
                 paths.append(df["value"][min(num+1, count_df-1)])
             else:
                 paths.append(None)
             # get meal reasons
-            if df["key_value"][min(num+2, count_df-1)] == 'meal_reason':
+            if df["key_value"][min(num+2, count_df-1)] == 'meal_reason_text':
                 reasons.append(df["value"][min(num+2, count_df-1)])
             else:
                 reasons.append(None)
@@ -156,12 +157,12 @@ for user in ids:
                 col_index = num - 5
 
             ## add image border based on meal_path
-            if paths[num]  == 'bringt mich näher':
-                img_with_border = ImageOps.expand(img,border=75,fill='lime')
-            elif paths[num]  == 'entfernt mich':
-                img_with_border = ImageOps.expand(img,border=75,fill='orange')
+            if paths[num]  == 'positiv' or paths[num]  == 'bringt mich näher':
+                img_with_border = ImageOps.expand(img,border=10,fill='lime')
+            elif paths[num]  == 'negativ' or paths[num]  == 'entfernt mich':
+                img_with_border = ImageOps.expand(img,border=10,fill='orange')
             elif paths[num]  == 'weiß ich nicht':
-                img_with_border = ImageOps.expand(img,border=75,fill='white')
+                img_with_border = ImageOps.expand(img,border=10,fill='white')
             else:
                 img_with_border = img
 

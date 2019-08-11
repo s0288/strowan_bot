@@ -1,3 +1,4 @@
 last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
-✏,/assessment,Hier siehst du deine Fastenfenster der letzten Woche. Wie denkst du darüber? ✏,,,"""http://s0288.pythonanywhere.com/static/strowan/pwa/2019/W{}/fasting_{}_W{}.png"".format(datetime.datetime.today().isocalendar()[1], chat_id, datetime.datetime.today().isocalendar()[1])",,/assessment
-Hier siehst du deine Fastenfenster der letzten Woche. Wie denkst du darüber? ✏,✏,"""Alles klar. Wenn du möchtest, halte hier für dich fest, wie die letzte Woche für dich war: https://strowan.typeform.com/to/gam4il?id={}"".format(chat_id)",,,,,end_conversation
+✏,/assessment,Hier siehst du deine Fastenfenster der letzten Woche. Wie denkst du über deine Woche? Was blieb dir besonders in Erinnerung? ✏,,,"""http://s0288.pythonanywhere.com/static/strowan/pwa/2019/W{}/fasting_{}_W{}.png"".format(datetime.datetime.today().isocalendar()[1], chat_id, datetime.datetime.today().isocalendar()[1])",past_week_text,/assessment
+Hier siehst du deine Fastenfenster der letzten Woche. Wie denkst du über deine Woche? Was blieb dir besonders in Erinnerung? ✏,✏,Was nimmst du dir für nächste Woche vor? ✏,,,,next_week_text,/assessment
+Was nimmst du dir für nächste Woche vor? ✏,✏,Danke für deine Antworten.,,,,,end_conversation

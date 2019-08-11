@@ -99,7 +99,7 @@ def main(chat_id=None):
                 message_elements = Bot.extract_updates(updates)
                 Bot.handle_updates(message_elements["first_name"], message_elements["chat_id"], message_elements["intent"], message_elements["message"])
         except Exception as e:
-            logging.exception(f"Exception in main from {message_elements['user_id']}")
+            logging.exception("Exception in main")
 
         time.sleep(0.5)
         sys.stdout.write('.'); sys.stdout.flush()
