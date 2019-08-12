@@ -26,10 +26,10 @@ if datetime.datetime.now().hour >= 4 or datetime.datetime.now().hour < 21:
     current_work_week = datetime.datetime.now().strftime("%V")
 
     for row in active_users:
-        platform_user_id = row[1]
-        year = row[3].year
-        month = row[3].month
-        day = row[3].day
+        platform_user_id = row[0]
+        year = row[2].year
+        month = row[2].month
+        day = row[2].day
 
         # create jupyter notebook for user & week
         try:
