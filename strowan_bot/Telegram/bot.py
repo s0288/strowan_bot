@@ -156,7 +156,7 @@ class Bot:
             if last_bot_message:
                 last_intent, last_msg, last_key_value = last_bot_message[0], last_bot_message[1], last_bot_message[2]
                 if message_elements['key_value'] in ('user_photo', 'meal_entry'):
-                    message_elements["intent"] = '/meal_entry'
+                    message_elements["intent"] = config.user_photo
                 elif last_intent == 'end_conversation' or last_intent is None:
                     message_elements["intent"] = 'open_conversation'
                 else:
