@@ -44,7 +44,7 @@ for user in ids:
 
     ##### >>>>> create polar plot <<<<< ######
 
-    stmt = "SELECT * FROM key_values WHERE key_value in ('user_photo', 'meal_confirmed_text') AND platform_user_id = {} ORDER BY created_at DESC".format(user)
+    stmt = "SELECT * FROM key_values WHERE key_value in ('user_photo', 'meal_entry') AND platform_user_id = {} ORDER BY created_at DESC".format(user)
     df = pd.read_sql_query(stmt, conn)
     df = np.array(df, dtype=object)
 
