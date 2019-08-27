@@ -43,7 +43,7 @@ for user in ids:
 
     ##### >>>>> create polar plot <<<<< ######
 
-    stmt = "SELECT * FROM key_values WHERE key_value in ('user_photo', 'meal_confirmed_text) AND platform_user_id = {} ORDER BY created_at DESC".format(user)
+    stmt = "SELECT * FROM key_values WHERE key_value in ('user_photo', 'meal_confirmed_text') AND platform_user_id = {} ORDER BY created_at DESC".format(user)
     df = pd.read_sql_query(stmt, conn)
     df = np.array(df, dtype=object)
 
@@ -86,7 +86,7 @@ for user in ids:
     ##### >>>>> create meal pic <<<<< ######
     # get the names of the user uploads
     # get the user_photos, meal_entries, meal_paths and meal_reasons
-    stmt = "select * from key_values where platform_user_id = {} and key_value in ('user_photo', 'meal_entry', 'meal_path_text', 'meal_reason_text') and date(created_at) = '{}' order by created_at asc".format(user, target_date)
+    stmt = "select * from key_values where platform_user_id = {} and key_value in ('user_photo', 'meal_confirmed_text', 'meal_entry', 'meal_path_text', 'meal_reason_text') and date(created_at) = '{}' order by created_at asc".format(user, target_date)
     df = pd.read_sql_query(stmt, conn)
 
     ## assign paths and reasons to photos/entries
