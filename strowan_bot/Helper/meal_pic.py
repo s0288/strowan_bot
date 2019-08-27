@@ -100,7 +100,7 @@ for user in ids:
 
     for num in range(count_df):
         # get image urls and created at
-        if df["key_value"][num] in ('user_photo', 'meal_entry'):
+        if df["key_value"][num] in ('user_photo', 'meal_confirmed_text', 'meal_entry'):
             imgs.append("{}/{}_meal_entry_{}_{}_{}-{}-{}".format(str(df['created_at'][num].isocalendar()[0]) + "-" + str(df['created_at'][num].isocalendar()[1]), df['platform_user_id'][num], df['key_value'][num], df['created_at'][num].date(), df['created_at'][num].hour, df['created_at'][num].minute, df['created_at'][num].second))
             created_at.append(df['created_at'][num])
 
