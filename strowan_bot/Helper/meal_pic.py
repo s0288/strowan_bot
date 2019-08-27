@@ -78,7 +78,8 @@ for user in ids:
         fig.savefig('../../../nad_app/user_files/polar_plots/{}_{}.png'.format(user, datetime.date.today() - datetime.timedelta(days=day)))
         plt.close(fig)
         print('created polar plot for {}'.format(user))
-    except:
+    except Exception as e:
+        print(e)
         fig.savefig('../../../nad_app/user_files/polar_plots/{}_{}.png'.format(user, datetime.date.today() - datetime.timedelta(days=day)))
         plt.close(fig)
 
