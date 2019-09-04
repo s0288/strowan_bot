@@ -4,3 +4,4 @@ Read_me.rtf
 *.py[cod]
 app.log
 .vscode
+*.sql
