@@ -1,2 +1,2 @@
 last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
-✏,/nachtragen,"""Trage hier deine Mahlzeit nach: https://strowan-flask.herokuapp.com/meal_form?id={}"".format(chat_id)",,,,,end_conversation
+✏,/nachtragen,"""Trage hier eine Mahlzeit nach: https://strowan-flask.herokuapp.com/meal_form?id={}"".format(chat_id)",,,,,end_conversation
