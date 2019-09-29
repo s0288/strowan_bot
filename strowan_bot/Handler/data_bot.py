@@ -130,24 +130,33 @@ class DataBot:
 
     # trigger functions
     def add_trigger_for_times(self, key_value):
-        if key_value in ['wi_time_wknd', 'weight_notif_wknd_time'] or key_value in ['wi_time_wrkday', 'weight_notif_work_time']:
+        if key_value == 'weight_notif_wknd_time' or key_value == 'weight_notif_work_time':
             trigger_value = '/wiegen'
             if key_value in ['wi_time_wknd', 'weight_notif_wknd_time']:
                 trigger_day = "sat-sun"
             elif key_value in ['wi_time_wrkday', 'weight_notif_work_time']:
                 trigger_day = "mon-fri"
+        elif key_value == 'assessment_text':
+            trigger_value = '/assessment'
+            trigger_day = 'sun'
+        # get msg specifics for key_value
         data = DBBot.get_key_values(key_value)
         for row in data:
             platform_user_id = row[1]
             platform_chat_id = row[2]
             created_at = row[5]
             # unique for _time values
-            trigger_time = row[4]
+            if "time" in key_value:
+                trigger_time = row[4]
+            else:
+                trigger_time = '17:00'
+            # set up trigger in db
             # check if already there or add
             if DBBot.check_triggers(platform_user_id, platform_chat_id, trigger_value, trigger_day, trigger_time) == 0:
                 received_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 DBBot.add_trigger(platform_user_id, platform_chat_id, trigger_value, trigger_time, trigger_day, created_at, received_at)
                 print('trigger for {} added'.format(trigger_value))
+        
 
     # convert hourly fast to cronjob hours
     def add_trigger_for_fast(self, key_value):
@@ -188,23 +197,24 @@ class DataBot:
     def remove_triggers(self, trigger_value):
         weekdays_reversed = {'mon': 0, 'tue': 1, 'wed': 2, 'thu': 3, 'fri': 4, 'sat': 5, 'sun': 6}
         data = DBBot.get_trigger_values(trigger_value=trigger_value)
-        # calculate today's date for later use
-        today = datetime.datetime.now().date()
-        for row in data:
-            created_at = row[5]
-            created_at_day_of_week = created_at.weekday()
-            trigger_day = row[4]
-            trigger_day_day_of_week = weekdays_reversed[trigger_day]
-            if created_at_day_of_week > trigger_day_day_of_week:
-                trigger_day_day_of_week = trigger_day_day_of_week + 7
-            days_since_creation = trigger_day_day_of_week - created_at_day_of_week
-            date_of_trigger = (created_at + datetime.timedelta(days=days_since_creation)).date()
+        if data:
+            # calculate today's date for later use
+            today = datetime.datetime.now().date()
+            for row in data:
+                created_at = row[5]
+                created_at_day_of_week = created_at.weekday()
+                trigger_day = row[4]
+                trigger_day_day_of_week = weekdays_reversed[trigger_day]
+                if created_at_day_of_week > trigger_day_day_of_week:
+                    trigger_day_day_of_week = trigger_day_day_of_week + 7
+                days_since_creation = trigger_day_day_of_week - created_at_day_of_week
+                date_of_trigger = (created_at + datetime.timedelta(days=days_since_creation)).date()
 
-            # check if date of trigger is earlier than today. If so, delete it:
-            if date_of_trigger < today:
-                user_id = row[0]
-                DBBot.delete_from_triggers(user_id, trigger_value, trigger_day, created_at)
-                print('removed trigger')
+                # check if date of trigger is earlier than today. If so, delete it:
+                if date_of_trigger < today:
+                    user_id = row[0]
+                    DBBot.delete_from_triggers(user_id, trigger_value, trigger_day, created_at)
+                    print('removed trigger')
 
 if __name__ == '__main__':
     DataBot = DataBot()
@@ -212,6 +222,7 @@ if __name__ == '__main__':
     DataBot.add_files_from_updates()
     DataBot.add_trigger_for_times('weight_notif_work_time')
     DataBot.add_trigger_for_times('weight_notif_wknd_time')
+    DataBot.add_trigger_for_times('assessment_text')
     DataBot.add_trigger_for_fast('f_duration')
     DBBot.delete_triggers_by_inactive_users()
     # fasten_progress is deprecated
