@@ -6,9 +6,11 @@ sys.path.append('../')
 import config
 
 import datetime
+current_day = datetime.datetime.today().isocalendar()[2]
+current_weeknr = datetime.datetime.today().isocalendar()[1]
 
 # only send on Sunday
-if datetime.datetime.today().weekday() == 6:
+if current_day == 7:
     # get activity values
     periods = [1, 4, 12]
     activity_txt = track_activity(periods)
@@ -18,6 +20,7 @@ if datetime.datetime.today().weekday() == 6:
     server.login(config.ADMIN_MAIL, config.ADMIN_MAIL_PW)
     fromaddr = config.ADMIN_MAIL
     toaddr = config.TARGET_MAIL
-    msg = (f"From: {fromaddr}\r\nTo: {toaddr}\r\n\r\n{activity_txt}")
+    subject = f'Activity - W{current_weeknr}'
+    msg = (f"From: {fromaddr}\r\nTo: {toaddr}\r\nSubject: {subject}\r\n\r\n{activity_txt}")
     server.sendmail(fromaddr, toaddr, msg)
     server.quit() 
