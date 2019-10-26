@@ -20,14 +20,14 @@ def track_activity(periods):
                 SELECT 
                     u.first_name,  
                     CASE WHEN u.created_at > NOW() - interval '{period} weeks' THEN 1 ELSE 0 END AS new_user,
-                    COUNT(k.key_value) FILTER(WHERE k.key_value = 'user_photo') AS cnt_imgs_7d,
-                    COUNT(k.key_value) FILTER(WHERE k.key_value = 'weight_value_float') AS cnt_weight_7d,
-                    COUNT(k.key_value) FILTER(WHERE k.key_value = 'past_week_text') AS cnt_assessment_7d,
-                    COUNT(up.message) FILTER(WHERE up.bot_command = "bot_command" AND up.intent = '/profil') AS cnt_profil_7d,
-                    COUNT(up.message) FILTER(WHERE up.bot_command = "bot_command" AND up.intent = '/rezepte') AS cnt_rezepte_7d,
-                    COUNT(up.message) FILTER(WHERE up.bot_command = "bot_command" AND up.intent = '/fasten') AS cnt_fast_7d,
-                    COUNT(up.message) FILTER(WHERE up.bot_command = "bot_command" AND up.intent = '/nachtragen') AS cnt_nachtragen_7d,
-                    COUNT(up.message) FILTER(WHERE up.bot_command = "bot_command" AND up.intent = '/befehle') AS cnt_befehle_7d
+                    COUNT(k.key_value) FILTER(WHERE k.key_value = 'user_photo') AS cnt_imgs,
+                    COUNT(k.key_value) FILTER(WHERE k.key_value = 'weight_value_float') AS cnt_weight,
+                    COUNT(k.key_value) FILTER(WHERE k.key_value = 'past_week_text') AS cnt_assessment,
+                    COUNT(up.message) FILTER(WHERE up.bot_command = "bot_command" AND up.intent = '/profil') AS cnt_profil,
+                    COUNT(up.message) FILTER(WHERE up.bot_command = "bot_command" AND up.intent = '/rezepte') AS cnt_rezepte,
+                    COUNT(up.message) FILTER(WHERE up.bot_command = "bot_command" AND up.intent = '/fasten') AS cnt_fast,
+                    COUNT(up.message) FILTER(WHERE up.bot_command = "bot_command" AND up.intent = '/nachtragen') AS cnt_nachtragen,
+                    COUNT(up.message) FILTER(WHERE up.bot_command = "bot_command" AND up.intent = '/befehle') AS cnt_befehle
                 FROM updates up
                 LEFT JOIN key_values k ON
                     up.platform_user_id = k.platform_user_id AND up.key_value = k.key_value AND up.created_at = k.created_at
