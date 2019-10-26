@@ -7,14 +7,22 @@ import sys #required because files in parent folder
 sys.path.append('../')
 import config
 
+from io import StringIO
+
+
 from sqlalchemy import create_engine, MetaData
 engine = create_engine(config.POSTGRES)
 metadata = MetaData(engine)
 conn = engine.connect()
 
-
 # retrieve activity values
 def track_activity(periods):
+    # Store the reference, in case you want to show things again in standard output
+    old_stdout = sys.stdout
+    # This variable will store everything that is sent to the standard output
+    result = StringIO()
+    sys.stdout = result
+
     for period in periods:
         stmt = f"""
                 SELECT 
@@ -44,6 +52,16 @@ def track_activity(periods):
         print('')
         print('')
 
-# get activity values
-periods = [1, 4, 12]
-track_activity(periods)
+    sys.stdout = old_stdout
+    result_string = result.getvalue()
+    return(result_string)
+
+if __name__ == '__main__':
+    # get activity values
+    periods = [1, 4, 12]
+    print(track_activity(periods))
+
+
+
+
+
