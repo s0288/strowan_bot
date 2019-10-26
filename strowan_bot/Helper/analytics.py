@@ -7,7 +7,7 @@ import sys #required because files in parent folder
 sys.path.append('../')
 import config
 
-from sqlalchemy import *
+from sqlalchemy import create_engine, MetaData
 engine = create_engine(config.POSTGRES)
 metadata = MetaData(engine)
 conn = engine.connect()
