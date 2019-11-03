@@ -1,0 +1,3 @@
+last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
+✏,/challenge,Hey 🙂. Mitglieder aus der Gruppe fasten ab heute gemeinsam. Möchtest du dich anschließen? ,Fasten; jetzt nicht,/fasten; jetzt nicht,http://s0288.pythonanywhere.com/static/challenge.png,,/challenge
+Hey 🙂. Mitglieder aus der Gruppe fasten ab heute gemeinsam. Möchtest du dich anschließen? ,✏,"Alles klar. Klick einfach auf den Button oben, um dich später noch anzuschließen.",,,,,end_conversation

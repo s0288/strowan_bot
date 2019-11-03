@@ -1,3 +1,4 @@
+import pandas as pd
 import smtplib
 from analytics import track_activity
 
@@ -8,6 +9,9 @@ import config
 import datetime
 current_day = datetime.datetime.today().isocalendar()[2]
 current_weeknr = datetime.datetime.today().isocalendar()[1]
+
+# print all cols in df
+pd.set_option('display.max_colwidth', -1)
 
 # only send on Sunday
 if current_day == 7:
