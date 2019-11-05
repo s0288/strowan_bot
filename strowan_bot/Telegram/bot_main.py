@@ -69,7 +69,7 @@ def main(chat_id=None):
             ##### triggers
             #### get list of active user ids first, then create triggers for these
             #### IMPORTANT: Already-set-up triggers are not removed - currently needs to restart whenever a user is removed
-            active_users = DBBot.get_active_users("Telegram")
+            active_users = DBBot.get_active_users()
             active_users = [x[0] for x in active_users]
             # added to allow testing with only one active user
             if len(active_users)==1:

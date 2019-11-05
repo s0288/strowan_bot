@@ -37,16 +37,12 @@ class DBBot:
         self.conn.execute(userididx)
 
 # bot_main functions
-    def get_active_users(self, platform_name=None):
-        if platform_name is None:
-            stmt = "SELECT platform_user_id, first_name, created_at, received_at, is_bot, language_code, is_user FROM users WHERE is_user is TRUE AND is_bot is False"
-            args = []
-        else:
-            stmt = "SELECT platform_user_id FROM users WHERE platform_name = %s is TRUE AND is_bot is False"
-            args = [platform_name]
+    def get_active_users(self):
+        stmt = "SELECT platform_user_id, first_name, created_at, received_at, is_bot, language_code, is_user FROM users WHERE is_user IS TRUE AND is_bot IS FALSE"
+        args = []
         try:
             return self.conn.execute(stmt, args).fetchall()
-        except Exception as e:
+        except:
             logging.exception("Exception in get_active_users")
 
     def get_trigger_values(self, platform_user_id=None, trigger_value=None):
@@ -59,7 +55,7 @@ class DBBot:
         args = []
         try:
             return self.conn.execute(stmt, args).fetchall()
-        except Exception as e:
+        except:
             return None
 
 # update functions
@@ -68,7 +64,7 @@ class DBBot:
         args = [message_id, created_at, received_at, message, intent, platform_user_id, platform_chat_id, chat_type, bot_command, key_value, is_bot, callback_query_id, group_chat_created, new_chat_participant_id, update_id]
         try:
             self.conn.execute(stmt, args)
-        except Exception as e:
+        except:
             logging.exception("Exception in add_message")
 
     def get_last_message(self, platform_chat_id, is_bot):
