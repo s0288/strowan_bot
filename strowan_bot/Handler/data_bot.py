@@ -74,7 +74,7 @@ class DataBot:
                     DBBot.add_key_value(platform_user_id, platform_chat_id, key_value, key_value_value, created_at, received_at)
                     print('key_value for {} added'.format(key_value))
             # meal_entry, meal_path, meal_description, meal_reason are deprecated
-            elif "user_photo" in key_value or "_text" in key_value:
+            elif "user_photo" in key_value or "_text" in key_value or "_emoji" in key_value:
                 key_value_value = key_value_value
                 DBBot.add_key_value(platform_user_id, platform_chat_id, key_value, key_value_value, created_at, received_at)
                 print('key_value for {} added'.format(key_value))
