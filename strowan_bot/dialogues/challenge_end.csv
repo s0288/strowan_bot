@@ -1,3 +1,3 @@
 last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
 ✏,/challenge_end,Glückwunsch 🎉! Du hast es geschafft. Wie erging es dir?, 👍 ; 👎, 👍 ; 👎,,challenge_feedback_emoji,/challenge_end
-Glückwunsch 🎉! Du hast es geschafft. Wie erging es dir?,✏,"Guten Appetit! Du hast Teil 1 schon hinter dir. Drücke auf Fasten, wenn du die nächsten 16 Stunden starten möchtest. Alternativ starte ich die Fastenuhr automatisch nach deinem letzten Essensfoto.",Fasten; Befehle,Fasten; Befehle,,,end_conversation
+Glückwunsch 🎉! Du hast es geschafft. Wie erging es dir?,✏,"Guten Appetit! Du hast Teil 1 schon hinter dir. Drücke auf Fasten, wenn du die nächsten 16 Stunden starten möchtest. Oder ich starte die Fastenuhr automatisch nach deinem letzten Essensfoto.",Fasten; Befehle,Fasten; Befehle,,,end_conversation
