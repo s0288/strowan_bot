@@ -1,3 +1,3 @@
 last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
-✏,/challenge_feedback_p,"Hallo 🙂. Ich konnte deine Fastenuhr noch nicht starten, weil ich kein Foto deiner letzten Mahlzeit erhalten habe. Du kannst das Fasten selbst starten, indem du auf Fasten klickst.",Fasten; Befehle,Fasten; Befehle,,,/challenge_feedback_p
+✏,/challenge_feedback_p,"Hallo 🙂. Ich konnte deine Fastenuhr noch nicht starten, weil ich kein Foto deiner letzten Mahlzeit erhalten habe. Du kannst das Fasten selbst starten, indem du auf Fasten klickst.",Fasten; Befehle,/fasten; /befehle,,,/challenge_feedback_p
 "Hallo 🙂. Ich konnte deine Fastenuhr noch nicht starten, weil ich kein Foto deiner letzten Mahlzeit erhalten habe. Du kannst das Fasten selbst starten, indem du auf Fasten klickst.",✏,Schreib mir jederzeit!,Befehle,/befehle,,,end_conversation
