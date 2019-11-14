@@ -1,3 +1,3 @@
 last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
-✏,/challenge_feedback_a,"Hallo 🙂. Glückwunsch, du fastest schon seit 17:34 Uhr. Um 09:34 Uhr hast du dein Ziel von 16 Stunden erreicht. Wie fühlst du dich?", 👍 ; 👎, 👍 ; 👎,,challenge_feedback_emoji,/challenge_feedback_a
-"Hallo 🙂. Glückwunsch, du fastest schon seit 17:34 Uhr. Um 09:34 Uhr hast du dein Ziel von 16 Stunden erreicht. Wie fühlst du dich?",✏,Alles klar. Ich melde mich spätestens um 09:34 Uhr wieder. Frohes Fasten!,Befehle,/befehle,,,end_conversation
+✏,/challenge_feedback_a,"Hallo 🙂. Glückwunsch, du fastest schon seit 12:27 Uhr. Um 08:27 Uhr am Freitag hast du dein Ziel von 20 Stunden erreicht. Wie fühlst du dich?", 👍 ; 👎, 👍 ; 👎,,challenge_feedback_emoji,/challenge_feedback_a
+"Hallo 🙂. Glückwunsch, du fastest schon seit 12:27 Uhr. Um 08:27 Uhr am Freitag hast du dein Ziel von 20 Stunden erreicht. Wie fühlst du dich?",✏,Alles klar. Ich melde mich spätestens um 08:27 Uhr wieder. Frohes Fasten!,Befehle,/befehle,,,end_conversation
