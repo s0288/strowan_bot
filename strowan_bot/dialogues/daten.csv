@@ -1,0 +1,3 @@
+last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
+✏,/daten,Was möchtest du angeben?,Wiegen; Ketonwert; Befehle,/wiegen; /ketonwert; /befehle,,,/daten
+Was möchtest du angeben?,✏,Alles klar. Schreib mir jederzeit,Fasten; Befehle,/fasten; /befehle,,,end_conversation
