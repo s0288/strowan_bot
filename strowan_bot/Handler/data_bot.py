@@ -78,6 +78,11 @@ class DataBot:
                 key_value_value = key_value_value
                 DBBot.add_key_value(platform_user_id, platform_chat_id, key_value, key_value_value, created_at, received_at)
                 print('key_value for {} added'.format(key_value))
+            # add start of dialogue (bot_command)
+            elif "_start" in key_value:
+                key_value_value = key_value_value
+                DBBot.add_key_value(platform_user_id, platform_chat_id, key_value, key_value_value, created_at, received_at)
+                print('key_value for {} added'.format(key_value))
             # currently missing: timestamp
 
 

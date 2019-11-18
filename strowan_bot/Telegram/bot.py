@@ -111,6 +111,7 @@ class Bot:
         if message.get('entities') is not None:
             for entity in message["entities"]:
                 message_elements['bot_command'] = entity["type"]
+                message_elements['key_value'] = message_elements["message"].lower()[1:]+'_start'
         message_elements['is_bot'] = message["from"]["is_bot"]
         # if the message has a language code, save it
         if message["from"].get('language_code') is not None:
@@ -131,6 +132,7 @@ class Bot:
         # if the callback is a bot command, set it
         if "/" in message["data"] and "http" not in message["data"]:
             message_elements['bot_command'] = "bot_command"
+            message_elements['key_value'] = message_elements["message"].lower()[1:]+'_start'
         message_elements['user_id'] = message["from"]["id"]
         message_elements['first_name'] = message["from"]["first_name"]
         message_elements['chat_id'] = message["message"]["chat"]["id"]

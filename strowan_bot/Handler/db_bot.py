@@ -138,7 +138,6 @@ class DBBot:
                 args = [last_value]
         else:
             if last_value is None:
-                print('in here')
                 stmt = 'SELECT platform_user_id, platform_chat_id, message, key_value, intent, created_at, is_bot FROM updates WHERE key_value is not Null AND is_bot = cast(0 as boolean) ORDER BY id DESC'
                 args = []
             else:
