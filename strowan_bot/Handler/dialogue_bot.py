@@ -108,7 +108,6 @@ class DialogueBot:
             data = DialogueBot.fetch_dialogue(intent)
 
         last_user_message, last_bot_message, last_bot_message_for_exception = DialogueBot.fetch_last_messages(data, chat_id, last_user_message, last_bot_message)
-
         try:
             response_array = data[(intent == last_user_message == data[:,1]) | ((last_bot_message == data[:,0]) & (last_user_message == data[:,1]))][0]
         except:
