@@ -27,10 +27,11 @@ def track_activity(periods):
         stmt = f"""
                 SELECT 
                     u.first_name,  
-                    CASE WHEN u.created_at > NOW() - interval '{period} weeks' THEN 1 ELSE 0 END AS new_user,
+                    CASE WHEN u.created_at > NOW() - interval '1 weeks' THEN 1 ELSE 0 END AS new_user,
                     COUNT(k.key_value) FILTER(WHERE k.key_value = 'user_photo') AS cnt_imgs,
                     COUNT(k.key_value) FILTER(WHERE k.key_value = 'weight_value_float') AS cnt_weight,
-                    COUNT(k.key_value) FILTER(WHERE k.key_value = 'past_week_text') AS cnt_assessment,
+                    COUNT(k.key_value) FILTER(WHERE k.key_value = 'challenge_participation_text') AS cnt_assessment_challenge,
+                    COUNT(k.key_value) FILTER(WHERE k.key_value = 'past_week_text') AS cnt_assessment_reflection,
                     COUNT(up.message) FILTER(WHERE up.bot_command = "bot_command" AND up.intent = '/profil') AS cnt_profil,
                     COUNT(up.message) FILTER(WHERE up.bot_command = "bot_command" AND up.intent = '/rezepte') AS cnt_rezepte,
                     COUNT(up.message) FILTER(WHERE up.bot_command = "bot_command" AND up.intent = '/fasten') AS cnt_fast,
@@ -42,7 +43,7 @@ def track_activity(periods):
                 JOIN users u ON 
                     up.platform_user_id = u.platform_user_id
                 -- only consider values from last week
-                WHERE up.created_at > NOW() - interval '{period} weeks'
+                WHERE up.created_at > NOW() - interval '1 weeks'
                 GROUP BY 1, 2
                 """
         df = pd.read_sql_query(stmt, conn)
