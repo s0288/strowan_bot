@@ -58,7 +58,7 @@ class DialogueBot:
             last_user_message = DBBot.get_last_message(chat_id, 0)[1]
         # check if user provided open answer - if so, change message to "✏". If user sent photo, start meal_entry
         if len(data[data[:, 1]==last_user_message, 0]) == 0:
-            if np.char.startswith(data[:, 1][0], "/meal_entry") and "photo" in last_user_message:
+            if np.char.startswith(data[:, 1][0], config.user_photo) and "photo" in last_user_message:
                 last_user_message = data[:, 1][0]
             else:
                 last_user_message = "✏"
@@ -119,6 +119,10 @@ class DialogueBot:
         # check if response_array exists. If not, set default answer <- catch-all for errors in dialogues
         if 'response_array' not in locals():
             try:
+                print(f'intent: {intent}')
+                print(f'last_bot_message: {last_bot_message}')
+                print(f'data[:,1]: {data[:,1]}')
+                print(f'data[:,0]: {data[:,0]}')
                 # check if the user double clicked a button by replacing the user message with "✏".
                 response_array = data[(intent == "✏" == data[:,1]) | ((last_bot_message == data[:,0]) & ("✏" == data[:,1]))][0]
             except Exception as e:
