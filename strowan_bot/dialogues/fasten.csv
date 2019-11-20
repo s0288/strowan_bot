@@ -1,3 +1,3 @@
 last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
 ✏,/fasten,"Super, dass du fastest. Wie lange willst du fasten?",16 h; 18 h; 20 h; 24 h,16 h; 18 h; 20 h; 24 h,http://s0288.pythonanywhere.com/static/exercise.gif,fast_duration_integer,/fasten
-"Super, dass du fastest. Wie lange willst du fasten?",✏,"Wunderbar. Ich melde mich später, um dich zu fragen, wie es dir geht. Viel Spaß 😊",,,,,end_conversation
+"Super, dass du fastest. Wie lange willst du fasten?",✏,"Wunderbar. Ich melde mich später, um dich zu fragen, wie es dir geht. In deinem Profil kannst du sehen, wie lange du schon fastest. Viel Spaß 😊",Profil,/profil,,,end_conversation
