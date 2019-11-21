@@ -1,4 +1,0 @@
-last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
-✏,/challenge_end,Glückwunsch 🎉! Du hast es geschafft. Wie erging es dir?, 👍 ; 👎, 👍 ; 👎,,challenge_feedback_emoji,/challenge_end
-Glückwunsch 🎉! Du hast es geschafft. Wie erging es dir?,✏,"Guten Appetit! Gibt es etwas, das dir besonders leicht oder schwer fiel beim Fasten? Möchtest du etwas beim nächsten Mal verändern? ✏",,,,challenge_feedback_text,/challenge_end
-"Guten Appetit! Gibt es etwas, das dir besonders leicht oder schwer fiel beim Fasten? Möchtest du etwas beim nächsten Mal verändern? ✏",✏,Danke für deine Antworten. Und jetzt guten Appetit!,,,,,end_conversation
