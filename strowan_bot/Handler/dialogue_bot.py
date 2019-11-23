@@ -115,7 +115,6 @@ class DialogueBot:
             last_user_message = '/befehle'
             data = DialogueBot.fetch_dialogue(intent)
         
-        print(intent)
         # for fasting intents: get fasting values
         if intent in ('/fasten_feedback', '/fasten_end'):
             fast_duration, fast_start, fast_end = DialogueBot.get_fast_values(chat_id)
