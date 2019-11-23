@@ -105,7 +105,8 @@ class DialogueBot:
         fast_start = fast_start.strftime('%A, %H:%M')
         return fast_duration, fast_start, fast_end
 
-    def find_response(self, intent, chat_id, last_user_message=None, last_bot_message=None):
+    # improve function by creating an object that holds additional user info (e.g. fast values)
+    def find_response(self, intent, chat_id, last_user_message=None, last_bot_message=None, fast_start=None, fast_end=None, fast_duration=None):
         # get the dialogue
         try:
             data = DialogueBot.fetch_dialogue(intent)
@@ -116,7 +117,7 @@ class DialogueBot:
             data = DialogueBot.fetch_dialogue(intent)
         
         # for fasting intents: get fasting values
-        if intent in ('/fasten_feedback', '/fasten_end'):
+        if intent in ('/fasten_feedback'):
             fast_duration, fast_start, fast_end = DialogueBot.get_fast_values(chat_id)
         else:
             fast_start = None

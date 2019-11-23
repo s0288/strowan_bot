@@ -283,10 +283,27 @@ class Bot:
 
 
 # ------ start: trigger messages
+    def get_fast_values(chat_id):
+        data = DBBot.get_fast_values(chat_id, 'fast_duration_integer')
+        fast_duration = int(data[0][0])
+        fast_start = data[0][1]
+        fast_end = (fast_start + datetime.timedelta(hours=fast_duration)).strftime('%A, %H:%M')
+        fast_start = fast_start.strftime('%A, %H:%M')
+        return fast_duration, fast_start, fast_end
+
     def trigger_message(self, intent, chat_id):
         message_elements = {'update_id': None, 'created_at': None, 'received_at': None, 'message_id': None, 'message': None, 'intent': None, 'keyboard': None, 'user_id': None, 'first_name': None, 'chat_id': None, 'chat_title': None, 'chat_type': None, 'bot_command': None, 'key_value': None, 'img': None, 'is_bot': None, 'language_code': None, 'callback_query_id': None, 'group_chat_created': None, 'new_chat_participant_id': None}
         message_elements["chat_id"] = chat_id
-        message_elements["message"], message_elements["keyboard"], message_elements["callback_url"], message_elements["img"], message_elements["key_value"], message_elements["intent"] = DialogueBot.find_response(intent, chat_id, last_user_message=intent, last_bot_message="✏")
+
+        # for fasting intents: get fasting values
+        if intent in ('/fasten_feedback'):
+            fast_duration, fast_start, fast_end = Bot.get_fast_values(chat_id)
+        else:
+            fast_start = None
+            fast_end = None
+            fast_duration = None
+
+        message_elements["message"], message_elements["keyboard"], message_elements["callback_url"], message_elements["img"], message_elements["key_value"], message_elements["intent"] = DialogueBot.find_response(intent, chat_id, last_user_message=intent, last_bot_message="✏", fast_start=fast_start, fast_end=fast_end, fast_duration=fast_duration)
         # if keyboard needed, get it
         if message_elements["keyboard"]:
             message_elements["keyboard"] = Bot.build_keyboard(message_elements["keyboard"], message_elements["callback_url"])
