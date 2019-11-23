@@ -80,7 +80,7 @@ class DialogueBot:
             last_bot_message = "✏"
         return last_user_message, last_bot_message, last_bot_message_for_exception
 
-    def extract_response_array(response_array, chat_id):
+    def extract_response_array(response_array, chat_id, fast_start, fast_end, fast_duration):
         # save parameters
         message = response_array[2]
         keyboard = response_array[3]
@@ -97,6 +97,14 @@ class DialogueBot:
             img = eval(img)
         return message, keyboard, callback_url, img, key_value, intent
 
+    def get_fast_values(chat_id):
+        data = DBBot.get_fast_values(chat_id, 'fast_duration_integer')
+        fast_duration = int(data[0][0])
+        fast_start = data[0][1]
+        fast_end = (fast_start + datetime.timedelta(hours=fast_duration)).strftime('%A, %H:%M')
+        fast_start = fast_start.strftime('%A, %H:%M')
+        return fast_duration, fast_start, fast_end
+
     def find_response(self, intent, chat_id, last_user_message=None, last_bot_message=None):
         # get the dialogue
         try:
@@ -106,6 +114,13 @@ class DialogueBot:
             intent = '/befehle'
             last_user_message = '/befehle'
             data = DialogueBot.fetch_dialogue(intent)
+        
+        print(intent)
+        # for fasting intents: get fasting values
+        if intent in ('/fasten_feedback', '/fasten_end'):
+            fast_duration, fast_start, fast_end = DialogueBot.get_fast_values(chat_id)
+        else:
+            fast_start, fast_end, fast_duration = None
 
         last_user_message, last_bot_message, last_bot_message_for_exception = DialogueBot.fetch_last_messages(data, chat_id, last_user_message, last_bot_message)
         try:
@@ -129,6 +144,6 @@ class DialogueBot:
                 logging.exception("No matching answer")
                 response_array = ['✏', '✏', 'Tut mir leid. Das verstehe ich nicht 😔. Ich habe meine Macher schon verständigt.', None, None, None, None, None, '/open_conversation']
 
-        message, keyboard, callback_url, img, key_value, intent = DialogueBot.extract_response_array(response_array, chat_id)
+        message, keyboard, callback_url, img, key_value, intent = DialogueBot.extract_response_array(response_array, chat_id, fast_start, fast_end, fast_duration)
 
         return message, keyboard, callback_url, img, key_value, intent

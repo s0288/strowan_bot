@@ -148,6 +148,14 @@ class DBBot:
         except Exception as e:
             logging.exception("Exception in get_last_values_from_updates")
 
+    def get_fast_values(self, platform_user_id, fast_value):
+        stmt = "SELECT value, created_at FROM key_values WHERE platform_user_id = %s AND key_value = %s ORDER BY id DESC LIMIT 1"
+        args = [platform_user_id, fast_value]
+        try:
+            return self.conn.execute(stmt, args).fetchall()
+        except Exception as e:
+            logging.exception("Exception in get_key_values")
+
     ## key value retrieval
     def add_key_value(self, platform_user_id, platform_chat_id, key_value, value, created_at, received_at):
         stmt = 'INSERT INTO key_values (platform_user_id, platform_chat_id, key_value, value, created_at, received_at) VALUES (%s, %s, %s, %s, %s, %s)'

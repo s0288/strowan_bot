@@ -245,6 +245,5 @@ if __name__ == '__main__':
     DataBot.add_trigger_for_times('assessment_text')
     DataBot.add_trigger_for_fast('fast_duration_integer', lookback=1)
     DBBot.delete_triggers_by_inactive_users()
-    # fasten_progress is deprecated
     DataBot.remove_triggers('/fasten_feedback')
     DataBot.remove_triggers('/fasten_end')

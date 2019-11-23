@@ -1,4 +1,0 @@
-last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
-✏,/fasten_success,Du hast das Fasten beendet 😊! Wie erging es dir?,Es war schwer; Ich fühle mich großartig,Es war schwer; Ich fühle mich großartig,,fast_feedback_text,/fasten_success
-Du hast das Fasten beendet 😊! Wie erging es dir?,✏,"Gibt es etwas, das du für dich notieren möchtest? Wenn ja, dann schreib es mir ✏",,,,,/fasten_success
-"Gibt es etwas, das du für dich notieren möchtest? Wenn ja, dann schreib es mir ✏",✏,Guten Appetit 👩‍🍳.,,,,,end_conversation
