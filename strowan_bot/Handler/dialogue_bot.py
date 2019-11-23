@@ -119,7 +119,9 @@ class DialogueBot:
         if intent in ('/fasten_feedback', '/fasten_end'):
             fast_duration, fast_start, fast_end = DialogueBot.get_fast_values(chat_id)
         else:
-            fast_start, fast_end, fast_duration = None
+            fast_start = None
+            fast_end = None
+            fast_duration = None
 
         last_user_message, last_bot_message, last_bot_message_for_exception = DialogueBot.fetch_last_messages(data, chat_id, last_user_message, last_bot_message)
         try:
