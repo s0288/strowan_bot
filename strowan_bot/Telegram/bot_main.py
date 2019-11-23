@@ -1,5 +1,9 @@
 #!/usr/bin/python3.6
 # coding: utf8
+# set German locale - esp. for datetime: use "Sonntag" instead of "Sunday"
+import locale
+locale.setlocale(locale.LC_ALL, 'de_DE')
+
 import time
 import logging
 
