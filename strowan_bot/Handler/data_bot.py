@@ -164,9 +164,9 @@ class DataBot:
         
 
     # convert hourly fast to cronjob hours
-    def add_trigger_for_fast(self, key_value):
-        ## very inefficient as of now because it retrieves ALL fasting triggers, even the expired ones
-        data = DBBot.get_key_values(key_value)
+    def add_trigger_for_fast(self, key_value, lookback=None):
+        # get all relevant fasting key values within lookback period
+        data = DBBot.get_key_values(key_value, lookback)
 
         weekdays = {0: 'mon', 1: 'tue', 2: 'wed', 3: 'thu', 4: 'fri', 5: 'sat', 6: 'sun'}
         for row in data:
@@ -183,21 +183,36 @@ class DataBot:
                 end_time = created_at + datetime.timedelta(hours=fasting_duration)
                 # how many days from today to end of fast?
                 duration_days = (end_time - created_at).days
-
+                # create triggers for every day in fasting window
                 for i in range(0,duration_days+1):
                     day_of_week = created_at.weekday()+i
                     # day_of_week can only take values between 0 and 6
                     if day_of_week > 6:
                         day_of_week = day_of_week - 7
                     trigger_day = weekdays[day_of_week]
+                    # on last day of fast, set fasten_end dialogue, else fasten_feedback
                     if i == duration_days:
-                        trigger_value = '/fasten_success'
+                        # if fasting end is after 09:00, also add fasten_feedback
+                        if end_time.time() > datetime.time(9,0,0):
+                            trigger_value = '/fasten_feedback'
+                            trigger_time = '08:00'
+                            # check if trigger already exists. If not, add it
+                            if DBBot.check_triggers(platform_user_id, platform_chat_id, trigger_value, trigger_day, trigger_time) == 0:
+                                received_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                                DBBot.add_trigger(platform_user_id, platform_chat_id, trigger_value, trigger_time, trigger_day, created_at, received_at)
+                                print('trigger for fast: day {} of {} added'.format(i, duration_days))
+                        
+                        trigger_value = '/fasten_end'
                         trigger_time = end_time.time().strftime('%H:%M')
-                    # currently also adds old fasting triggers. Better would be to only consider fasting key values from this week or sth
+                    else:
+                        trigger_value = '/fasten_feedback'
+                        trigger_time = '08:00'
+                    # check if trigger already exists. If not, add it
                     if DBBot.check_triggers(platform_user_id, platform_chat_id, trigger_value, trigger_day, trigger_time) == 0:
                         received_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                         DBBot.add_trigger(platform_user_id, platform_chat_id, trigger_value, trigger_time, trigger_day, created_at, received_at)
                         print('trigger for fast: day {} of {} added'.format(i, duration_days))
+                    
 
     def remove_triggers(self, trigger_value):
         weekdays_reversed = {'mon': 0, 'tue': 1, 'wed': 2, 'thu': 3, 'fri': 4, 'sat': 5, 'sun': 6}
@@ -228,8 +243,8 @@ if __name__ == '__main__':
     DataBot.add_trigger_for_times('weight_notif_work_time')
     DataBot.add_trigger_for_times('weight_notif_wknd_time')
     DataBot.add_trigger_for_times('assessment_text')
-    DataBot.add_trigger_for_fast('f_duration')
+    DataBot.add_trigger_for_fast('fast_duration_integer', lookback=1)
     DBBot.delete_triggers_by_inactive_users()
     # fasten_progress is deprecated
-    DataBot.remove_triggers('/fasten_progress')
-    DataBot.remove_triggers('/fasten_success')
+    DataBot.remove_triggers('/fasten_feedback')
+    DataBot.remove_triggers('/fasten_end')

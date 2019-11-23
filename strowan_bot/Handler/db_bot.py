@@ -154,13 +154,22 @@ class DBBot:
         args = [platform_user_id, platform_chat_id, key_value, value, created_at, received_at]
         self.conn.execute(stmt, args)
 
-    def get_key_values(self, key_value=None):
+    def get_key_values(self, key_value=None, lookback=None):
         if key_value is None:
-            stmt = 'SELECT key_values.id, key_values.platform_user_id, key_values.platform_chat_id, key_values.key_value, key_values.value, key_values.created_at, key_values.received_at FROM key_values join users on key_values.platform_user_id = users.platform_user_id WHERE users.is_user is True ORDER BY key_values.created_at DESC'
-            args = []
+            if lookback is None:
+                stmt = 'SELECT key_values.id, key_values.platform_user_id, key_values.platform_chat_id, key_values.key_value, key_values.value, key_values.created_at, key_values.received_at FROM key_values join users on key_values.platform_user_id = users.platform_user_id WHERE users.is_user is True ORDER BY key_values.created_at DESC'
+                args = []
+            else:
+                stmt = "SELECT key_values.id, key_values.platform_user_id, key_values.platform_chat_id, key_values.key_value, key_values.value, key_values.created_at, key_values.received_at FROM key_values join users on key_values.platform_user_id = users.platform_user_id WHERE users.is_user is True AND key_values.created_at > now() - INTERVAL '%s week' ORDER BY id DESC ORDER BY key_values.created_at DESC"
+                args = [lookback]
         elif key_value is not None:
-            stmt = 'SELECT key_values.id, key_values.platform_user_id, key_values.platform_chat_id, key_values.key_value, key_values.value, key_values.created_at, key_values.received_at FROM key_values join users on key_values.platform_user_id = users.platform_user_id WHERE key_values.key_value = %s AND users.is_user is True ORDER BY key_values.created_at DESC'
-            args = [key_value]
+            if lookback is None:
+                stmt = 'SELECT key_values.id, key_values.platform_user_id, key_values.platform_chat_id, key_values.key_value, key_values.value, key_values.created_at, key_values.received_at FROM key_values join users on key_values.platform_user_id = users.platform_user_id WHERE key_values.key_value = %s AND users.is_user is True ORDER BY key_values.created_at DESC'
+                args = [key_value]
+            else:
+                stmt = "SELECT key_values.id, key_values.platform_user_id, key_values.platform_chat_id, key_values.key_value, key_values.value, key_values.created_at, key_values.received_at FROM key_values join users on key_values.platform_user_id = users.platform_user_id WHERE key_values.key_value = %s AND users.is_user is True AND key_values.created_at > now() - INTERVAL '%s week' ORDER BY key_values.created_at DESC"
+                args = [key_value, lookback]
+            
         try:
             return self.conn.execute(stmt, args).fetchall()
         except Exception as e:
