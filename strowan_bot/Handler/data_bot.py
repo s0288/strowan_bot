@@ -171,11 +171,10 @@ class DataBot:
         weekdays = {0: 'mon', 1: 'tue', 2: 'wed', 3: 'thu', 4: 'fri', 5: 'sat', 6: 'sun'}
         for row in data:
             created_at = row[5]
-            today = datetime.datetime.now().date()
             fasting_duration = int(row[4])
 
             # check whether fasten key value is still active (within fasting window)
-            if today - datetime.timedelta(hours=fasting_duration) < created_at:
+            if datetime.datetime.now() - datetime.timedelta(hours=fasting_duration) < created_at:
                 platform_user_id = row[1]
                 platform_chat_id = row[2]
                 # calculate end of fast
