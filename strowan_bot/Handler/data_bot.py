@@ -180,7 +180,7 @@ class DataBot:
                 # calculate end of fast
                 end_time = created_at + datetime.timedelta(hours=fasting_duration)
                 # how many days from today to end of fast?
-                duration_days = (end_time - created_at).days
+                duration_days = (end_time.date() - created_at.date()).days
                 # create triggers for every day in fasting window
                 for i in range(0,duration_days+1):
                     day_of_week = created_at.weekday()+i
