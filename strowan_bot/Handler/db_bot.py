@@ -49,10 +49,9 @@ class DBBot:
         if platform_user_id == None and trigger_value == None:
             stmt = 'SELECT platform_user_id, platform_chat_id, trigger_value, trigger_time, trigger_day, created_at FROM triggers ORDER BY id DESC'
         elif trigger_value is not None:
-            stmt = f'SELECT platform_user_id, platform_chat_id, trigger_value, trigger_time, trigger_day, created_at FROM triggers WHERE trigger_value = {trigger_value} ORDER BY id DESC'
+            stmt = f"SELECT platform_user_id, platform_chat_id, trigger_value, trigger_time, trigger_day, created_at FROM triggers WHERE trigger_value = '{trigger_value}' ORDER BY id DESC"
         else:
-            stmt = f'SELECT platform_user_id, platform_chat_id, trigger_value, trigger_time, trigger_day, created_at FROM triggers WHERE platform_user_id in {platform_user_id} ORDER BY id DESC'
-        print(stmt)
+            stmt = f"SELECT platform_user_id, platform_chat_id, trigger_value, trigger_time, trigger_day, created_at FROM triggers WHERE platform_user_id in ({platform_user_id}) ORDER BY id DESC"
         args = []
         try:
             return self.conn.execute(stmt, args).fetchall()
