@@ -218,7 +218,6 @@ class DataBot:
     def remove_triggers(self, trigger_value):
         weekdays_reversed = {'mon': 0, 'tue': 1, 'wed': 2, 'thu': 3, 'fri': 4, 'sat': 5, 'sun': 6}
         data = DBBot.get_trigger_values(trigger_value=trigger_value)
-        print(data)
         if data:
             # calculate today's date for later use
             today = datetime.datetime.now().date()
@@ -233,8 +232,6 @@ class DataBot:
                 date_of_trigger = (created_at + datetime.timedelta(days=days_since_creation)).date()
 
                 # check if date of trigger is earlier than today. If so, delete it:
-                print(date_of_trigger)
-                print(today)
                 if date_of_trigger < today:
                     user_id = row[0]
                     DBBot.delete_from_triggers(user_id, trigger_value, trigger_day, created_at)
@@ -249,5 +246,5 @@ if __name__ == '__main__':
     DataBot.add_trigger_for_times('assessment_text')
     DataBot.add_trigger_for_fast('fast_duration_integer', lookback=1)
     DBBot.delete_triggers_by_inactive_users()
-    DataBot.remove_triggers('/fasten_feedback')
-    DataBot.remove_triggers('/fasten_end')
+    DataBot.remove_triggers('fasten_feedback')
+    DataBot.remove_triggers('fasten_end')
