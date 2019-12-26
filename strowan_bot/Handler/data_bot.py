@@ -225,7 +225,7 @@ class DataBot:
             for row in data:
                 created_at = row[5]
                 created_at_day_of_week = created_at.weekday()
-                trigger_day = row[4]
+                trigger_day = row[4].lower()
                 trigger_day_day_of_week = weekdays_reversed[trigger_day]
                 if created_at_day_of_week > trigger_day_day_of_week:
                     trigger_day_day_of_week = trigger_day_day_of_week + 7
