@@ -170,46 +170,49 @@ class DataBot:
 
         weekdays = {0: 'mon', 1: 'tue', 2: 'wed', 3: 'thu', 4: 'fri', 5: 'sat', 6: 'sun'}
         for row in data:
-            created_at = row[5]
-            fasting_duration = int(row[4])
+            try:
+                created_at = row[5]
+                fasting_duration = int(row[4])
 
-            # check whether fasten key value is still active (within fasting window)
-            if datetime.datetime.now() - datetime.timedelta(hours=fasting_duration) < created_at:
-                platform_user_id = row[1]
-                platform_chat_id = row[2]
-                # calculate end of fast
-                end_time = created_at + datetime.timedelta(hours=fasting_duration)
-                # how many days from today to end of fast?
-                duration_days = (end_time.date() - created_at.date()).days
-                # create triggers for every day in fasting window
-                for i in range(0,duration_days+1):
-                    day_of_week = created_at.weekday()+i
-                    # day_of_week can only take values between 0 and 6
-                    if day_of_week > 6:
-                        day_of_week = day_of_week - 7
-                    trigger_day = weekdays[day_of_week]
-                    # on last day of fast, set fasten_end dialogue, else fasten_feedback
-                    if i == duration_days:
-                        # if fasting end is after 09:00, also add fasten_feedback
-                        if end_time.time() > datetime.time(9,0,0):
+                # check whether fasten key value is still active (within fasting window)
+                if datetime.datetime.now() - datetime.timedelta(hours=fasting_duration) < created_at:
+                    platform_user_id = row[1]
+                    platform_chat_id = row[2]
+                    # calculate end of fast
+                    end_time = created_at + datetime.timedelta(hours=fasting_duration)
+                    # how many days from today to end of fast?
+                    duration_days = (end_time.date() - created_at.date()).days
+                    # create triggers for every day in fasting window
+                    for i in range(0,duration_days+1):
+                        day_of_week = created_at.weekday()+i
+                        # day_of_week can only take values between 0 and 6
+                        if day_of_week > 6:
+                            day_of_week = day_of_week - 7
+                        trigger_day = weekdays[day_of_week]
+                        # on last day of fast, set fasten_end dialogue, else fasten_feedback
+                        if i == duration_days:
+                            # if fasting end is after 09:00, also add fasten_feedback
+                            if end_time.time() > datetime.time(9,0,0):
+                                trigger_value = '/fasten_feedback'
+                                trigger_time = '08:00'
+                                # check if trigger already exists. If not, add it
+                                if DBBot.check_triggers(platform_user_id, platform_chat_id, trigger_value, trigger_day, trigger_time) == 0:
+                                    received_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                                    DBBot.add_trigger(platform_user_id, platform_chat_id, trigger_value, trigger_time, trigger_day, created_at, received_at)
+                                    print('trigger for fast: day {} of {} added'.format(i, duration_days))
+                            
+                            trigger_value = '/fasten_end'
+                            trigger_time = end_time.time().strftime('%H:%M')
+                        else:
                             trigger_value = '/fasten_feedback'
                             trigger_time = '08:00'
-                            # check if trigger already exists. If not, add it
-                            if DBBot.check_triggers(platform_user_id, platform_chat_id, trigger_value, trigger_day, trigger_time) == 0:
-                                received_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                                DBBot.add_trigger(platform_user_id, platform_chat_id, trigger_value, trigger_time, trigger_day, created_at, received_at)
-                                print('trigger for fast: day {} of {} added'.format(i, duration_days))
-                        
-                        trigger_value = '/fasten_end'
-                        trigger_time = end_time.time().strftime('%H:%M')
-                    else:
-                        trigger_value = '/fasten_feedback'
-                        trigger_time = '08:00'
-                    # check if trigger already exists. If not, add it
-                    if DBBot.check_triggers(platform_user_id, platform_chat_id, trigger_value, trigger_day, trigger_time) == 0:
-                        received_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                        DBBot.add_trigger(platform_user_id, platform_chat_id, trigger_value, trigger_time, trigger_day, created_at, received_at)
-                        print('trigger for fast: day {} of {} added'.format(i, duration_days))
+                        # check if trigger already exists. If not, add it
+                        if DBBot.check_triggers(platform_user_id, platform_chat_id, trigger_value, trigger_day, trigger_time) == 0:
+                            received_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                            DBBot.add_trigger(platform_user_id, platform_chat_id, trigger_value, trigger_time, trigger_day, created_at, received_at)
+                            print('trigger for fast: day {} of {} added'.format(i, duration_days))
+            except Exception as e:
+                print(e)
                     
 
     def remove_triggers(self, trigger_value):
