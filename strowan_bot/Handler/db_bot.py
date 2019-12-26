@@ -212,7 +212,7 @@ class DBBot:
             logging.exception("Exception in delete_triggers_by_inactive_users")
 
     def delete_from_triggers(self, platform_user_id, trigger_value, trigger_day, created_at):
-        stmt = 'DELETE FROM triggers WHERE platform_user_id = %s AND trigger_value = %s AND trigger_day = %s AND created_at = %s'
+        stmt = "DELETE FROM triggers WHERE platform_user_id = %s AND trigger_value = '%s' AND trigger_day = '%s' AND created_at = '%s'"
         args = [platform_user_id, trigger_value, trigger_day, created_at]
         try:
             self.conn.execute(stmt, args)
