@@ -1,4 +1,3 @@
 last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
-✏,/start,"Hey. Ich begleite dich beim Fasten ⏱. Drücke auf Fasten, wenn du mehrere Stunden oder mehrere Tage fasten willst.",Fasten; Später,/fasten; Später,,,/start
-"Hey. Ich begleite dich beim Fasten ⏱. Drücke auf Fasten, wenn du mehrere Stunden oder mehrere Tage fasten willst.",✏,"Jeden Donnerstag machen wir eine gemeinsame Fastenübung. Dabei entscheidest du selbst, wie lange du dabei fastest.",Weiter,Weiter,http://s0288.pythonanywhere.com/static/challenge_w47.png,,/start
-"Jeden Donnerstag machen wir eine gemeinsame Fastenübung. Dabei entscheidest du selbst, wie lange du dabei fastest.",✏,"Drücke auf Fasten, wenn du bereit bist. In deinem Profil siehst du deinen Fortschritt. Bis bald 🙂.",Fasten; Profil,/fasten; /profil,,,end_conversation
+✏,/start,"Hey. Ich helfe dir zu fasten ⏱. Faste für ein paar Stunden oder mehrere Tage. Drücke auf Start, um deine Fastenuhr zu starten.",Start,/fasten,,,/start
+"Hey. Ich helfe dir zu fasten ⏱. Faste für ein paar Stunden oder mehrere Tage. Drücke auf Start, um loszulegen.",✏,"Drücke auf Start, um deine Fastenuhr zu starten.",Start,/fasten,,,end_conversation
