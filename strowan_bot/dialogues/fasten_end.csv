@@ -1,4 +1,4 @@
 last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
-✏,/fasten_end,Glückwunsch 🎉! Du hast dein Fastenziel erreicht. Wie erging es dir?, 👍 ; 👎, 👍 ; 👎,,fasten_feedback_emoji,/fasten_end
-Glückwunsch 🎉! Du hast dein Fastenziel erreicht. Wie erging es dir?,✏,"Gibt es etwas, das dir besonders leicht oder schwer fiel? Möchtest du etwas beim nächsten Mal verändern? ✏",,,,fasten_feedback_text,/fasten_end
-"Gibt es etwas, das dir besonders leicht oder schwer fiel? Möchtest du etwas beim nächsten Mal verändern? ✏",✏,Danke für deine Antworten. Und jetzt guten Appetit!,,,,,end_conversation
+✏,/fasten_end,"""Glückwunsch 🎉, du hast {} gefastet. Wie fühlst du dich?"".format(fast_duration)", 👍 ; 👎, 👍 ; 👎,,fasten_end_text,/fasten_end
+"""Glückwunsch 🎉, du hast {} gefastet. Wie fühlst du dich?"".format(fast_duration)",✏,Möchtest du dir etwas für das nächste Mal notieren? ✏,,,,fasten_feedback_emoji,/fasten_end
+Möchtest du dir etwas für das nächste Mal notieren? ✏,✏,Danke für deine Antworten. Und jetzt guten Appetit!,,,,fasten_feedback_text,end_conversation

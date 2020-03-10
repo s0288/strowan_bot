@@ -80,7 +80,7 @@ class DialogueBot:
             last_bot_message = "✏"
         return last_user_message, last_bot_message, last_bot_message_for_exception
 
-    def extract_response_array(response_array, chat_id, fast_start, fast_end, fast_duration):
+    def extract_response_array(response_array, chat_id, fast_duration):
         # save parameters
         message = response_array[2]
         keyboard = response_array[3]
@@ -98,8 +98,13 @@ class DialogueBot:
         return message, keyboard, callback_url, img, key_value, intent
 
     def get_fast_values(chat_id):
-        data = DBBot.get_fast_values(chat_id, 'fast_start_text')
-        fast_start = data[0][0]
+        # get datetime of start of fast
+        try:
+            data = DBBot.get_fast_values(chat_id, 'fast_start_text')
+            fast_start = data[0][0]
+        except:
+            fast_start = datetime.datetime.now()
+        # set fast_end to now() and calculate difference between fast_end and fast_start
         fast_end = datetime.datetime.now()
         difference = fast_end - fast_start
         seconds_in_day = 24 * 60 * 60
@@ -109,7 +114,7 @@ class DialogueBot:
         return fast_duration
 
     # improve function by creating an object that holds additional user info (e.g. fast values)
-    def find_response(self, intent, chat_id, last_user_message=None, last_bot_message=None, fast_start=None, fast_end=None, fast_duration=None):
+    def find_response(self, intent, chat_id, last_user_message=None, last_bot_message=None, fast_duration=None):
         # get the dialogue
         try:
             data = DialogueBot.fetch_dialogue(intent)
@@ -120,11 +125,9 @@ class DialogueBot:
             data = DialogueBot.fetch_dialogue(intent)
         
         # for fasting intents: get fasting values
-        if intent == '/end':
+        if intent == '/fasten_end':
             fast_duration = DialogueBot.get_fast_values(chat_id)
         else:
-            fast_start = None
-            fast_end = None
             fast_duration = None
 
         last_user_message, last_bot_message, last_bot_message_for_exception = DialogueBot.fetch_last_messages(data, chat_id, last_user_message, last_bot_message)
@@ -149,6 +152,6 @@ class DialogueBot:
                 logging.exception("No matching answer")
                 response_array = ['✏', '✏', 'Tut mir leid. Das verstehe ich nicht 😔. Ich habe meine Macher schon verständigt.', None, None, None, None, None, '/open_conversation']
 
-        message, keyboard, callback_url, img, key_value, intent = DialogueBot.extract_response_array(response_array, chat_id, fast_start, fast_end, fast_duration)
+        message, keyboard, callback_url, img, key_value, intent = DialogueBot.extract_response_array(response_array, chat_id, fast_duration)
 
         return message, keyboard, callback_url, img, key_value, intent

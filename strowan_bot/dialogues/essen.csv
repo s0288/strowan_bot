@@ -1,3 +1,0 @@
-last_bot_message,last_user_message,message,keyboard,callback_url,photo,key_value,intent
-✏,/essen,"Lade ein Foto deines Essens hoch oder klicke auf Mahlzeit, um ein Essen zu erfassen 🔍. Mit Nachtragen trägst du eine Mahlzeit nach. Unter Rezepte findest du jede Woche neue leckere Rezepte 🥙.",Mahlzeit; Rezepte; Nachtragen; Befehle,/mahlzeit; /rezepte; /nachtragen; /befehle,,,/essen
-"Lade ein Foto deines Essens hoch oder klicke auf Mahlzeit, um ein Essen zu erfassen 🔍. Mit Nachtragen trägst du eine Mahlzeit nach. Unter Rezepte findest du jede Woche neue leckere Rezepte 🥙.",✏,"Ich verstehe freie Antworten noch nicht. Wähle einen der Buttons aus, um mit mir zu sprechen. ",,,,,end_conversation
