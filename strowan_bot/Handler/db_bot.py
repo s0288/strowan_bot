@@ -149,7 +149,7 @@ class DBBot:
             logging.exception("Exception in get_last_values_from_updates")
 
     def get_fast_values(self, platform_user_id, fast_value):
-        stmt = "SELECT value, created_at FROM key_values WHERE platform_user_id = %s AND key_value = %s ORDER BY id DESC LIMIT 1"
+        stmt = "SELECT created_at FROM updates WHERE platform_chat_id = %s AND key_value = %s ORDER BY id DESC LIMIT 1"
         args = [platform_user_id, fast_value]
         try:
             return self.conn.execute(stmt, args).fetchall()

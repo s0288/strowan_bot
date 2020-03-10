@@ -98,12 +98,15 @@ class DialogueBot:
         return message, keyboard, callback_url, img, key_value, intent
 
     def get_fast_values(chat_id):
-        data = DBBot.get_fast_values(chat_id, 'fast_duration_integer')
-        fast_duration = int(data[0][0])
-        fast_start = data[0][1]
-        fast_end = (fast_start + datetime.timedelta(hours=fast_duration)).strftime('%A, %H:%M')
-        fast_start = fast_start.strftime('%A, %H:%M')
-        return fast_duration, fast_start, fast_end
+        data = DBBot.get_fast_values(chat_id, 'fast_start_text')
+        fast_start = data[0][0]
+        fast_end = datetime.datetime.now()
+        difference = fast_end - fast_start
+        seconds_in_day = 24 * 60 * 60
+        fast_duration_hours = divmod(difference.days * seconds_in_day + difference.seconds, 3600)[0]
+        fast_duration_mins = divmod(difference.days * seconds_in_day + difference.seconds, 60)[0]
+        fast_duration = f"{fast_duration_hours} Stunden und {fast_duration_mins} Minuten"
+        return fast_duration
 
     # improve function by creating an object that holds additional user info (e.g. fast values)
     def find_response(self, intent, chat_id, last_user_message=None, last_bot_message=None, fast_start=None, fast_end=None, fast_duration=None):
@@ -117,8 +120,8 @@ class DialogueBot:
             data = DialogueBot.fetch_dialogue(intent)
         
         # for fasting intents: get fasting values
-        if intent in ('/fasten_feedback'):
-            fast_duration, fast_start, fast_end = DialogueBot.get_fast_values(chat_id)
+        if intent == '/end':
+            fast_duration = DialogueBot.get_fast_values(chat_id)
         else:
             fast_start = None
             fast_end = None
