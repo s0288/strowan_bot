@@ -1,3 +1,3 @@
 last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
-✏,/start,"Hey. Ich helfe dir zu fasten ⏱. Faste für ein paar Stunden oder mehrere Tage. Drücke auf Start, um deine Fastenuhr zu starten.",Start,/fasten,,,/start
+✏,/start,"Hey. Ich helfe dir zu fasten ⏱. Faste für ein paar Stunden oder mehrere Tage. Drücke auf Start, um deine Fastenuhr zu starten.",Start,/fasten,,fast_start,/start
 "Hey. Ich helfe dir zu fasten ⏱. Faste für ein paar Stunden oder mehrere Tage. Drücke auf Start, um loszulegen.",✏,"Drücke auf Start, um deine Fastenuhr zu starten.",Start,/fasten,,,end_conversation
