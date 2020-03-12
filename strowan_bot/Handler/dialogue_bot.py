@@ -109,7 +109,7 @@ class DialogueBot:
         difference = fast_end - fast_start
         seconds_in_day = 24 * 60 * 60
         fast_duration_hours = divmod(difference.days * seconds_in_day + difference.seconds, 3600)[0]
-        fast_duration_mins = divmod(difference.days * seconds_in_day + difference.seconds, 60)[0]
+        fast_duration_mins = divmod(difference.days * seconds_in_day + difference.seconds, 60)[0] - fast_duration_hours*60
         fast_duration = f"{fast_duration_hours} Stunden und {fast_duration_mins} Minuten"
         return fast_duration
 
