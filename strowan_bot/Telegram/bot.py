@@ -11,6 +11,7 @@ import sys #required because files in other folder
 sys.path.append('../Handler/')
 from db_bot import DBBot
 from dialogue_bot import DialogueBot
+from fast_overview import create_overview
 
 import sys #required because files in parent folder
 sys.path.append('../')
@@ -258,6 +259,26 @@ class Bot:
                 Bot.send_photo(message_elements)
         else:
             Bot.send_message(message_elements)
+
+        # if user started fast, create current version of fasting plot
+        if message_elements["key_value"] == 'fast_start_text':
+            curr_date = datetime.datetime.now().strftime("%y-%m-%d")
+            curr_year = datetime.datetime.now().isocalendar()[0]
+            curr_week = datetime.datetime.now().isocalendar()[1]
+            # check if the user already has a folder. If not, create it
+            file_path_users = f"{config.FILE_DIRECTORY}/static/users"
+            file_path_users_user = f"{file_path_users}/{chat_id}"
+            file_path_users_user_week = f"{file_path_users_user}/{curr_year}_{curr_week}"
+            file_path_users_user_week_fasts = f"{file_path_users_user_week}/fasts"
+            if os.path.isdir(file_path_users) is False:
+                os.mkdir(file_path_users)
+            if os.path.isdir(file_path_users_user) is False:
+                os.mkdir(file_path_users_user)
+            if os.path.isdir(file_path_users_user_week) is False:
+                os.mkdir(file_path_users_user_week)
+            if os.path.isdir(file_path_users_user_week_fasts) is False:
+                os.mkdir(file_path_users_user_week_fasts)
+            create_overview(chat_id, f"{file_path_users_user_week_fasts}/fast_overview_{curr_date}.png")
 
 
     def build_keyboard(keyboard, callback_url):
