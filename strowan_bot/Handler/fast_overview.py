@@ -39,78 +39,81 @@ def create_overview(user_id, output_file_bokeh=config.BASE_DIRECTORY):
             """
     data = pd.read_sql_query(txt, conn)
 
-    ## remove duplicate button clicks in-between beginning and end of fast
-    # create new data frame for the cleaned rows
-    df_fast = pd.DataFrame(columns=['created_at', 'key_value'])
+    # only continue if user has started a fast yet:
+    if len(data) > 0:
+        ## remove duplicate button clicks in-between beginning and end of fast
+        # create new data frame for the cleaned rows
+        df_fast = pd.DataFrame(columns=['created_at', 'key_value'])
 
-    # key values
-    fasten_start = 'fast_start_text'
-    fasten_end = 'fasten_end_text'
+        # key values
+        fasten_start = 'fast_start_text'
+        fasten_end = 'fasten_end_text'
 
-    # loop over data - Is there a vectorised way to do this?
-    fast_started = 0
-    for i in data.iterrows():
-        # check if user started fast but ignore second starts without ends
-        if fast_started == 0:
-            if i[1].key_value == fasten_start:
-                df_fast.loc[len(df_fast)] = i[1]
-                fast_started = 1
-        # check if user ended fast after he started it
-        if fast_started == 1:
-            if i[1].key_value == fasten_end:
-                df_fast.loc[len(df_fast)] = i[1]
-                fast_started = 0
+        # loop over data - Is there a vectorised way to do this?
+        fast_started = 0
+        for i in data.iterrows():
+            # check if user started fast but ignore second starts without ends
+            if fast_started == 0:
+                if i[1].key_value == fasten_start:
+                    df_fast.loc[len(df_fast)] = i[1]
+                    fast_started = 1
+            # check if user ended fast after he started it
+            if fast_started == 1:
+                if i[1].key_value == fasten_end:
+                    df_fast.loc[len(df_fast)] = i[1]
+                    fast_started = 0
 
-    # if last row is fast_start add fast_ongoing
-    if df_fast.key_value.iloc[[-1]].values[0] == 'fast_start_text':
-        df_fast.loc[len(df_fast)] = [datetime.datetime.now().replace(microsecond=0), 'fast_ongoing']            
+        # if last row is fast_start add fast_ongoing
+        if df_fast.key_value.iloc[[-1]].values[0] == 'fast_start_text':
+            df_fast.loc[len(df_fast)] = [datetime.datetime.now().replace(microsecond=0), 'fast_ongoing']            
 
-    # calculate duration of each fast in hours
-    df_fast["duration"] = (df_fast['created_at'].shift(-1)-df_fast['created_at']) / np.timedelta64(1, 'h')
+        # calculate duration of each fast in hours
+        df_fast["duration"] = (df_fast['created_at'].shift(-1)-df_fast['created_at']) / np.timedelta64(1, 'h')
 
-    # only keep the starting values
-    df_fast = df_fast.loc[df_fast.key_value == 'fast_start_text']
+        # only keep the starting values
+        df_fast = df_fast.loc[df_fast.key_value == 'fast_start_text']
 
-    # only keep fast with longest duration on same date -- ALTERNATIVE FROM ZERO: Sum all fasts on a given day
-    df_fast["created_at_date"] = df_fast.created_at.dt.date
-    idx = df_fast.groupby('created_at_date').duration.transform(max) == df_fast.duration
-    df_fast = df_fast[idx].reset_index(drop=True)
+        # only keep fast with longest duration on same date -- ALTERNATIVE FROM ZERO: Sum all fasts on a given day
+        df_fast["created_at_date"] = df_fast.created_at.dt.date
+        idx = df_fast.groupby('created_at_date').duration.transform(max) == df_fast.duration
+        df_fast = df_fast[idx].reset_index(drop=True)
 
-    # create abbreviated date values
-    df_fast["created_at_abbr"] = df_fast.created_at.dt.strftime('%d. %b')
-    # create abbreviated duration values
-    df_fast["duration_abbr"] = df_fast.duration.round().astype(int).astype(str) + " h"
-
-
-
-    ##### create bokeh plot
-    # specify output    
-    output_file(output_file_bokeh)
-
-    # get values for recent fasts
-    df_plot = df_fast.tail(7)
-    fasts = df_plot.tail().created_at_abbr.values.tolist()
-    durations = df_plot.tail().duration.values.tolist()
-    labels_durations = df_plot.tail().duration_abbr.values.tolist()
-
-    # create plot
-    p = figure(x_range=fasts, y_range=(0, max(durations)+5), plot_height=250, title="Aktuelle Fastenzeiten",
-            toolbar_location=None, tools="")
-    p.vbar(x=fasts, top=durations, width=0.5)
+        # create abbreviated date values
+        df_fast["created_at_abbr"] = df_fast.created_at.dt.strftime('%d. %b')
+        # create abbreviated duration values
+        df_fast["duration_abbr"] = df_fast.duration.round().astype(int).astype(str) + " h"
 
 
-    # add fasting hours as labels
-    source = ColumnDataSource(dict(x=fasts, y=durations, text=labels_durations))
-    labels = LabelSet(x='x', y='y', text='text', level='glyph',
-            x_offset=-10, y_offset=10, source=source, render_mode='css')
-    p.add_layout(labels)
+        ##### create bokeh plot
 
+        # get values for recent fasts
+        df_plot = df_fast.tail(7)
+        fasts = df_plot.tail().created_at_abbr.values.tolist()
+        print(fasts)
+        durations = df_plot.tail().duration.values.tolist()
+        print(durations)
+        labels_durations = df_plot.tail().duration_abbr.values.tolist()
+        print(labels_durations)
 
-    # remove axes grid lines
-    p.xgrid.grid_line_color = None
-    p.ygrid.grid_line_color = None
+        # create plot
+        p = figure(x_range=fasts, y_range=(0, max(durations)+5), plot_height=250, title="Aktuelle Fastenzeiten",
+                toolbar_location=None, tools="")
+        p.vbar(x=fasts, top=durations, width=0.5)
 
-    show(p)
+        # add fasting hours as labels
+        source = ColumnDataSource(dict(x=fasts, y=durations, text=labels_durations))
+        labels = LabelSet(x='x', y='y', text='text', level='glyph',
+                x_offset=-10, y_offset=10, source=source, render_mode='css')
+        p.add_layout(labels)
+
+        # remove axes grid lines
+        p.xgrid.grid_line_color = None
+        p.ygrid.grid_line_color = None
+
+        # specify output
+        output_file(f"/home/s0288/fast_{user_id}_20-03-13.html")
+
+        show(p)
 
 
 # get active users
