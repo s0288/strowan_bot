@@ -108,7 +108,7 @@ def create_overview(user_id, output_file_bokeh=config.BASE_DIRECTORY):
         p.ygrid.grid_line_color = None
 
         # specify output
-        output_file(f"/home/s0288/fast_{user_id}_20-03-13.html")
+        output_file(output_file_bokeh)
 
         show(p)
 
