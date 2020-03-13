@@ -127,7 +127,7 @@ curr_week = datetime.datetime.now().isocalendar()[1]
 for user_id in ids:
     
     # check if the user already has a folder. If not, create it
-    file_path_users = f"{config.FILE_DIRECTORY}/users"
+    file_path_users = f"{config.FILE_DIRECTORY}/static/users"
     file_path_users_user = f"{file_path_users}/{user_id}"
     file_path_users_user_week = f"{file_path_users_user}/{curr_year}_{curr_week}"
     file_path_users_user_week_fasts = f"{file_path_users_user_week}/fasts"
