@@ -5,7 +5,7 @@ import datetime
 import numpy as np
 import pandas as pd
 
-from bokeh.io import output_file, output_notebook, show
+from bokeh.io import export_png, show
 from bokeh.plotting import figure
 from bokeh.models import ColumnDataSource, LabelSet
 from bokeh.models import CategoricalTicker
@@ -108,7 +108,7 @@ def create_overview(user_id, output_file_bokeh=config.FILE_DIRECTORY):
         p.ygrid.grid_line_color = None
 
         # specify output
-        output_file(output_file_bokeh)
+        export_png(p, filename=output_file_bokeh)
 
         show(p)
 
@@ -141,7 +141,7 @@ for user_id in ids:
         os.mkdir(file_path_users_user_week_fasts)
     
     # define output file location for user
-    output_file_bokeh = f"{file_path_users_user_week_fasts}/fast_overview_{curr_date}.html"
+    output_file_bokeh = f"{file_path_users_user_week_fasts}/fast_overview_{curr_date}.png"
     
     # create fasting overviews for active users
     create_overview(user_id, output_file_bokeh)
