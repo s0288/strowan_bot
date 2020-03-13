@@ -4,11 +4,7 @@ import datetime
 
 import numpy as np
 import pandas as pd
-
-from bokeh.io import export_png, show
-from bokeh.plotting import figure
-from bokeh.models import ColumnDataSource, LabelSet
-from bokeh.models import CategoricalTicker
+import matplotlib.pyplot as plt
 
 import datetime
 import os
@@ -25,7 +21,7 @@ metadata = MetaData(engine)
 conn = engine.connect()
 
 
-def create_overview(user_id, output_file_bokeh=config.FILE_DIRECTORY):
+def create_overview(user_id, output_file_location=config.FILE_DIRECTORY):
     #### get fasting-related values and clean df
     txt = f"""
             SELECT 
@@ -83,34 +79,64 @@ def create_overview(user_id, output_file_bokeh=config.FILE_DIRECTORY):
         # create abbreviated duration values
         df_fast["duration_abbr"] = df_fast.duration.round().astype(int).astype(str) + " h"
 
-
-        ##### create bokeh plot
-
+        ###### create plot
         # get values for recent fasts
         df_plot = df_fast.tail(7)
         fasts = df_plot.tail().created_at_abbr.values.tolist()
         durations = df_plot.tail().duration.values.tolist()
         labels_durations = df_plot.tail().duration_abbr.values.tolist()
 
-        # create plot
-        p = figure(x_range=fasts, y_range=(0, max(durations)+5), plot_height=250, title="Aktuelle Fastenzeiten",
-                toolbar_location=None, tools="")
-        p.vbar(x=fasts, top=durations, width=0.5)
+        ###### save as png
+        # get values for recent fasts
+        df_plot = df_fast.tail(7)
+        fasts = df_plot.tail().created_at_abbr.values.tolist()
+        durations = df_plot.tail().duration.values.tolist()
+        labels_durations = df_plot.tail().duration_abbr.values.tolist()
 
-        # add fasting hours as labels
-        source = ColumnDataSource(dict(x=fasts, y=durations, text=labels_durations))
-        labels = LabelSet(x='x', y='y', text='text', level='glyph',
-                x_offset=-10, y_offset=10, source=source, render_mode='css')
-        p.add_layout(labels)
+        # plot bar chart
+        fig, ax = plt.subplots()
+        width = 0.35       # the width of the bars: can also be len(x) sequence
+        ax.bar(fasts, durations, width)
 
-        # remove axes grid lines
-        p.xgrid.grid_line_color = None
-        p.ygrid.grid_line_color = None
+        ax.set_ylabel('Stunden')
+        ax.set_ylim([0,max(durations)+5])
+        ax.set_xlabel('Tage')
+        ax.set_title('Aktuelle Fastenzeiten')
 
-        # specify output
-        export_png(p, filename=output_file_bokeh)
+        # add durations as labels 
+        rects = ax.patches
+        for rect, label in zip(rects, labels_durations):
+            height = rect.get_height()
+            ax.text(rect.get_x() + rect.get_width() / 2, height + 0.5, label,
+                    ha='center', va='bottom')
 
-        show(p)
+        plt.savefig(output_file_location)
+
+        # ##### save as html (bokeh)
+        # from bokeh.io import output_file, show
+        # from bokeh.plotting import figure
+        # from bokeh.models import ColumnDataSource, LabelSet
+        # from bokeh.models import CategoricalTicker
+
+        # # create plot
+        # p = figure(x_range=fasts, y_range=(0, max(durations)+5), plot_height=250, title="Aktuelle Fastenzeiten",
+        #         toolbar_location=None, tools="")
+        # p.vbar(x=fasts, top=durations, width=0.5)
+
+        # # add fasting hours as labels
+        # source = ColumnDataSource(dict(x=fasts, y=durations, text=labels_durations))
+        # labels = LabelSet(x='x', y='y', text='text', level='glyph',
+        #         x_offset=-10, y_offset=10, source=source, render_mode='css')
+        # p.add_layout(labels)
+
+        # # remove axes grid lines
+        # p.xgrid.grid_line_color = None
+        # p.ygrid.grid_line_color = None
+
+        # # specify output
+        # output_file(output_file_location)
+
+        # show(p)
 
 
 # get active users
@@ -141,7 +167,7 @@ for user_id in ids:
         os.mkdir(file_path_users_user_week_fasts)
     
     # define output file location for user
-    output_file_bokeh = f"{file_path_users_user_week_fasts}/fast_overview_{curr_date}.png"
+    output_file_location = f"{file_path_users_user_week_fasts}/fast_overview_{curr_date}.png"
     
     # create fasting overviews for active users
-    create_overview(user_id, output_file_bokeh)
+    create_overview(user_id, output_file_location)
