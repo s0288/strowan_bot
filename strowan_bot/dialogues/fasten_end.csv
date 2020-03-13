@@ -1,2 +1,2 @@
 last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
-✏,/fasten_end,"""Glückwunsch 🎉, du hast {} gefastet. Guten Appetit!"".format(fast_duration)",,,,fasten_end_text,end_conversation
+✏,/fasten_end,"""Glückwunsch 🎉, du hast {} gefastet. Hier siehst du einen Überblick deiner letzten Fastenzeiten. Guten Appetit!"".format(fast_duration)",,,"""http://s0288.pythonanywhere.com/static/users/{}/{}_{}/fasts/fast_overview_{}.html"".format(chat_id, datetime.datetime.now().isocalendar()[0], datetime.datetime.now().isocalendar()[1], datetime.datetime.now().strftime(""%y-%m-%d""))",fasten_end_text,end_conversation
