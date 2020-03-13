@@ -89,11 +89,8 @@ def create_overview(user_id, output_file_bokeh=config.BASE_DIRECTORY):
         # get values for recent fasts
         df_plot = df_fast.tail(7)
         fasts = df_plot.tail().created_at_abbr.values.tolist()
-        print(fasts)
         durations = df_plot.tail().duration.values.tolist()
-        print(durations)
         labels_durations = df_plot.tail().duration_abbr.values.tolist()
-        print(labels_durations)
 
         # create plot
         p = figure(x_range=fasts, y_range=(0, max(durations)+5), plot_height=250, title="Aktuelle Fastenzeiten",
