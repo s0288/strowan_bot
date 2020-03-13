@@ -25,7 +25,7 @@ metadata = MetaData(engine)
 conn = engine.connect()
 
 
-def create_overview(user_id, output_file_bokeh=config.BASE_DIRECTORY):
+def create_overview(user_id, output_file_bokeh=config.FILE_DIRECTORY):
     #### get fasting-related values and clean df
     txt = f"""
             SELECT 
@@ -121,6 +121,7 @@ for num, id in enumerate(data):
 
 
 curr_date = datetime.datetime.now().strftime("%y-%m-%d")
+curr_year = datetime.datetime.now().isocalendar()[0]
 curr_week = datetime.datetime.now().isocalendar()[1]
 
 for user_id in ids:
@@ -128,7 +129,7 @@ for user_id in ids:
     # check if the user already has a folder. If not, create it
     file_path_users = f"{config.FILE_DIRECTORY}/users"
     file_path_users_user = f"{file_path_users}/{user_id}"
-    file_path_users_user_week = f"{file_path_users_user_week}/{curr_week}"
+    file_path_users_user_week = f"{file_path_users_user}/{curr_year}_{curr_week}"
     file_path_users_user_week_fasts = f"{file_path_users_user_week}/fasts"
     if os.path.isdir(file_path_users) is False:
         os.mkdir(file_path_users)
