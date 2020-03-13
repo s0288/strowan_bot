@@ -121,22 +121,26 @@ for num, id in enumerate(data):
 
 
 curr_date = datetime.datetime.now().strftime("%y-%m-%d")
+curr_week = datetime.datetime.now().isocalendar()[1]
 
 for user_id in ids:
     
     # check if the user already has a folder. If not, create it
-    file_path_users = f"{config.BASE_DIRECTORY}/users"
+    file_path_users = f"{config.FILE_DIRECTORY}/users"
     file_path_users_user = f"{file_path_users}/{user_id}"
-    file_path_users_user_fasts = f"{file_path_users_user}/fasts"
+    file_path_users_user_week = f"{file_path_users}/{curr_week}"
+    file_path_users_user_week_fasts = f"{file_path_users_user_week}/fasts"
     if os.path.isdir(file_path_users) is False:
         os.mkdir(file_path_users)
     if os.path.isdir(file_path_users_user) is False:
         os.mkdir(file_path_users_user)
-    if os.path.isdir(file_path_users_user_fasts) is False:
-        os.mkdir(file_path_users_user_fasts)
+    if os.path.isdir(file_path_users_user_week) is False:
+        os.mkdir(file_path_users_user_week)
+    if os.path.isdir(file_path_users_user_week_fasts) is False:
+        os.mkdir(file_path_users_user_week_fasts)
     
     # define output file location for user
-    output_file_bokeh = f"{file_path_users_user_fasts}/fast_overview_{curr_date}.html"
+    output_file_bokeh = f"{file_path_users_user_week_fasts}/fast_overview_{curr_date}.html"
     
     # create fasting overviews for active users
     create_overview(user_id, output_file_bokeh)
