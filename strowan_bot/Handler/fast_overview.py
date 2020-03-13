@@ -137,6 +137,18 @@ def create_overview(user_id, output_file_location=config.FILE_DIRECTORY):
         # output_file(output_file_location)
 
         # show(p)
+    
+    else:
+        # plot bar chart
+        fig, ax = plt.subplots()
+        width = 0.35       # the width of the bars: can also be len(x) sequence
+        ax.bar([], [], width)
+
+        ax.set_ylabel('Stunden')
+        ax.set_xlabel('Tage')
+        ax.set_title('Aktuelle Fastenzeiten')
+
+        plt.savefig(output_file_location)
 
 
 # get active users
