@@ -1,3 +1,3 @@
 last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
-✏,/fasten,"Super. Drücke Stopp, um das Fasten zu beenden. Setze dir ein Ziel, wenn du möchtest.",Stopp; 16 h; 24 h; 48 h,/fasten_end; 16 h; 24 h; 48 h,http://s0288.pythonanywhere.com/static/fast_start.png,fast_start_text,/fasten
-"Super. Drücke Stopp, um das Fasten zu beenden. Setze dir ein Ziel, wenn du möchtest.",✏,"Wunderbar. Ich melde mich am Ende deiner Zeit. Drücke auf Stopp, wenn du das Fasten vorher beenden willst.",Stopp,/fasten_end,,fast_duration_integer,end_conversation
+✏,/fasten,"Super. Genieße das Fasten 🙂! Drücke Stopp, um das Fasten zu beenden.",Stopp,/fasten_end,http://s0288.pythonanywhere.com/static/fast_start.png,fast_start_text,/fasten
+"Super. Genieße das Fasten 🙂! Drücke Stopp, um das Fasten zu beenden.",✏,"Wunderbar. Ich melde mich am Ende deiner Zeit. Drücke auf Stopp, wenn du das Fasten vorher beenden willst.",Stopp,/fasten_end,,fast_duration_integer,end_conversation
