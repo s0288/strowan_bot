@@ -140,12 +140,12 @@ def create_overview(df_fast, output_file_location=config.FILE_DIRECTORY):
         data_height = ymax - y0
         # add total fasting hours to plot
         total_duration = df_fast.duration.sum()
-        plt.text(0, y0 + data_height * 1.2, f'Stunden gefastet:', fontsize=16)
-        plt.text(0.8, y0 + data_height * 1.1, f'{total_duration:.0f}', fontsize=24)
+        plt.text(0, y0 + data_height * 1.3, f'Stunden gefastet:', fontsize=16)
+        plt.text(0.8, y0 + data_height * 1.2, f'{total_duration:.0f}', fontsize=24)
         # add total fasting hours to plot
         count_fasts = df_fast.duration.count()
-        plt.text(4.5, y0 + data_height * 1.2, f'Fastentrips:', fontsize=16)
-        plt.text(5.1, y0 + data_height * 1.1, f'{count_fasts:.0f}', fontsize=24)
+        plt.text(4.5, y0 + data_height * 1.3, f'Fastentrips:', fontsize=16)
+        plt.text(5.1, y0 + data_height * 1.2, f'{count_fasts:.0f}', fontsize=24)
 
     plt.savefig(output_file_location, bbox_inches='tight')
 
