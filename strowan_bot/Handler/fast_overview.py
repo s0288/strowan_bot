@@ -29,6 +29,7 @@ def create_overview(user_id, output_file_location=config.FILE_DIRECTORY):
                 , key_value
             FROM updates u
             WHERE 
+                -- get bot messages for first interactions
                 u.platform_chat_id = {user_id} AND u.platform_user_id != {user_id} 
                 AND u.key_value in ('fast_start_text', 'fasten_end_text')
             ORDER BY u.id ASC 
@@ -89,13 +90,13 @@ def create_overview(user_id, output_file_location=config.FILE_DIRECTORY):
         ###### save as png
         # get values for recent fasts
         df_plot = df_fast.tail(7)
-        fasts = df_plot.tail().created_at_abbr.values.tolist()
-        durations = df_plot.tail().duration.values.tolist()
-        labels_durations = df_plot.tail().duration_abbr.values.tolist()
+        fasts = df_plot.created_at_abbr.values.tolist()
+        durations = df_plot.duration.values.tolist()
+        labels_durations = df_plot.duration_abbr.values.tolist()
 
         # plot bar chart
         fig, ax = plt.subplots()
-        width = 0.35       # the width of the bars: can also be len(x) sequence
+        width = 0.5       # the width of the bars: can also be len(x) sequence
         ax.bar(fasts, durations, width)
 
         ax.set_ylabel('Stunden')
@@ -141,7 +142,7 @@ def create_overview(user_id, output_file_location=config.FILE_DIRECTORY):
     else:
         # plot bar chart
         fig, ax = plt.subplots()
-        width = 0.35       # the width of the bars: can also be len(x) sequence
+        width = 0.5       # the width of the bars: can also be len(x) sequence
         ax.bar([], [], width)
 
         ax.set_ylabel('Stunden')
