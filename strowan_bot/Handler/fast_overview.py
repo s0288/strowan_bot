@@ -21,7 +21,8 @@ metadata = MetaData(engine)
 conn = engine.connect()
 
 
-def create_overview(user_id, output_file_location=config.FILE_DIRECTORY):
+# get data on fasts from user
+def get_fasting_data(user_id):
     #### get fasting-related values and clean df
     txt = f"""
             SELECT 
@@ -79,7 +80,26 @@ def create_overview(user_id, output_file_location=config.FILE_DIRECTORY):
         df_fast["created_at_abbr"] = df_fast.created_at.dt.strftime('%d. %b')
         # create abbreviated duration values
         df_fast["duration_abbr"] = df_fast.duration.round().astype(int).astype(str) + " h"
+        
+    else:
+        df_fast = None
+    return df_fast
 
+
+# plot recent fasts from user
+def create_overview(df_fast, output_file_location=config.FILE_DIRECTORY):
+    # if user hasn't fasted yet
+    if df_fast is None:
+        # plot bar chart
+        fig, ax = plt.subplots()
+        width = 0.5       # the width of the bars: can also be len(x) sequence
+        ax.bar([], [], width)
+
+        ax.set_ylabel('Stunden')
+        ax.set_xlabel('Tage')
+        ax.set_title('Aktuelle Fastenzeiten')
+    # if user has existing fasting data
+    else:
         ###### create plot
         # get values for recent fasts
         df_plot = df_fast.tail(7)
@@ -111,45 +131,7 @@ def create_overview(user_id, output_file_location=config.FILE_DIRECTORY):
             ax.text(rect.get_x() + rect.get_width() / 2, height + 0.5, label,
                     ha='center', va='bottom')
 
-        plt.savefig(output_file_location)
-
-        # ##### save as html (bokeh)
-        # from bokeh.io import output_file, show
-        # from bokeh.plotting import figure
-        # from bokeh.models import ColumnDataSource, LabelSet
-        # from bokeh.models import CategoricalTicker
-
-        # # create plot
-        # p = figure(x_range=fasts, y_range=(0, max(durations)+5), plot_height=250, title="Aktuelle Fastenzeiten",
-        #         toolbar_location=None, tools="")
-        # p.vbar(x=fasts, top=durations, width=0.5)
-
-        # # add fasting hours as labels
-        # source = ColumnDataSource(dict(x=fasts, y=durations, text=labels_durations))
-        # labels = LabelSet(x='x', y='y', text='text', level='glyph',
-        #         x_offset=-10, y_offset=10, source=source, render_mode='css')
-        # p.add_layout(labels)
-
-        # # remove axes grid lines
-        # p.xgrid.grid_line_color = None
-        # p.ygrid.grid_line_color = None
-
-        # # specify output
-        # output_file(output_file_location)
-
-        # show(p)
-    
-    else:
-        # plot bar chart
-        fig, ax = plt.subplots()
-        width = 0.5       # the width of the bars: can also be len(x) sequence
-        ax.bar([], [], width)
-
-        ax.set_ylabel('Stunden')
-        ax.set_xlabel('Tage')
-        ax.set_title('Aktuelle Fastenzeiten')
-
-        plt.savefig(output_file_location)
+    plt.savefig(output_file_location)
 
 
 # get active users
@@ -183,4 +165,5 @@ for user_id in ids:
     output_file_location = f"{file_path_users_user_week_fasts}/fast_overview_{curr_date}.png"
     
     # create fasting overviews for active users
-    create_overview(user_id, output_file_location)
+    df_fast = get_fasting_data(user_id)
+    create_overview(df_fast, output_file_location)
