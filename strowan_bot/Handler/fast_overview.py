@@ -131,6 +131,15 @@ def create_overview(df_fast, output_file_location=config.FILE_DIRECTORY):
             ax.text(rect.get_x() + rect.get_width() / 2, height + 0.5, label,
                     ha='center', va='bottom')
 
+        # add total fasting hours to plot
+        total_duration = df_fast.duration.sum()
+        plt.text(0, 30, f'Stunden gefastet:', fontsize=16)
+        plt.text(0.6, 28, f'{total_duration:.0f}', fontsize=24)
+        # add total fasting hours to plot
+        count_fasts = df_fast.duration.count()
+        plt.text(4.5, 30, f'Fastentrips:', fontsize=16)
+        plt.text(4.9, 28, f'{count_fasts:.0f}', fontsize=24)
+
     plt.savefig(output_file_location)
 
 
