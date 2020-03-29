@@ -11,7 +11,7 @@ import sys #required because files in other folder
 sys.path.append('../Handler/')
 from db_bot import DBBot
 from dialogue_bot import DialogueBot
-from fast_overview import create_overview
+from fast_overview import get_fasting_data, create_overview
 
 import sys #required because files in parent folder
 sys.path.append('../')
@@ -260,7 +260,7 @@ class Bot:
         else:
             Bot.send_message(message_elements)
 
-        # if user started fast, create current version of fasting plot
+        # if user started fast, create current version of fasting plot -- FIX TO BETTER SOLUTION
         if message_elements["key_value"] == 'fast_start_text':
             curr_date = datetime.datetime.now().strftime("%y-%m-%d")
             curr_year = datetime.datetime.now().isocalendar()[0]
@@ -278,7 +278,8 @@ class Bot:
                 os.mkdir(file_path_users_user_week)
             if os.path.isdir(file_path_users_user_week_fasts) is False:
                 os.mkdir(file_path_users_user_week_fasts)
-            create_overview(chat_id, f"{file_path_users_user_week_fasts}/fast_overview_{curr_date}.png")
+            df_fast = get_fasting_data(chat_id)
+            create_overview(df_fast, f"{file_path_users_user_week_fasts}/fast_overview_{curr_date}.png")
 
 
     def build_keyboard(keyboard, callback_url):
