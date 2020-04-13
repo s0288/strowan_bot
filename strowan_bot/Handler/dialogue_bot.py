@@ -8,6 +8,7 @@ import json
 import os
 
 from db_bot import DBBot
+from fast_overview import get_output_location, get_fasting_data, create_overview
 
 import sys #required because files in parent folder
 sys.path.append('../')
@@ -81,6 +82,8 @@ class DialogueBot:
         return last_user_message, last_bot_message, last_bot_message_for_exception
 
     def extract_response_array(response_array, chat_id, fast_duration):
+        ## even though fast_duration is not explicitly mentioned in this function, it is used within the "if '{}' in message:" section.
+
         # save parameters
         message = response_array[2]
         keyboard = response_array[3]
@@ -111,6 +114,7 @@ class DialogueBot:
         fast_duration_hours = divmod(difference.days * seconds_in_day + difference.seconds, 3600)[0]
         fast_duration_mins = divmod(difference.days * seconds_in_day + difference.seconds, 60)[0] - fast_duration_hours*60
         fast_duration = f"{fast_duration_hours} Stunden und {fast_duration_mins} Minuten"
+
         return fast_duration
 
     # improve function by creating an object that holds additional user info (e.g. fast values)
@@ -124,11 +128,15 @@ class DialogueBot:
             last_user_message = '/befehle'
             data = DialogueBot.fetch_dialogue(intent)
         
-        # for fasting intents: get fasting values
-        if intent == '/fasten_end':
+        ## for fasting intents: 
+        # fasten_start: create fasting plot
+        if intent == '/fasten':
+            output_file_location = get_output_location(chat_id)
+            df_fast = get_fasting_data(chat_id)
+            create_overview(df_fast, output_file_location)
+        # fasten_end: get fasting values
+        elif intent == '/fasten_end':
             fast_duration = DialogueBot.get_fast_values(chat_id)
-        else:
-            fast_duration = None
 
         last_user_message, last_bot_message, last_bot_message_for_exception = DialogueBot.fetch_last_messages(data, chat_id, last_user_message, last_bot_message)
         try:

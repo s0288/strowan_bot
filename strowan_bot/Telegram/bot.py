@@ -11,7 +11,6 @@ import sys #required because files in other folder
 sys.path.append('../Handler/')
 from db_bot import DBBot
 from dialogue_bot import DialogueBot
-from fast_overview import get_fasting_data, create_overview
 
 import sys #required because files in parent folder
 sys.path.append('../')
@@ -260,27 +259,6 @@ class Bot:
         else:
             Bot.send_message(message_elements)
 
-        # if user started fast, create current version of fasting plot -- FIX TO BETTER SOLUTION
-        if message_elements["key_value"] == 'fast_start_text':
-            curr_date = datetime.datetime.now().strftime("%y-%m-%d")
-            curr_year = datetime.datetime.now().isocalendar()[0]
-            curr_week = datetime.datetime.now().isocalendar()[1]
-            # check if the user already has a folder. If not, create it
-            file_path_users = f"{config.FILE_DIRECTORY}/static/users"
-            file_path_users_user = f"{file_path_users}/{chat_id}"
-            file_path_users_user_week = f"{file_path_users_user}/{curr_year}_{curr_week}"
-            file_path_users_user_week_fasts = f"{file_path_users_user_week}/fasts"
-            if os.path.isdir(file_path_users) is False:
-                os.mkdir(file_path_users)
-            if os.path.isdir(file_path_users_user) is False:
-                os.mkdir(file_path_users_user)
-            if os.path.isdir(file_path_users_user_week) is False:
-                os.mkdir(file_path_users_user_week)
-            if os.path.isdir(file_path_users_user_week_fasts) is False:
-                os.mkdir(file_path_users_user_week_fasts)
-            df_fast = get_fasting_data(chat_id)
-            create_overview(df_fast, f"{file_path_users_user_week_fasts}/fast_overview_{curr_date}.png")
-
 
     def build_keyboard(keyboard, callback_url):
         inline_keyboard = []
@@ -302,40 +280,3 @@ class Bot:
         reply_markup = {"inline_keyboard": inline_keyboard}
         return json.dumps(reply_markup)
 # ------ end: handle updates
-
-
-# ------ start: trigger messages
-    def get_fast_values(chat_id):
-        data = DBBot.get_fast_values(chat_id, 'fast_duration_integer')
-        fast_duration = int(data[0][0])
-        fast_start = data[0][1]
-        fast_end = (fast_start + datetime.timedelta(hours=fast_duration)).strftime('%A, %H:%M')
-        fast_start = fast_start.strftime('%A, %H:%M')
-        return fast_duration, fast_start, fast_end
-
-    def trigger_message(self, intent, chat_id):
-        message_elements = {'update_id': None, 'created_at': None, 'received_at': None, 'message_id': None, 'message': None, 'intent': None, 'keyboard': None, 'user_id': None, 'first_name': None, 'chat_id': None, 'chat_title': None, 'chat_type': None, 'bot_command': None, 'key_value': None, 'img': None, 'is_bot': None, 'language_code': None, 'callback_query_id': None, 'group_chat_created': None, 'new_chat_participant_id': None}
-        message_elements["chat_id"] = chat_id
-
-        # for fasting intents: get fasting values
-        if intent in ('/fasten_feedback'):
-            fast_duration, fast_start, fast_end = Bot.get_fast_values(chat_id)
-        else:
-            fast_start = None
-            fast_end = None
-            fast_duration = None
-
-        message_elements["message"], message_elements["keyboard"], message_elements["callback_url"], message_elements["img"], message_elements["key_value"], message_elements["intent"] = DialogueBot.find_response(intent, chat_id, last_user_message=intent, last_bot_message="✏", fast_start=fast_start, fast_end=fast_end, fast_duration=fast_duration)
-        # if keyboard needed, get it
-        if message_elements["keyboard"]:
-            message_elements["keyboard"] = Bot.build_keyboard(message_elements["keyboard"], message_elements["callback_url"])
-        
-        # check for photo, doc or other
-        if message_elements["img"]:
-            file_type = os.path.splitext(message_elements["img"])[1]
-            if file_type == ".gif" or file_type == ".pdf":
-                Bot.send_document(message_elements)
-            else:
-                Bot.send_photo(message_elements)
-        else:
-            Bot.send_message(message_elements)

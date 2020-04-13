@@ -20,6 +20,29 @@ engine = create_engine(config.POSTGRES)
 metadata = MetaData(engine)
 conn = engine.connect()
 
+def get_output_location(user_id):
+    curr_date = datetime.datetime.now().strftime("%y-%m-%d")
+    curr_year = datetime.datetime.now().isocalendar()[0]
+    curr_week = datetime.datetime.now().isocalendar()[1]
+
+    # check if the user already has a folder. If not, create it
+    file_path_users = f"{config.FILE_DIRECTORY}/static/users"
+    file_path_users_user = f"{file_path_users}/{user_id}"
+    file_path_users_user_week = f"{file_path_users_user}/{curr_year}_{curr_week}"
+    file_path_users_user_week_fasts = f"{file_path_users_user_week}/fasts"
+    if os.path.isdir(file_path_users) is False:
+        os.mkdir(file_path_users)
+    if os.path.isdir(file_path_users_user) is False:
+        os.mkdir(file_path_users_user)
+    if os.path.isdir(file_path_users_user_week) is False:
+        os.mkdir(file_path_users_user_week)
+    if os.path.isdir(file_path_users_user_week_fasts) is False:
+        os.mkdir(file_path_users_user_week_fasts)   
+
+    # define output file location for user
+    output_file_location = f"{file_path_users_user_week_fasts}/fast_overview_{curr_date}.png"
+    
+    return output_file_location
 
 # get data on fasts from user
 def get_fasting_data(user_id):
@@ -157,28 +180,12 @@ for num, id in enumerate(data):
     ids.append(data[num][0])
 
 
-curr_date = datetime.datetime.now().strftime("%y-%m-%d")
-curr_year = datetime.datetime.now().isocalendar()[0]
-curr_week = datetime.datetime.now().isocalendar()[1]
+
 
 for user_id in ids:
     
-    # check if the user already has a folder. If not, create it
-    file_path_users = f"{config.FILE_DIRECTORY}/static/users"
-    file_path_users_user = f"{file_path_users}/{user_id}"
-    file_path_users_user_week = f"{file_path_users_user}/{curr_year}_{curr_week}"
-    file_path_users_user_week_fasts = f"{file_path_users_user_week}/fasts"
-    if os.path.isdir(file_path_users) is False:
-        os.mkdir(file_path_users)
-    if os.path.isdir(file_path_users_user) is False:
-        os.mkdir(file_path_users_user)
-    if os.path.isdir(file_path_users_user_week) is False:
-        os.mkdir(file_path_users_user_week)
-    if os.path.isdir(file_path_users_user_week_fasts) is False:
-        os.mkdir(file_path_users_user_week_fasts)
-    
-    # define output file location for user
-    output_file_location = f"{file_path_users_user_week_fasts}/fast_overview_{curr_date}.png"
+    # check if path already exists, if not, create it
+    output_file_location = get_output_location(user_id)
     
     # create fasting overviews for active users
     df_fast = get_fasting_data(user_id)
