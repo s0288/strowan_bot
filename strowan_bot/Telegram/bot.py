@@ -257,6 +257,8 @@ class Bot:
 
         message_elements["intent"] = intent
         message_elements["chat_id"] = chat_id
+
+        # get response
         message_elements["message"], message_elements["keyboard"], message_elements["callback_url"], message_elements["img"], message_elements["key_value"], message_elements["intent"] = DialogueBot.get_response(intent, chat_id)
         
         # create keyboard

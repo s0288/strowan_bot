@@ -82,8 +82,7 @@ class DialogueBot:
         return last_user_message, last_bot_message, last_bot_message_for_exception
 
     def extract_response_array(response_array, chat_id, fast_duration):
-        ## even though fast_duration is not explicitly mentioned in this function, it is used within the "if '{}' in message:" section.
-
+        # info: even though fast_duration is not explicitly mentioned in this function, it is used within the "if '{}' in message:" section.
         # save parameters
         message = response_array[2]
         keyboard = response_array[3]
@@ -116,11 +115,6 @@ class DialogueBot:
         fast_duration = f"{fast_duration_hours} Stunden und {fast_duration_mins} Minuten"
 
         return fast_duration
-
-    def handle_open_conversation(intent, chat_id):
-        message, keyboard, callback_url, img, key_value, intent = DialogueBot.handle_key_value_conversation("/befehle", chat_id, last_user_message="/befehle", last_bot_message="✏")
-        return message, keyboard, callback_url, img, key_value, intent
-
 
     def handle_key_value_conversation(intent, chat_id, last_user_message=None, last_bot_message=None, fast_duration=None):
         # get the dialogue
@@ -166,6 +160,13 @@ class DialogueBot:
 
         message, keyboard, callback_url, img, key_value, intent = DialogueBot.extract_response_array(response_array, chat_id, fast_duration)
 
+        return message, keyboard, callback_url, img, key_value, intent
+
+
+    def handle_open_conversation(intent, chat_id):
+        # redirect to key_value conversation for now
+        message, keyboard, callback_url, img, key_value, intent = DialogueBot.handle_key_value_conversation("/befehle", chat_id, last_user_message="/befehle", last_bot_message="✏")
+        
         return message, keyboard, callback_url, img, key_value, intent
 
 
