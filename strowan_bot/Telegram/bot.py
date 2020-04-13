@@ -231,35 +231,6 @@ class Bot:
 
 
 # ------ handle updates
-    def handle_updates(self, first_name, chat_id, intent, message):
-        # message container for incoming and outgoing msgs
-        message_elements = {'update_id': None, 'created_at': None, 'received_at': None, 'message_id': None, 'message': None, 'intent': None, 'keyboard': None, 'user_id': None, 'first_name': None, 'chat_id': None, 'chat_title': None, 'chat_type': None, 'bot_command': None, 'key_value': None, 'callback_url': None, 'img': None, 'is_bot': None, 'language_code': None, 'callback_query_id': None, 'group_chat_created': None, 'new_chat_participant_id': None}
-
-        message_elements["intent"] = intent
-        message_elements["chat_id"] = chat_id
-        ##### TO DO: catch-all until fixed:
-        if intent in ['open_conversation', 'end_conversation']:
-            message_elements["message"], message_elements["keyboard"], message_elements["callback_url"], message_elements["img"], message_elements["key_value"], message_elements["intent"] = DialogueBot.find_response("/befehle", chat_id, last_user_message="/befehle", last_bot_message="✏")
-            logging.info(f'Open dialogue started by {chat_id}')
-        ##### end catch-all
-        else:
-            message_elements["message"], message_elements["keyboard"], message_elements["callback_url"], message_elements["img"], message_elements["key_value"], message_elements["intent"] = DialogueBot.find_response(intent, chat_id)
-        
-        # create keyboard
-        if message_elements["keyboard"]:
-            message_elements["keyboard"] = Bot.build_keyboard(message_elements["keyboard"], message_elements["callback_url"])
-
-        # check for photo, doc or other
-        if message_elements["img"]:
-            file_type = os.path.splitext(message_elements["img"])[1]
-            if file_type == ".gif" or file_type == ".pdf":
-                Bot.send_document(message_elements)
-            else:
-                Bot.send_photo(message_elements)
-        else:
-            Bot.send_message(message_elements)
-
-
     def build_keyboard(keyboard, callback_url):
         inline_keyboard = []
         # needed to make sure that not more than 2 buttons are allowed side-by-side
@@ -279,4 +250,26 @@ class Bot:
                 temp_keyboard = []
         reply_markup = {"inline_keyboard": inline_keyboard}
         return json.dumps(reply_markup)
+
+    def handle_updates(self, first_name, chat_id, intent, message):
+        # message container for incoming and outgoing msgs
+        message_elements = {'update_id': None, 'created_at': None, 'received_at': None, 'message_id': None, 'message': None, 'intent': None, 'keyboard': None, 'user_id': None, 'first_name': None, 'chat_id': None, 'chat_title': None, 'chat_type': None, 'bot_command': None, 'key_value': None, 'callback_url': None, 'img': None, 'is_bot': None, 'language_code': None, 'callback_query_id': None, 'group_chat_created': None, 'new_chat_participant_id': None}
+
+        message_elements["intent"] = intent
+        message_elements["chat_id"] = chat_id
+        message_elements["message"], message_elements["keyboard"], message_elements["callback_url"], message_elements["img"], message_elements["key_value"], message_elements["intent"] = DialogueBot.get_response(intent, chat_id)
+        
+        # create keyboard
+        if message_elements["keyboard"]:
+            message_elements["keyboard"] = Bot.build_keyboard(message_elements["keyboard"], message_elements["callback_url"])
+
+        # check for photo, doc or other
+        if message_elements["img"]:
+            file_type = os.path.splitext(message_elements["img"])[1]
+            if file_type == ".gif" or file_type == ".pdf":
+                Bot.send_document(message_elements)
+            else:
+                Bot.send_photo(message_elements)
+        else:
+            Bot.send_message(message_elements)
 # ------ end: handle updates

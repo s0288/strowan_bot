@@ -117,13 +117,17 @@ class DialogueBot:
 
         return fast_duration
 
-    # improve function by creating an object that holds additional user info (e.g. fast values)
-    def find_response(self, intent, chat_id, last_user_message=None, last_bot_message=None, fast_duration=None):
+    def handle_open_conversation(intent, chat_id):
+        message, keyboard, callback_url, img, key_value, intent = DialogueBot.handle_key_value_conversation("/befehle", chat_id, last_user_message="/befehle", last_bot_message="✏")
+        return message, keyboard, callback_url, img, key_value, intent
+
+
+    def handle_key_value_conversation(intent, chat_id, last_user_message=None, last_bot_message=None, fast_duration=None):
         # get the dialogue
         try:
             data = DialogueBot.fetch_dialogue(intent)
         except Exception as e:
-            logging.exception("Could not find intent in find_response")
+            logging.exception("Could not find intent in get_response")
             intent = '/befehle'
             last_user_message = '/befehle'
             data = DialogueBot.fetch_dialogue(intent)
@@ -163,3 +167,19 @@ class DialogueBot:
         message, keyboard, callback_url, img, key_value, intent = DialogueBot.extract_response_array(response_array, chat_id, fast_duration)
 
         return message, keyboard, callback_url, img, key_value, intent
+
+
+    # improve function by creating an object that holds additional user info (e.g. fast values)
+    def get_response(self, intent, chat_id):
+        ## route according to intent
+        # open conversation
+        if intent in ['open_conversation', 'end_conversation']:
+            message, keyboard, callback_url, img, key_value, intent = DialogueBot.handle_open_conversation(intent, chat_id)
+            logging.info(f'Open dialogue by {chat_id}')
+        # key_value conversation
+        else:
+            message, keyboard, callback_url, img, key_value, intent = DialogueBot.handle_key_value_conversation(intent, chat_id)
+        
+        return message, keyboard, callback_url, img, key_value, intent
+
+
