@@ -1,2 +1,2 @@
 last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
-✏,/info,"""{}"".format(info)",Start; Stopp,/fasten; /fasten_end,,,end_conversation
+✏,/info,"""{}"".format(info)",Start; Stopp; Info,/fasten; /fasten_end; /info,,,end_conversation

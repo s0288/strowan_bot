@@ -1,3 +1,2 @@
 last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
-✏,/fasten,"Super. Genieße das Fasten 🙂! Drücke Stopp, um das Fasten zu beenden.",Stopp,/fasten_end,http://s0288.pythonanywhere.com/static/fast_start.png,fast_start_text,/fasten
-"Super. Genieße das Fasten 🙂! Drücke Stopp, um das Fasten zu beenden.",✏,"Für eine Übersicht, drücke auf Befehle.",Befehle,/befehle,,fast_duration_integer,end_conversation
+✏,/fasten,"""Viel Spaß 🙂! {} Drücke Info, um zu sehen, wie lange du schon fastest, oder Stopp, um das Fasten zu beenden."".format(info)",Stopp; Info,/fasten_end; /info,http://s0288.pythonanywhere.com/static/fast_start.png,fast_start_text,end_conversation

@@ -9,7 +9,7 @@ import os
 
 from db_bot import DBBot
 from fast_overview import get_output_location, get_fasting_data, create_overview
-from get_info import get_active_fasts, get_active_fasts_txt
+from get_info import get_fast_duration, get_user_info_fast, get_user_info_fast_txt, get_active_fasts, get_active_fasts_txt
 
 import sys #required because files in parent folder
 sys.path.append('../')
@@ -110,16 +110,22 @@ class DialogueBot:
         # set fast_end to now() and calculate difference between fast_end and fast_start
         fast_end = datetime.datetime.now()
         difference = fast_end - fast_start
-        seconds_in_day = 24 * 60 * 60
-        fast_duration_hours = divmod(difference.days * seconds_in_day + difference.seconds, 3600)[0]
-        fast_duration_mins = divmod(difference.days * seconds_in_day + difference.seconds, 60)[0] - fast_duration_hours*60
-        fast_duration = f"{fast_duration_hours} Stunden und {fast_duration_mins} Minuten"
+        fast_duration = get_fast_duration(difference)
 
         return fast_duration
 
-    def get_active_fasts():
+    def get_info(chat_id, only_user_stats=False):
+        # get txt on how many users are fasting
         data = get_active_fasts()
         txt = get_active_fasts_txt(data["cnt_user"][0])
+
+        if only_user_stats == True:
+            return txt
+
+        # get txt on current fasting state of user
+        data = get_user_info_fast(chat_id)
+        txt_2 = f" Du fastest seit {get_user_info_fast_txt(data)}."
+        txt = txt + txt_2
         return txt
 
     def handle_key_value_conversation(intent, chat_id, last_user_message=None, last_bot_message=None, fast_duration=None, info=None):
@@ -138,11 +144,14 @@ class DialogueBot:
             output_file_location = get_output_location(chat_id)
             df_fast = get_fasting_data(chat_id)
             create_overview(df_fast, output_file_location)
+            # get info on how many members are fasting and on fasting length 
+            info = DialogueBot.get_info(chat_id, only_user_stats=True)
         elif intent == '/fasten_end':
             # fasten_end: get fasting values
             fast_duration = DialogueBot.get_fast_duration(chat_id)
         elif intent == '/info':
-            info = DialogueBot.get_active_fasts()
+            # get info on how many members are fasting and on fasting length
+            info = DialogueBot.get_info(chat_id)
 
         last_user_message, last_bot_message, last_bot_message_for_exception = DialogueBot.fetch_last_messages(data, chat_id, last_user_message, last_bot_message)
         try:
