@@ -9,6 +9,7 @@ import os
 
 from db_bot import DBBot
 from fast_overview import get_output_location, get_fasting_data, create_overview
+from get_info import get_active_fasts, get_active_fasts_txt
 
 import sys #required because files in parent folder
 sys.path.append('../')
@@ -81,7 +82,7 @@ class DialogueBot:
             last_bot_message = "✏"
         return last_user_message, last_bot_message, last_bot_message_for_exception
 
-    def extract_response_array(response_array, chat_id, fast_duration):
+    def extract_response_array(response_array, chat_id, fast_duration, info):
         # info: even though fast_duration is not explicitly mentioned in this function, it is used within the "if '{}' in message:" section.
         # save parameters
         message = response_array[2]
@@ -99,7 +100,7 @@ class DialogueBot:
             img = eval(img)
         return message, keyboard, callback_url, img, key_value, intent
 
-    def get_fast_values(chat_id):
+    def get_fast_duration(chat_id):
         # get datetime of start of fast
         try:
             data = DBBot.get_fast_values(chat_id, 'fast_start_text')
@@ -116,7 +117,12 @@ class DialogueBot:
 
         return fast_duration
 
-    def handle_key_value_conversation(intent, chat_id, last_user_message=None, last_bot_message=None, fast_duration=None):
+    def get_active_fasts():
+        data = get_active_fasts()
+        txt = get_active_fasts_txt(data["cnt_user"][0])
+        return txt
+
+    def handle_key_value_conversation(intent, chat_id, last_user_message=None, last_bot_message=None, fast_duration=None, info=None):
         # get the dialogue
         try:
             data = DialogueBot.fetch_dialogue(intent)
@@ -126,15 +132,17 @@ class DialogueBot:
             last_user_message = '/befehle'
             data = DialogueBot.fetch_dialogue(intent)
         
-        ## for fasting intents: 
-        # fasten_start: create fasting plot
+        ## for special intents: 
         if intent == '/fasten':
+            # fasten_start: create fasting plot, but no change in dialogue
             output_file_location = get_output_location(chat_id)
             df_fast = get_fasting_data(chat_id)
             create_overview(df_fast, output_file_location)
-        # fasten_end: get fasting values
         elif intent == '/fasten_end':
-            fast_duration = DialogueBot.get_fast_values(chat_id)
+            # fasten_end: get fasting values
+            fast_duration = DialogueBot.get_fast_duration(chat_id)
+        elif intent == '/info':
+            info = DialogueBot.get_active_fasts()
 
         last_user_message, last_bot_message, last_bot_message_for_exception = DialogueBot.fetch_last_messages(data, chat_id, last_user_message, last_bot_message)
         try:
@@ -158,7 +166,7 @@ class DialogueBot:
                 logging.exception("No matching answer")
                 response_array = ['✏', '✏', 'Tut mir leid. Das verstehe ich nicht 😔. Ich habe meine Macher schon verständigt.', None, None, None, None, None, '/open_conversation']
 
-        message, keyboard, callback_url, img, key_value, intent = DialogueBot.extract_response_array(response_array, chat_id, fast_duration)
+        message, keyboard, callback_url, img, key_value, intent = DialogueBot.extract_response_array(response_array, chat_id, fast_duration, info)
 
         return message, keyboard, callback_url, img, key_value, intent
 
