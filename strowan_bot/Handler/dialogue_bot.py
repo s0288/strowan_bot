@@ -114,7 +114,7 @@ class DialogueBot:
 
         return fast_duration
 
-    def get_info(chat_id, only_user_stats=False):
+    def get_info(chat_id, response_array=None, only_user_stats=False):
         # get txt on how many users are fasting
         data = get_active_fasts()
         txt = get_active_fasts_txt(data["cnt_user"][0])
@@ -124,9 +124,18 @@ class DialogueBot:
 
         # get txt on current fasting state of user
         data = get_user_info_fast(chat_id)
-        txt_2 = f" Du fastest seit {get_user_info_fast_txt(data)}."
+        user_info_fast_txt, fast_status = get_user_info_fast_txt(data)
+        txt_2 = f" Du fastest seit {user_info_fast_txt}."
         txt = txt + txt_2
-        return txt
+
+        if fast_status == 'not_fasting':
+            response_array[3] = ['Start', 'Info']
+            response_array[4] = ['/fasten', '/info']
+        else:
+            response_array[3] = ['Stopp', 'Info']
+            response_array[4] = ['/fasten_end', '/info']            
+        
+        return txt, response_array
 
     def handle_key_value_conversation(intent, chat_id, last_user_message=None, last_bot_message=None, fast_duration=None, info=None):
         # get the dialogue
@@ -137,21 +146,6 @@ class DialogueBot:
             intent = '/befehle'
             last_user_message = '/befehle'
             data = DialogueBot.fetch_dialogue(intent)
-        
-        ## for special intents: 
-        if intent == '/fasten':
-            # fasten_start: create fasting plot, but no change in dialogue
-            output_file_location = get_output_location(chat_id)
-            df_fast = get_fasting_data(chat_id)
-            create_overview(df_fast, output_file_location)
-            # get info on how many members are fasting and on fasting length 
-            info = DialogueBot.get_info(chat_id, only_user_stats=True)
-        elif intent == '/fasten_end':
-            # fasten_end: get fasting values
-            fast_duration = DialogueBot.get_fast_duration(chat_id)
-        elif intent == '/info':
-            # get info on how many members are fasting and on fasting length
-            info = DialogueBot.get_info(chat_id)
 
         last_user_message, last_bot_message, last_bot_message_for_exception = DialogueBot.fetch_last_messages(data, chat_id, last_user_message, last_bot_message)
         try:
@@ -174,6 +168,22 @@ class DialogueBot:
             except Exception as e:
                 logging.exception("No matching answer")
                 response_array = ['✏', '✏', 'Tut mir leid. Das verstehe ich nicht 😔. Ich habe meine Macher schon verständigt.', None, None, None, None, None, '/open_conversation']
+
+        ## for special intents: 
+        if intent == '/fasten':
+            # fasten_start: create fasting plot, but no change in dialogue
+            output_file_location = get_output_location(chat_id)
+            df_fast = get_fasting_data(chat_id)
+            create_overview(df_fast, output_file_location)
+            # get info on how many members are fasting and on fasting length 
+            info = DialogueBot.get_info(chat_id, only_user_stats=True)
+        elif intent == '/fasten_end':
+            # fasten_end: get fasting values
+            fast_duration = DialogueBot.get_fast_duration(chat_id)
+        elif intent == '/info':
+            # get info on how many members are fasting and on fasting length
+            info, response_array = DialogueBot.get_info(chat_id, response_array=response_array)
+
 
         message, keyboard, callback_url, img, key_value, intent = DialogueBot.extract_response_array(response_array, chat_id, fast_duration, info)
 

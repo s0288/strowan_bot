@@ -79,6 +79,7 @@ def get_user_info_fast(user_id):
     return data
 
 def get_user_info_fast_txt(data):
+    fast_status = 'not_fasting'
     # check if user has ever fasted:
     if len(data) > 0:
         # check, whether the user started or ended a fast last
@@ -86,13 +87,14 @@ def get_user_info_fast_txt(data):
         # if user started a fast last, calculate fast_duration
         if temp.key_value.values[0] == 'fast_start_text':
             difference = datetime.datetime.now() - temp.created_at[0]
+            fast_status = 'fasting'
         else:
             difference = None
         fast_duration = get_fast_duration(difference)
     # if user never fasted:
     else:
         fast_duration = '0 Stunden und 0 Minuten'
-    return fast_duration    
+    return fast_duration, fast_status    
 
 
 
