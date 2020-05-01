@@ -216,8 +216,8 @@ def create_progress_plot(total_duration, last_week_duration, output_file_locatio
     plt.text(50, 290, f'{last_week_duration:.0f} h', fontsize=24)
 
     # add total fasting to plot
-    plt.text(240, 260, f'Insgesamt gefastet:', fontsize=16)
-    plt.text(300, 290, f'{total_duration:.0f} h', fontsize=24)
+    plt.text(220, 260, f'Insgesamt gefastet:', fontsize=16)
+    plt.text(280, 290, f'{total_duration:.0f} h', fontsize=24)
 
     plt.savefig(output_file_location, bbox_inches='tight')
     plt.close()
