@@ -173,20 +173,19 @@ def create_overview(df_fast, output_file_location=config.FILE_DIRECTORY):
     plt.savefig(output_file_location, bbox_inches='tight')
 
 
-# get active users
-data = DBBot.get_active_users()
-ids = []
-for num, id in enumerate(data):
-    ids.append(data[num][0])
+if __name__ == '__main__':
+    # get active users
+    data = DBBot.get_active_users()
+    ids = []
+    for num, id in enumerate(data):
+        ids.append(data[num][0])
 
 
-
-
-for user_id in ids:
-    
-    # check if path already exists, if not, create it
-    output_file_location = get_output_location(user_id)
-    
-    # create fasting overviews for active users
-    df_fast = get_fasting_data(user_id)
-    create_overview(df_fast, output_file_location)
+    for user_id in ids:
+        
+        # check if path already exists, if not, create it
+        output_file_location = get_output_location(user_id)
+        
+        # create fasting overviews for active users
+        df_fast = get_fasting_data(user_id)
+        create_overview(df_fast, output_file_location)
