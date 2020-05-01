@@ -275,3 +275,8 @@ class Bot:
         else:
             Bot.send_message(message_elements)
 # ------ end: handle updates
+
+
+# ------ start: trigger msg
+    def send_trigger_photo(self, message_elements):
+        Bot.send_photo(message_elements)
