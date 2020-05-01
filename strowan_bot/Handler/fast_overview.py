@@ -235,7 +235,6 @@ if __name__ == '__main__':
 
 
     for user_id in ids:
-        print(user_id)
         #### create fast_overview
         # check if path already exists, if not, create it
         output_file_location = get_output_location(user_id)
@@ -245,8 +244,11 @@ if __name__ == '__main__':
 
         #### create progress
         # get inputs for create_batch_plot
-        total_duration = df_fast.duration.sum()
-        count_fasts = df_fast.duration.count()
-        output_file_location = get_output_location(user_id, plot_type='progress')
-        # create batch plot
-        create_progress_plot(total_duration, count_fasts, output_file_location)
+        try:
+            total_duration = df_fast.duration.sum()
+            count_fasts = df_fast.duration.count()
+            output_file_location = get_output_location(user_id, plot_type='progress')
+            # create batch plot
+            create_progress_plot(total_duration, count_fasts, output_file_location)
+        except:
+            print('could not create progress - user never fasted')
