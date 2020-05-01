@@ -179,7 +179,7 @@ def create_overview(df_fast, output_file_location=config.FILE_DIRECTORY):
 
 ############################################
 ### create progress plot
-def create_progress_plot(total_duration, count_fasts, output_file_location=config.FILE_DIRECTORY):
+def create_progress_plot(total_duration, last_week_duration, output_file_location=config.FILE_DIRECTORY):
     # <100 h: ameise
     # 100-200 h: katze
     # 200-500 h: kranich
@@ -187,7 +187,7 @@ def create_progress_plot(total_duration, count_fasts, output_file_location=confi
     # >1000 h: zen
 
     batch_threshold = [0, 100, 200, 500, 1000]
-    batch = [{'name': 'Ameise', 'img': 'ant', 'coord_x': 165}, {'name': 'Fuchs', 'img': 'fox', 'coord_x': 180}, {'name': 'Katze', 'img': 'cat', 'coord_x': 180}, {'name': 'Kranich', 'img': 'crane', 'coord_x': 170}, {'name': 'Zen', 'img': 'zen', 'coord_x': 185}]
+    batch = [{'name': 'Ameise', 'img': 'ant', 'coord_x': 145}, {'name': 'Fuchs', 'img': 'fox', 'coord_x': 160}, {'name': 'Katze', 'img': 'cat', 'coord_x': 160}, {'name': 'Kranich', 'img': 'crane', 'coord_x': 150}, {'name': 'Zen', 'img': 'zen', 'coord_x': 165}]
 
     # get first threshold that is not surpassed yet
     batch_value = np.array(batch_threshold)[batch_threshold <= total_duration][-1]
@@ -209,21 +209,18 @@ def create_progress_plot(total_duration, count_fasts, output_file_location=confi
     # add name of batch and diff to next
     plt.text(batch[batch_index]["coord_x"], 200, f"{batch[batch_index]['name']}", fontsize=24)
     if diff_to_batch:
-        plt.text(110, 215, f"Nächste Stufe in: {diff_to_batch:,.0f} Stunden", fontsize=16)
+        plt.text(80, 225, f"Nächste Stufe in: {diff_to_batch:,.0f} Stunden", fontsize=16)
 
-    # add total fasting hours to plot
-    plt.text(65, 245, f'Stunden gefastet:', fontsize=16)
-    plt.text(100, 270, f'{total_duration:.0f}', fontsize=24)
+    # add last week's fasting to plot
+    plt.text(30, 260, f'Letzte Woche:', fontsize=16)
+    plt.text(50, 290, f'{last_week_duration:.0f} h', fontsize=24)
 
-    # add total fasting count to plot
-    plt.text(240, 245, f'Fastentrips:', fontsize=16)
-    plt.text(275, 270, f'{count_fasts:.0f}', fontsize=24)
+    # add total fasting to plot
+    plt.text(240, 260, f'Insgesamt gefastet:', fontsize=16)
+    plt.text(300, 290, f'{total_duration:.0f} h', fontsize=24)
 
     plt.savefig(output_file_location, bbox_inches='tight')
     plt.close()
-
-
-
 
 
 
@@ -248,9 +245,9 @@ if __name__ == '__main__':
         # get inputs for create_batch_plot
         try:
             total_duration = df_fast.duration.sum()
-            count_fasts = df_fast.duration.count()
+            last_week_duration = df_fast.tail(7).duration.sum()
             output_file_location = get_output_location(user_id, plot_type='progress')
             # create batch plot
-            create_progress_plot(total_duration, count_fasts, output_file_location)
-        except:
-            print('could not create progress - user never fasted')
+            create_progress_plot(total_duration, last_week_duration, output_file_location)
+        except Exception as e:
+            print(e)
