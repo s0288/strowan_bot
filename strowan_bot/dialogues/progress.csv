@@ -1,0 +1,4 @@
+last_bot_message,last_user_message,message,keyboard,callback_url,img,key_value,intent
+✏,/progress,"Hey 🙂. Hier siehst du, wie lange du letzte Woche gefastet hast. Wie denkst du über deine Woche? Was blieb dir besonders in Erinnerung? ✏",,,"""http://s0288.pythonanywhere.com/static/users/{}/{}_{}/fasts/progress_{}.png"".format(chat_id, datetime.datetime.now().isocalendar()[0], datetime.datetime.now().isocalendar()[1], datetime.datetime.now().strftime('%y-%m-%d'))",past_week_text,/progress
+"Hey 🙂. Hier siehst du, wie lange du letzte Woche gefastet hast. Wie denkst du über deine Woche? Was blieb dir besonders in Erinnerung? ✏",✏,"Gibt es etwas, das du dir für nächste Woche vornehmen möchtest? ✏",,,,next_week_text,/progress
+"Gibt es etwas, das du dir für nächste Woche vornehmen möchtest? ✏",✏,Danke für deine Antworten. Bis bald 🙂,Start; Info,/fasten; /info,,,end_conversation
