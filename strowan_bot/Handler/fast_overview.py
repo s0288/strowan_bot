@@ -40,7 +40,7 @@ def get_output_location(user_id, plot_type='fast_overview'):
         os.mkdir(file_path_users_user_week_fasts)   
 
     # define output file location for user
-    output_file_location = f"{file_path_users_user_week_fasts}/{plot_type}{curr_date}.png"
+    output_file_location = f"{file_path_users_user_week_fasts}/{plot_type}_{curr_date}.png"
 
     return output_file_location
 
