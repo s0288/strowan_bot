@@ -6,6 +6,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+import matplotlib.image as mpimg
+
 import datetime
 import os
 
@@ -176,10 +178,7 @@ def create_overview(df_fast, output_file_location=config.FILE_DIRECTORY):
 
 ############################################
 ### create progress plot
-import matplotlib.image as mpimg
-
 def create_progress_plot(total_duration, count_fasts, output_file_location=config.FILE_DIRECTORY):
-
     # <100 h: ameise
     # 100-200 h: katze
     # 200-500 h: kranich
@@ -202,7 +201,7 @@ def create_progress_plot(total_duration, count_fasts, output_file_location=confi
         diff_to_batch = None
 
     # get batch
-    img = mpimg.imread(f"strowan_bot/strowan_bot/batches/{batch[batch_index]['img']}.png")
+    img = mpimg.imread(f"{config.BATCH_DIRECTORY}/{batch[batch_index]['img']}.png")
     plt.imshow(img)
     plt.axis('off')
 
