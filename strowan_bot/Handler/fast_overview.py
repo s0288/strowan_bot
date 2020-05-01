@@ -20,7 +20,7 @@ engine = create_engine(config.POSTGRES)
 metadata = MetaData(engine)
 conn = engine.connect()
 
-def get_output_location(user_id):
+def get_output_location(user_id, plot_type='fast_overview'):
     curr_date = datetime.datetime.now().strftime("%y-%m-%d")
     curr_year = datetime.datetime.now().isocalendar()[0]
     curr_week = datetime.datetime.now().isocalendar()[1]
@@ -40,8 +40,8 @@ def get_output_location(user_id):
         os.mkdir(file_path_users_user_week_fasts)   
 
     # define output file location for user
-    output_file_location = f"{file_path_users_user_week_fasts}/fast_overview_{curr_date}.png"
-    
+    output_file_location = f"{file_path_users_user_week_fasts}/{plot_type}{curr_date}.png"
+
     return output_file_location
 
 # get data on fasts from user
