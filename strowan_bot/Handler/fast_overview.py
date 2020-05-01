@@ -173,6 +173,7 @@ def create_overview(df_fast, output_file_location=config.FILE_DIRECTORY):
         plt.text(5.1, y0 + data_height * 1.2, f'{count_fasts:.0f}', fontsize=24)
 
     plt.savefig(output_file_location, bbox_inches='tight')
+    plt.close()
 
 
 
@@ -219,6 +220,7 @@ def create_progress_plot(total_duration, count_fasts, output_file_location=confi
     plt.text(275, 270, f'{count_fasts:.0f}', fontsize=24)
 
     plt.savefig(output_file_location, bbox_inches='tight')
+    plt.close()
 
 
 

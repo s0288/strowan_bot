@@ -137,6 +137,14 @@ class DialogueBot:
         
         return txt, response_array
 
+    def get_progress(chat_id):
+        # get txt on current fasting state of user
+        data = get_user_info_fast(chat_id)
+        user_info_fast_txt, fast_status = get_user_info_fast_txt(data)
+        txt = f" Hey 🙂. Du fastest seit {user_info_fast_txt}. Wie denkst du über deine Woche? Was blieb dir besonders in Erinnerung? ✏"
+        
+        return txt
+
     def handle_key_value_conversation(intent, chat_id, last_user_message=None, last_bot_message=None, fast_duration=None, info=None):
         # get the dialogue
         try:
@@ -183,6 +191,9 @@ class DialogueBot:
         elif intent == '/info':
             # get info on how many members are fasting and on fasting length
             info, response_array = DialogueBot.get_info(chat_id, response_array=response_array)
+        elif intent == '/progress':
+            # get info on how many members are fasting and on fasting length
+            info = DialogueBot.get_progress(chat_id)
 
 
         message, keyboard, callback_url, img, key_value, intent = DialogueBot.extract_response_array(response_array, chat_id, fast_duration, info)
