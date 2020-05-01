@@ -30,11 +30,6 @@ conn = engine.connect()
 
 Bot = Bot()
 
-#chat_id
-# 'http://s0288.pythonanywhere.com/static/users/415604082/2020_18/fasts/progress_20-05-01.png'
-# "http://s0288.pythonanywhere.com/static/users/{}/{}_{}/fasts/progress_{}.png".format(chat_id, datetime.datetime.now().isocalendar()[0], datetime.datetime.now().isocalendar()[1], datetime.datetime.now().strftime('%y-%m-%d'))
-
-
 def get_last_weeks_fasting_users():
     #### get active fasts
     txt = f"""
@@ -65,15 +60,24 @@ def get_last_weeks_fasting_users():
 
 
 if __name__ == '__main__':
-    # get users that fasted within last 7 days
-    chat_ids = get_last_weeks_fasting_users()
-    # loop through users
-    for i in chat_ids.iterrows():
-        chat_id = i[1]["platform_user_id"]
-        img = f"http://s0288.pythonanywhere.com/static/users/{chat_id}/{datetime.datetime.now().isocalendar()[0]}_{datetime.datetime.now().isocalendar()[1]}/fasts/progress_{datetime.datetime.now().strftime('%y-%m-%d')}.png"
-        message = "Hey 🙂. Hier siehst du, wie lange du letzte Woche gefastet hast. Wie denkst du über deine Woche? Was blieb dir besonders in Erinnerung? ✏"
+    chat_id = config.TEST_USER
+    img = f"http://s0288.pythonanywhere.com/static/users/{chat_id}/{datetime.datetime.now().isocalendar()[0]}_{datetime.datetime.now().isocalendar()[1]}/fasts/progress_{datetime.datetime.now().strftime('%y-%m-%d')}.png"
+    message = "Hey 🙂. Hier siehst du, wie lange du letzte Woche gefastet hast. Wie denkst du über deine Woche? Was blieb dir besonders in Erinnerung? ✏"
 
-        # create message_elements
-        message_elements = {'update_id': None, 'created_at': None, 'received_at': None, 'message_id': None, 'message': message, 'intent': '/progress', 'keyboard': None, 'user_id': None, 'first_name': None, 'chat_id': chat_id, 'chat_title': None, 'chat_type': None, 'bot_command': None, 'key_value': 'past_week_text', 'callback_url': None, 'img': img, 'is_bot': None, 'language_code': None, 'callback_query_id': None, 'group_chat_created': None, 'new_chat_participant_id': None}
+    # create message_elements
+    message_elements = {'update_id': None, 'created_at': None, 'received_at': None, 'message_id': None, 'message': message, 'intent': '/progress', 'keyboard': None, 'user_id': None, 'first_name': None, 'chat_id': chat_id, 'chat_title': None, 'chat_type': None, 'bot_command': None, 'key_value': 'past_week_text', 'callback_url': None, 'img': img, 'is_bot': None, 'language_code': None, 'callback_query_id': None, 'group_chat_created': None, 'new_chat_participant_id': None}
 
-        Bot.send_trigger_photo(message_elements)
+    Bot.send_trigger_photo(message_elements)
+    
+    # # get users that fasted within last 7 days
+    # chat_ids = get_last_weeks_fasting_users()
+    # # loop through users
+    # for i in chat_ids.iterrows():
+    #     chat_id = i[1]["platform_user_id"]
+    #     img = f"http://s0288.pythonanywhere.com/static/users/{chat_id}/{datetime.datetime.now().isocalendar()[0]}_{datetime.datetime.now().isocalendar()[1]}/fasts/progress_{datetime.datetime.now().strftime('%y-%m-%d')}.png"
+    #     message = "Hey 🙂. Hier siehst du, wie lange du letzte Woche gefastet hast. Wie denkst du über deine Woche? Was blieb dir besonders in Erinnerung? ✏"
+
+    #     # create message_elements
+    #     message_elements = {'update_id': None, 'created_at': None, 'received_at': None, 'message_id': None, 'message': message, 'intent': '/progress', 'keyboard': None, 'user_id': None, 'first_name': None, 'chat_id': chat_id, 'chat_title': None, 'chat_type': None, 'bot_command': None, 'key_value': 'past_week_text', 'callback_url': None, 'img': img, 'is_bot': None, 'language_code': None, 'callback_query_id': None, 'group_chat_created': None, 'new_chat_participant_id': None}
+
+    #     Bot.send_trigger_photo(message_elements)
