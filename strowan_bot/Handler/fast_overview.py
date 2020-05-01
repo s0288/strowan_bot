@@ -173,6 +173,60 @@ def create_overview(df_fast, output_file_location=config.FILE_DIRECTORY):
     plt.savefig(output_file_location, bbox_inches='tight')
 
 
+
+############################################
+### create progress plot
+import matplotlib.image as mpimg
+
+def create_progress_plot(total_duration, count_fasts, output_file_location=config.FILE_DIRECTORY):
+
+    # <100 h: ameise
+    # 100-200 h: katze
+    # 200-500 h: kranich
+    # 500-1000 h: fuchs
+    # >1000 h: zen
+
+    batch_threshold = [0, 100, 200, 500, 1000]
+    batch = [{'name': 'Ameise', 'img': 'ant', 'coord_x': 165}, {'name': 'Fuchs', 'img': 'fox', 'coord_x': 180}, {'name': 'Katze', 'img': 'cat', 'coord_x': 180}, {'name': 'Kranich', 'img': 'crane', 'coord_x': 170}, {'name': 'Zen', 'img': 'zen', 'coord_x': 185}]
+
+    # get first threshold that is not surpassed yet
+    batch_value = np.array(batch_threshold)[batch_threshold <= total_duration][-1]
+    batch_index = batch_threshold.index(batch_value)
+
+    # get distance to next batch
+    try:
+        batch_next = np.array(batch_threshold)[batch_threshold > total_duration][0]
+        diff_to_batch = batch_next - total_duration
+    except:
+        batch_next = None
+        diff_to_batch = None
+
+    # get batch
+    img = mpimg.imread(f"strowan_bot/strowan_bot/batches/{batch[batch_index]['img']}.png")
+    plt.imshow(img)
+    plt.axis('off')
+
+    # add name of batch and diff to next
+    plt.text(batch[batch_index]["coord_x"], 200, f"{batch[batch_index]['name']}", fontsize=24)
+    if diff_to_batch:
+        plt.text(110, 215, f"Nächste Stufe in: {diff_to_batch:,.0f} Stunden", fontsize=16)
+
+    # add total fasting hours to plot
+    plt.text(65, 245, f'Stunden gefastet:', fontsize=16)
+    plt.text(100, 270, f'{total_duration:.0f}', fontsize=24)
+
+    # add total fasting count to plot
+    plt.text(240, 245, f'Fastentrips:', fontsize=16)
+    plt.text(275, 270, f'{count_fasts:.0f}', fontsize=24)
+
+    plt.savefig(output_file_location, bbox_inches='tight')
+
+
+
+
+
+
+
 if __name__ == '__main__':
     # get active users
     data = DBBot.get_active_users()
@@ -182,10 +236,18 @@ if __name__ == '__main__':
 
 
     for user_id in ids:
-        
+        print(user_id)
+        #### create fast_overview
         # check if path already exists, if not, create it
         output_file_location = get_output_location(user_id)
-        
         # create fasting overviews for active users
         df_fast = get_fasting_data(user_id)
         create_overview(df_fast, output_file_location)
+
+        #### create progress
+        # get inputs for create_batch_plot
+        total_duration = df_fast.duration.sum()
+        count_fasts = df_fast.duration.count()
+        output_file_location = get_output_location(user_id, plot_type='progress')
+        # create batch plot
+        create_progress_plot(total_duration, count_fasts, output_file_location)
