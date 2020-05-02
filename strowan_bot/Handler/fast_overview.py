@@ -245,7 +245,7 @@ if __name__ == '__main__':
         # get inputs for create_batch_plot
         try:
             total_duration = df_fast.duration.sum()
-            last_week_duration = df_fast.tail(7).duration.sum()
+            last_week_duration = df_fast[df_fast.created_at_date > datetime.date.today() - datetime.timedelta(days=7)].duration.sum()
             output_file_location = get_output_location(user_id, plot_type='progress')
             # create batch plot
             create_progress_plot(total_duration, last_week_duration, output_file_location)
