@@ -73,7 +73,7 @@ if __name__ == '__main__':
                 # get data to create progress plot
                 df_fast = get_fasting_data(chat_id)
                 total_duration = df_fast.duration.sum()
-                last_week_duration = df_fast.tail(7).duration.sum()
+                last_week_duration = df_fast[df_fast.created_at_date > datetime.date.today() - datetime.timedelta(days=7)].duration.sum()
                 output_file_location = get_output_location(chat_id, plot_type='progress')
                 # create progress plot
                 create_progress_plot(total_duration, last_week_duration, output_file_location)
