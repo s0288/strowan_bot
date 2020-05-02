@@ -63,7 +63,7 @@ def get_last_weeks_fasting_users():
 if __name__ == '__main__':
 
     # only trigger on Sundays
-    if datetime.datetime.today().weekday() == 6:
+    if datetime.datetime.today().weekday() == 5:
         # get users that fasted within last 7 days
         chat_ids = get_last_weeks_fasting_users()
         # loop through users
@@ -72,11 +72,9 @@ if __name__ == '__main__':
                 chat_id = i[1]["platform_user_id"]
                 # get data to create progress plot
                 df_fast = get_fasting_data(chat_id)
-                total_duration = df_fast.duration.sum()
-                last_week_duration = df_fast[df_fast.created_at_date > datetime.date.today() - datetime.timedelta(days=7)].duration.sum()
                 output_file_location = get_output_location(chat_id, plot_type='progress')
                 # create progress plot
-                create_progress_plot(total_duration, last_week_duration, output_file_location)
+                create_progress_plot(df_fast, output_file_location)
 
                 # prepare msg
                 img = f"http://s0288.pythonanywhere.com/static/users/{chat_id}/{datetime.datetime.now().isocalendar()[0]}_{datetime.datetime.now().isocalendar()[1]}/fasts/progress_{datetime.datetime.now().strftime('%y-%m-%d')}.png"

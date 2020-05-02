@@ -179,7 +179,11 @@ def create_overview(df_fast, output_file_location=config.FILE_DIRECTORY):
 
 ############################################
 ### create progress plot
-def create_progress_plot(total_duration, last_week_duration, output_file_location=config.FILE_DIRECTORY):
+def create_progress_plot(df_fast, output_file_location=config.FILE_DIRECTORY):
+    # create user stats
+    total_duration = df_fast.duration.sum()
+    last_week_duration = df_fast[df_fast.created_at_date > datetime.date.today() - datetime.timedelta(days=7)].duration.sum()
+
     # <100 h: ameise
     # 100-200 h: katze
     # 200-500 h: kranich
@@ -244,10 +248,8 @@ if __name__ == '__main__':
         #### create progress
         # get inputs for create_batch_plot
         try:
-            total_duration = df_fast.duration.sum()
-            last_week_duration = df_fast[df_fast.created_at_date > datetime.date.today() - datetime.timedelta(days=7)].duration.sum()
             output_file_location = get_output_location(user_id, plot_type='progress')
             # create batch plot
-            create_progress_plot(total_duration, last_week_duration, output_file_location)
+            create_progress_plot(df_fast, output_file_location)
         except Exception as e:
             print(e)
