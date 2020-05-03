@@ -47,7 +47,6 @@ def get_last_weeks_fasting_users():
                     ON u.platform_chat_id = us.platform_user_id
                 WHERE 
                     u.key_value in ('fast_start_text')
-                    AND us.platform_user_id NOT IN ({config.CORRECT_USER_1}, {config.CORRECT_USER_2}, {config.CORRECT_USER_3})
                 GROUP BY 1
                 ) s
             -- only keep those users with fast start as last value within the last 7 days
