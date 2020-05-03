@@ -63,7 +63,7 @@ def get_last_weeks_fasting_users():
 if __name__ == '__main__':
 
     # only trigger on Sundays
-    if datetime.datetime.today().weekday() == 5:
+    if datetime.datetime.today().weekday() == 6:
         # get users that fasted within last 7 days
         chat_ids = get_last_weeks_fasting_users()
         # loop through users
